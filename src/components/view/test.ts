@@ -14,6 +14,7 @@ class Test {
 
   init() {
     this.getUser();
+    this.getWords();
   }
 
   async getUser() {
@@ -24,6 +25,10 @@ class Test {
     });
 
     console.log(this.user);
+  }
+
+  async getWords() {
+    console.log(await this.api.getWords());
   }
 }
 

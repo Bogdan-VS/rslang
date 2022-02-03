@@ -1,5 +1,10 @@
 import { PathLink } from '../utils/enums';
-import { IUserData, IWord } from '../utils/interfaces';
+import {
+  IUserData,
+  IUsersAllWords,
+  IUserToken,
+  IWord,
+} from '../utils/interfaces';
 
 class Api {
   baseLink: string;
@@ -79,6 +84,104 @@ class Api {
       const user: {} = await responce.json();
 
       return user;
+    } catch (error) {
+      return responce.status;
+    }
+  }
+
+  async getNewUserToken(id: string) {
+    const responce = await fetch(
+      `${this.baseLink}${PathLink.user}/${id}${PathLink.tokens}`
+    );
+
+    try {
+      const userToken: IUserToken = await responce.json();
+
+      return userToken;
+    } catch (error) {
+      return responce.status;
+    }
+  }
+
+  async getAllUserWords(id: string) {
+    const responce = await fetch(
+      `${this.baseLink}${PathLink.user}/${id}${PathLink.words}`
+    );
+
+    try {
+      const usersWords: IUsersAllWords[] = await responce.json();
+
+      return usersWords;
+    } catch (error) {
+      return responce.status;
+    }
+  }
+
+  async createUserWord(id: string, wordId: string, userWord: IUsersAllWords) {
+    const responce = await fetch(
+      `${this.baseLink}${PathLink.user}/${id}${PathLink.words}/${wordId}`,
+      {
+        method: 'POST',
+        body: JSON.stringify(userWord),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    try {
+      const wordsData: IUsersAllWords = await responce.json();
+
+      return wordsData;
+    } catch (error) {
+      return responce.status;
+    }
+  }
+
+  async getUserWordById(id: string, wordId: string) {
+    const responce = await fetch(
+      `${this.baseLink}${PathLink.user}/${id}${PathLink.words}/${wordId}`
+    );
+
+    try {
+      const wordsData: IUsersAllWords = await responce.json();
+
+      return wordsData;
+    } catch (error) {
+      return responce.status;
+    }
+  }
+
+  async updateUserWord(id: string, wordId: string, userWord: IUsersAllWords) {
+    const responce = await fetch(
+      `${this.baseLink}${PathLink.user}/${id}${PathLink.words}/${wordId}`,
+      {
+        method: 'POST',
+        body: JSON.stringify(userWord),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    try {
+      const wordsData: IUsersAllWords = await responce.json();
+
+      return wordsData;
+    } catch (error) {
+      return responce.status;
+    }
+  }
+
+  async deleteUserWord(id: string, wordId: string) {
+    const responce = await fetch(
+      `${this.baseLink}${PathLink.user}/${id}${PathLink.words}/${wordId}`
+    );
+
+    try {
+      const wordData: {} = await responce.json();
+
+      return wordData;
     } catch (error) {
       return responce.status;
     }

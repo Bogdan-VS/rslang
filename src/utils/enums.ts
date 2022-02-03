@@ -2,6 +2,7 @@ export enum PathLink {
   words = '/words',
   wordId = '/words/',
   user = '/users',
+  tokens = '/tokens',
 }
 
 export enum ErrorsCode {

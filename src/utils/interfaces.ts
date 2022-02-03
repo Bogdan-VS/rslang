@@ -30,3 +30,16 @@ export interface IUserData {
   id?: string;
   password?: string;
 }
+
+export interface IUserToken {
+  message: string;
+  token: string;
+  refreshToken: string;
+  userId: string;
+  name: string;
+}
+
+export interface IUsersAllWords {
+  difficulty: string;
+  optional: {};
+}
