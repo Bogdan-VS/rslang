@@ -1,9 +1,6 @@
-export class Render {
-    constructor() {
-    }
-
-    static render = () => {
-        const html = `<header class="header">
+class Render {
+  static render = () => {
+    const html = `<header class="header">
   <div class="container header__container">
     <div class="header__logo" id="logo">RSLang.</div>
     <nav class="header__nav">
@@ -24,7 +21,10 @@ export class Render {
   </div>
 </header>
 <main>
-<div id="mainPage">${Render.renderMainPage()}</div>
+<div id="mainPage">
+${Render.renderMainPage()}
+${Render.renderAuthorize()}
+</div>
 </main>
 <footer>
   <div class="container footer-container">
@@ -42,14 +42,14 @@ export class Render {
       </div>
     </div>
   </div>
-</footer>`
-        const root = document.createElement('div');
-        root.innerHTML = html;
-        root.id = 'root'
-        document.body.appendChild(root)
-    }
+</footer>`;
+    const root = document.createElement('div');
+    root.innerHTML = html;
+    root.id = 'root';
+    document.body.appendChild(root);
+  };
 
-    private static renderMainPage = () => `<section class="main-section">
+  private static renderMainPage = () => `<section class="main-section">
     <div class="container section-container main-container">
       <div class="main-section__text-container">
         <h1 class="title">RS Lang</h1>
@@ -111,4 +111,32 @@ export class Render {
     </div>
   </section>`;
 
+  private static renderAuthorize = () => `
+  <form class="auth">
+    <div class="auth__wrapper">
+      <div id="sign-in" class="sign-in">
+        <h2 class="auth__title">Вход в аккаунт</h2>
+        <div class="auth__conteiner">
+          <div class="auth__container-item">
+            <input type="email" placeholder="Почта" name="email" required id="auth-email">
+            <label for="email"></label>
+          </div>
+          <div class="auth__container-item">
+            <input type="password" placeholder="Пароль" name="password" required id="auth-password">
+            <label for="password"></label>
+          </div>
+        </div>
+        <div class="button-conteiner">
+          <button type="submit" class="auth__button">Войти</button>
+        </div>
+        <div class="auth__subtitle">
+          <p>У вас нет аккаунта?</p>
+          <h4 class="auth__subtitle-item">Зарегистрируйтесь сейчас</h4> 
+        </div>
+      </div>
+    </div>
+  </form>
+  `;
 }
+
+export default Render;
