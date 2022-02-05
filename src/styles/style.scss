@@ -1,5 +1,5 @@
-@use 'reset';
+@use 'main-page';
 @use 'fonts';
-@use 'start-page';
-@use 'toys';
-@use 'tree';
+@use 'constants';
+@use 'base';
+@use "header";

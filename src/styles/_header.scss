@@ -1,0 +1,45 @@
+.header {
+  background-color: white;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
+  padding: 15px 0 17px 0;
+}
+
+.header__container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navigation {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.header__nav-item {
+  cursor: pointer;
+  transition: color .3s;
+  color: black;
+  padding: 0 20px;
+}
+
+.header__nav-item:hover {
+  color: #1943EF;
+}
+
+.nav__sub-menu {
+  display: none;
+  position: absolute;
+  list-style: none;
+  padding: 0;
+  top: 50%;
+}
+
+.header__logo {
+  font-family: 'Gilroy-Bold', serif;
+  font-size: 36px;
+  color: #1943EF;
+  cursor: pointer;
+}
+
+
