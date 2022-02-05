@@ -3,6 +3,10 @@ export enum PathLink {
   wordId = '/words/',
   user = '/users',
   tokens = '/tokens',
+  aggregatedWords = '/aggregatedWords',
+  statistics = '/statistics',
+  settings = '/settings',
+  signIn = '/signin',
 }
 
 export enum ErrorsCode {

@@ -43,3 +43,17 @@ export interface IUsersAllWords {
   difficulty: string;
   optional: {};
 }
+
+export interface IToken {
+  token: string;
+}
+
+export interface IStatistics {
+  learnedWords: number;
+  optional: {};
+}
+
+export interface ISettings {
+  wordsPerDays: number;
+  optional: {};
+}
