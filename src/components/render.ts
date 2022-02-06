@@ -17,7 +17,7 @@ class Render {
         <li class="header__nav-item text"><a href="#" class="header__nav-item">Статистика</a></li>
       </ul>
     </nav>
-    <button class="button">Вход</button>
+    <button class="button" id="sign-in">Вход</button>
   </div>
 </header>
 <main>
@@ -112,9 +112,9 @@ ${Render.renderAuthorize()}
   </section>`;
 
   private static renderAuthorize = () => `
-  <form class="auth">
+  <form class="auth" id="auth">
     <div class="auth__wrapper">
-      <div id="sign-in" class="sign-in">
+      <div id="sign-in__auth" class="sign">
         <h2 class="auth__title">Вход в аккаунт</h2>
         <div class="auth__conteiner">
           <div class="auth__container-item">
@@ -122,19 +122,40 @@ ${Render.renderAuthorize()}
             <label for="email"></label>
           </div>
           <div class="auth__container-item">
-            <input type="password" placeholder="Пароль" name="password" required id="auth-password">
+            <input type="password" placeholder="Пароль" name="password" min="8" max="30" required id="auth-password">
             <label for="password"></label>
           </div>
         </div>
         <div class="button-conteiner">
-          <button type="submit" class="auth__button">Войти</button>
+          <button type="submit" class="auth__button" id="sign-in__btn">Войти</button>
         </div>
         <div class="auth__subtitle">
           <p>У вас нет аккаунта?</p>
-          <h4 class="auth__subtitle-item">Зарегистрируйтесь сейчас</h4> 
+          <h4 class="auth__subtitle-item" id="sub-sign-up__btn">Зарегистрируйтесь сейчас</h4> 
+        </div>
+      </div>
+      <div class="sign hide" id="sign-up__auth">
+        <h2 class="auth__title">Регистрация</h2>
+        <div class="auth__conteiner">
+          <div class="auth__container-item">
+            <input type="text" placeholder="Имя" name="name" required id="auth-name">
+            <label for="name"></label>
+          </div>
+          <div class="auth__container-item">
+            <input type="email" placeholder="Почта" name="email" required id="auth-email">
+            <label for="email"></label>
+          </div>
+          <div class="auth__container-item">
+            <input type="password" placeholder="Пароль" name="password" min="8" max="30" required id="auth-password">
+            <label for="password"></label>
+          </div>
+        </div>
+        <div class="button-conteiner">
+          <button type="submit" class="auth__button auth__button-sing-up" id="sign-up__btn">Зарегестрироваться</button>
         </div>
       </div>
     </div>
+    <div class="auth__close" id="auth-close"></div>
   </form>
   `;
 }
