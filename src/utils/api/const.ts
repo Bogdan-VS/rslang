@@ -7,4 +7,5 @@ export const dataWords: IDataWords = {
 
 export const currentToken: IToken = {
   token: null,
+  id: null,
 };

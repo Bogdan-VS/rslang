@@ -112,19 +112,22 @@ ${Render.renderAuthorize()}
   </section>`;
 
   private static renderAuthorize = () => `
-  <form class="auth" id="auth">
+  <div class="auth" id="auth" action="#">
     <div class="auth__wrapper">
-      <div id="sign-in__auth" class="sign">
+      <form id="sign-in__auth" class="sign" action="#">
         <h2 class="auth__title">Вход в аккаунт</h2>
         <div class="auth__conteiner">
           <div class="auth__container-item">
-            <input type="email" placeholder="Почта" name="email" required id="auth-email">
+            <input type="email" placeholder="Почта" name="email" required id="auth-signin__email">
             <label for="email"></label>
           </div>
           <div class="auth__container-item">
-            <input type="password" placeholder="Пароль" name="password" min="8" max="30" required id="auth-password">
+            <input type="password" placeholder="Пароль" name="password" min="8" max="30" required id="auth-signin__password">
             <label for="password"></label>
           </div>
+        </div>
+        <div class="error-message__conteiner error-signin hide" id="error-message__signin">
+          <span>Не корректный пароль или почта</span>
         </div>
         <div class="button-conteiner">
           <button type="submit" class="auth__button" id="sign-in__btn">Войти</button>
@@ -133,30 +136,45 @@ ${Render.renderAuthorize()}
           <p>У вас нет аккаунта?</p>
           <h4 class="auth__subtitle-item" id="sub-sign-up__btn">Зарегистрируйтесь сейчас</h4> 
         </div>
-      </div>
-      <div class="sign hide" id="sign-up__auth">
+      </form>
+      <form class="sign hide" id="sign-up__auth" action="form">
         <h2 class="auth__title">Регистрация</h2>
         <div class="auth__conteiner">
           <div class="auth__container-item">
-            <input type="text" placeholder="Имя" name="name" required id="auth-name">
+            <input type="text" placeholder="Имя" name="name" required id="auth-signup__name">
             <label for="name"></label>
           </div>
           <div class="auth__container-item">
-            <input type="email" placeholder="Почта" name="email" required id="auth-email">
+            <input type="email" placeholder="Почта" name="email" required id="auth-signup__email">
             <label for="email"></label>
           </div>
           <div class="auth__container-item">
-            <input type="password" placeholder="Пароль" name="password" min="8" max="30" required id="auth-password">
+            <input type="password" placeholder="Пароль" name="password" min="8" max="30" required id="auth-signup__password">
             <label for="password"></label>
           </div>
+        </div>
+        <div class="error-message__conteiner hide" id="error-message">
+          <span>Такой пользователь уже существует</span>
         </div>
         <div class="button-conteiner">
           <button type="submit" class="auth__button auth__button-sing-up" id="sign-up__btn">Зарегестрироваться</button>
         </div>
+      </form>
+      <div class="sign hide" id="sign-message">
+        <h3 class="sign-message">Авторизация прошла успешно!</h3>
+        <div class="sign-message__container">
+          <button class="button sign-message__btn" id="message-btn">Ок</button>
+        </div>
+      </div>
+      <div class="sign hide" id="siout-message">
+        <h3 class="sign-message">Вы точно желаете выйти?</h3>
+        <div class="sign-message__container">
+          <button class="button siout-message__btn" id="signout-message-btn">Да</button>
+        </div>
       </div>
     </div>
     <div class="auth__close" id="auth-close"></div>
-  </form>
+  </div>
   `;
 }
 

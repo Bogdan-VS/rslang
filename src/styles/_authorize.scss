@@ -104,6 +104,21 @@
       }
     }
   }
+
+  .error-message__conteiner {
+    position: absolute;
+    color: #f03e3d;
+    width: 250px;
+    font-size: 1.4rem;
+    top: 335px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .error-signin {
+    top: 265px;
+  }
+
   .button-conteiner {
     width: 100%;
     display: flex;
@@ -148,6 +163,26 @@
     .auth__subtitle-item:hover {
       transform: scale(1.1);
       color: #4dadf7;
+    }
+  }
+
+  .sign-message {
+    text-align: center;
+    color: #fff;
+    background-color: #ff9900;
+    padding: 30px;
+    margin: 0;
+    letter-spacing: 0.05em;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+
+  .sign-message__container {
+    display: flex;
+    justify-content: center;
+    margin: 60px 0 30px 0;
+    .sign-message__btn {
+      cursor: pointer;
     }
   }
 }

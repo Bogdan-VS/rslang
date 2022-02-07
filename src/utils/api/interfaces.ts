@@ -25,18 +25,20 @@ export interface IDataWords {
 }
 
 export interface IUserData {
-  name: string;
+  name?: string;
   email: string;
   id?: string;
   password?: string;
+  token?: string;
 }
 
 export interface IUserToken {
-  message: string;
-  token: string;
-  refreshToken: string;
-  userId: string;
-  name: string;
+  message?: string;
+  token?: string;
+  refreshToken?: string;
+  userId?: string;
+  name?: string;
+  status?: number;
 }
 
 export interface IUsersAllWords {
@@ -46,6 +48,7 @@ export interface IUsersAllWords {
 
 export interface IToken {
   token: string;
+  id: string;
 }
 
 export interface IStatistics {
