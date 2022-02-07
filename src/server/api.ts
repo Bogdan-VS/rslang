@@ -58,7 +58,7 @@ class Api {
   async getUser(id: string) {
     const responce = await fetch(`${this.baseLink}${PathLink.user}/${id}`, {
       headers: {
-        Authorization: `Bearer ${currentToken}`,
+        Authorization: `Bearer ${currentToken.token}`,
         Accept: 'application/json',
       },
     });
@@ -77,7 +77,7 @@ class Api {
       method: 'PUT',
       body: JSON.stringify(userData),
       headers: {
-        Authorization: `Bearer ${currentToken}`,
+        Authorization: `Bearer ${currentToken.token}`,
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
@@ -96,7 +96,7 @@ class Api {
     const responce = await fetch(`${this.baseLink}${PathLink.user}/${id}`, {
       method: 'DELETE',
       headers: {
-        Authorization: `Bearer ${currentToken}`,
+        Authorization: `Bearer ${currentToken.token}`,
         Accept: 'application/json',
       },
     });
@@ -115,7 +115,7 @@ class Api {
       `${this.baseLink}${PathLink.user}/${id}${PathLink.tokens}`,
       {
         headers: {
-          Authorization: `Bearer ${currentToken}`,
+          Authorization: `Bearer ${currentToken.token}`,
           Accept: 'application/json',
         },
       }
@@ -135,7 +135,7 @@ class Api {
       `${this.baseLink}${PathLink.user}/${id}${PathLink.words}`,
       {
         headers: {
-          Authorization: `Bearer ${currentToken}`,
+          Authorization: `Bearer ${currentToken.token}`,
           Accept: 'application/json',
         },
       }
@@ -159,7 +159,7 @@ class Api {
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',
-          Authorization: `Bearer ${currentToken}`,
+          Authorization: `Bearer ${currentToken.token}`,
         },
       }
     );
@@ -178,7 +178,7 @@ class Api {
       `${this.baseLink}${PathLink.user}/${id}${PathLink.words}/${wordId}`,
       {
         headers: {
-          Authorization: `Bearer ${currentToken}`,
+          Authorization: `Bearer ${currentToken.token}`,
           Accept: 'application/json',
         },
       }
@@ -202,7 +202,7 @@ class Api {
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',
-          Authorization: `Bearer ${currentToken}`,
+          Authorization: `Bearer ${currentToken.token}`,
         },
       }
     );
@@ -241,7 +241,7 @@ class Api {
       `${this.baseLink}${PathLink.user}/${id}${PathLink.aggregatedWords}/${wordId}`,
       {
         headers: {
-          Authorization: `Bearer ${currentToken}`,
+          Authorization: `Bearer ${currentToken.token}`,
           Accept: 'application/json',
         },
       }
@@ -261,7 +261,7 @@ class Api {
       `${this.baseLink}${PathLink.user}/${id}${PathLink.statistics}`,
       {
         headers: {
-          Authorization: `Bearer ${currentToken}`,
+          Authorization: `Bearer ${currentToken.token}`,
           Accept: 'application/json',
         },
       }
@@ -283,7 +283,7 @@ class Api {
         method: 'PUT',
         body: JSON.stringify(wordStatistics),
         headers: {
-          Authorization: `Bearer ${currentToken}`,
+          Authorization: `Bearer ${currentToken.token}`,
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
@@ -304,7 +304,7 @@ class Api {
       `${this.baseLink}${PathLink.user}/${id}${PathLink.settings}`,
       {
         headers: {
-          Authorization: `Bearer ${currentToken}`,
+          Authorization: `Bearer ${currentToken.token}`,
           Accept: 'application/json',
         },
       }
@@ -326,7 +326,7 @@ class Api {
         method: 'PUT',
         body: JSON.stringify(wordSettings),
         headers: {
-          Authorization: `Bearer ${currentToken}`,
+          Authorization: `Bearer ${currentToken.token}`,
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
@@ -357,7 +357,8 @@ class Api {
 
       return userToken;
     } catch (error) {
-      return responce.status;
+      const resp: IUserToken = { status: responce.status };
+      return resp;
     }
   }
 }

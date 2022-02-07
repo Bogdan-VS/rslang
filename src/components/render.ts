@@ -1,9 +1,6 @@
-export class Render {
-    constructor() {
-    }
-
-    static render = () => {
-        const html = `<header class="header">
+class Render {
+  static render = () => {
+    const html = `<header class="header">
   <div class="container header__container">
     <div class="header__logo" id="logo">RSLang.</div>
     <nav class="header__nav">
@@ -20,11 +17,14 @@ export class Render {
         <li class="header__nav-item text"><a href="#" class="header__nav-item">Статистика</a></li>
       </ul>
     </nav>
-    <button class="button">Вход</button>
+    <button class="button" id="sign-in">Вход</button>
   </div>
 </header>
 <main>
-<div id="mainPage">${Render.renderMainPage()}</div>
+<div id="mainPage">
+${Render.renderMainPage()}
+${Render.renderAuthorize()}
+</div>
 </main>
 <footer>
   <div class="container footer-container">
@@ -42,14 +42,14 @@ export class Render {
       </div>
     </div>
   </div>
-</footer>`
-        const root = document.createElement('div');
-        root.innerHTML = html;
-        root.id = 'root'
-        document.body.appendChild(root)
-    }
+</footer>`;
+    const root = document.createElement('div');
+    root.innerHTML = html;
+    root.id = 'root';
+    document.body.appendChild(root);
+  };
 
-    private static renderMainPage = () => `<section class="main-section">
+  private static renderMainPage = () => `<section class="main-section">
     <div class="container section-container main-container">
       <div class="main-section__text-container">
         <h1 class="title">RS Lang</h1>
@@ -111,4 +111,71 @@ export class Render {
     </div>
   </section>`;
 
+  private static renderAuthorize = () => `
+  <div class="auth" id="auth" action="#">
+    <div class="auth__wrapper">
+      <form id="sign-in__auth" class="sign" action="#">
+        <h2 class="auth__title">Вход в аккаунт</h2>
+        <div class="auth__conteiner">
+          <div class="auth__container-item">
+            <input type="email" placeholder="Почта" name="email" required id="auth-signin__email">
+            <label for="email"></label>
+          </div>
+          <div class="auth__container-item">
+            <input type="password" placeholder="Пароль" name="password" min="8" max="30" required id="auth-signin__password">
+            <label for="password"></label>
+          </div>
+        </div>
+        <div class="error-message__conteiner error-signin hide" id="error-message__signin">
+          <span>Не корректный пароль или почта</span>
+        </div>
+        <div class="button-conteiner">
+          <button type="submit" class="auth__button" id="sign-in__btn">Войти</button>
+        </div>
+        <div class="auth__subtitle">
+          <p>У вас нет аккаунта?</p>
+          <h4 class="auth__subtitle-item" id="sub-sign-up__btn">Зарегистрируйтесь сейчас</h4> 
+        </div>
+      </form>
+      <form class="sign hide" id="sign-up__auth" action="form">
+        <h2 class="auth__title">Регистрация</h2>
+        <div class="auth__conteiner">
+          <div class="auth__container-item">
+            <input type="text" placeholder="Имя" name="name" required id="auth-signup__name">
+            <label for="name"></label>
+          </div>
+          <div class="auth__container-item">
+            <input type="email" placeholder="Почта" name="email" required id="auth-signup__email">
+            <label for="email"></label>
+          </div>
+          <div class="auth__container-item">
+            <input type="password" placeholder="Пароль" name="password" min="8" max="30" required id="auth-signup__password">
+            <label for="password"></label>
+          </div>
+        </div>
+        <div class="error-message__conteiner hide" id="error-message">
+          <span>Такой пользователь уже существует</span>
+        </div>
+        <div class="button-conteiner">
+          <button type="submit" class="auth__button auth__button-sing-up" id="sign-up__btn">Зарегестрироваться</button>
+        </div>
+      </form>
+      <div class="sign hide" id="sign-message">
+        <h3 class="sign-message">Авторизация прошла успешно!</h3>
+        <div class="sign-message__container">
+          <button class="button sign-message__btn" id="message-btn">Ок</button>
+        </div>
+      </div>
+      <div class="sign hide" id="siout-message">
+        <h3 class="sign-message">Вы точно желаете выйти?</h3>
+        <div class="sign-message__container">
+          <button class="button siout-message__btn" id="signout-message-btn">Да</button>
+        </div>
+      </div>
+    </div>
+    <div class="auth__close" id="auth-close"></div>
+  </div>
+  `;
 }
+
+export default Render;
