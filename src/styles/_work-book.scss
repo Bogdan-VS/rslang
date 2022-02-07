@@ -1,0 +1,129 @@
+#workBookPage {
+  background-color: #1943EF;
+}
+
+#workBookPage h2 {
+  color: white;
+}
+
+.work-book__container {
+  padding: 30px 0 40px 0;
+}
+
+.levels-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 15px;
+}
+
+.level-button {
+  outline: none;
+  border: none;
+  color: #c0c4ca;
+  height: 70px;
+  width: 180px;
+  border-radius: 10px;
+}
+
+.level-button-text {
+  color: #898d91;
+  font-family: 'Gilroy-Bold', serif;
+  font-size: 24px;
+  line-height: 34px;
+  transition: color .3s;
+}
+
+#a1 span:hover {
+  color: #1943EF;
+}
+
+#a2 span:hover {
+  color: #FF9900;
+}
+
+#b1 span:hover {
+  color: #4DADF7;
+}
+
+#b2 span:hover {
+  color: #F03E3D;
+}
+
+#c1 span:hover {
+  color: #7752BE;
+}
+
+#c2 span:hover {
+  color: #FAB005;
+}
+
+.word-card {
+  width: 70%;
+  background-color: white;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+  gap: 20px;
+}
+
+.word-card p {
+  margin: 0;
+}
+
+.word-card .text {
+  font-size: 16px;
+  line-height: 21px;
+}
+
+.words-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin: 0 auto;
+}
+
+.word-card__img {
+  width: 45%;
+  height: 100%;
+  background-color: #7752BE;
+}
+
+.text_translation {
+  margin: 0;
+  font-size: 14px;
+  line-height: 19px;
+  color: #898d91;
+}
+
+.word-card__usage-block {
+  margin-top: 20px;
+}
+
+.word-card__transcript-wrapper {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.word-card__transcript-text {
+  background-color: #1943EF;
+  border-radius: 10px;
+  color: white;
+  padding: 5px;
+}
+
+.word-card__title {
+  margin-bottom: 0;
+}
+
+.word-card__transcript-icon {
+  background: url("../assets/svg/sound.svg") no-repeat center/cover;
+  width: 25px;
+  height: 25px;
+
+}
+
+
