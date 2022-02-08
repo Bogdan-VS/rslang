@@ -1,6 +1,4 @@
-export class Render {
-    constructor() {
-    }
+class Render {
 
     static render = () => {
         const html = `<header class="header">
@@ -24,7 +22,8 @@ export class Render {
   </div>
 </header>
 <main>
-<div id="mainPage">${Render.renderMainPage()}</div>
+<div id="mainPage" style="display: none">${Render.renderMainPage()}</div>
+<div id="workBookPage">${Render.renderWorkBookPage()}</div>
 </main>
 <footer>
   <div class="container footer-container">
@@ -109,6 +108,125 @@ export class Render {
         </div>
       </div>
     </div>
-  </section>`;
+  </section>`
+
+    private static renderWorkBookPage = () => `<div class="container work-book__container">
+      <h2>Учебник</h2>
+      <div class="levels-wrapper">
+        <button class="level-button" id="a1">
+          Easy A1
+        </button>
+        <button class="level-button" id="a2">
+          Easy A2
+        </button>
+        <button class="level-button" id="b1">
+          Medium B1
+        </button>
+        <button class="level-button" id="b2">
+          Medium B2
+        </button>
+        <button class="level-button" id="c1">
+          Hard C1
+        </button>
+        <button class="level-button" id="c2">
+          Hard C2
+        </button>
+      </div>
+      <div class="levels__pagination">
+        <ul>
+          <li class="pagination__item pagination__arrow"><span></span></li>
+          <li class="pagination__item "><span>1</span></li>
+          <li class="pagination__item "><span>2</span></li>
+          <li class="pagination__item "><span>3</span></li>
+          <li class="pagination__item "><span>4</span></li>
+          <li class="pagination__item "><span>5</span></li>
+          <li class="pagination__item "><span>...</span></li>
+          <li class="pagination__item "><span>30</span></li>
+          <li class="pagination__item pagination__arrow"><span></span></li>
+        </ul>
+      </div>
+      <div class="words-container">
+        <div class="word-card">
+          <div class="word-card__img"></div>
+          <div class="word-card__text-block">
+            <h3 class="word-card__title">Laugh</h3>
+            <div class="word-card__translation text">смех</div>
+            <div class="word-card__transcript-wrapper">
+              <div class="word-card__transcript-text text">[læf]</div>
+              <div class="word-card__transcript-icon"></div>
+            </div>
+            <div class="word-card__usage-block">
+              <p class="text">Laugh is the sound made when someone is happy or a funny thing occurs.</p>
+              <p class="text text_translation">Смех - это звук, который звучит, когда кто-то счастлив или происходит смешная вещь</p>
+            </div>
+            <div class="word-card__usage-block">
+              <p class="text">The sound of her laugh filled the room.</p>
+              <p class="text text_translation">Звук ее смеха заполнил комнату.</p>
+            </div>
+          </div>
+        </div>
+        <div class="word-card">
+          <div class="word-card__img"></div>
+          <div class="word-card__text-block">
+            <h3 class="word-card__title">Laugh</h3>
+            <div class="word-card__translation text">смех</div>
+            <div class="word-card__transcript-wrapper">
+              <div class="word-card__transcript-text text">[læf]</div>
+              <div class="word-card__transcript-icon"></div>
+            </div>
+            <div class="word-card__usage-block">
+              <p class="text">Laugh is the sound made when someone is happy or a funny thing occurs.</p>
+              <p class="text text_translation">Смех - это звук, который звучит, когда кто-то счастлив или происходит смешная вещь</p>
+            </div>
+            <div class="word-card__usage-block">
+              <p class="text">The sound of her laugh filled the room.</p>
+              <p class="text text_translation">Звук ее смеха заполнил комнату.</p>
+            </div>
+          </div>
+        </div>
+        <div class="word-card">
+          <div class="word-card__img"></div>
+          <div class="word-card__text-block">
+            <h3 class="word-card__title">Laugh</h3>
+            <div class="word-card__translation text">смех</div>
+            <div class="word-card__transcript-wrapper">
+              <div class="word-card__transcript-text text">[læf]</div>
+              <div class="word-card__transcript-icon"></div>
+            </div>
+            <div class="word-card__usage-block">
+              <p class="text">Laugh is the sound made when someone is happy or a funny thing occurs.</p>
+              <p class="text text_translation">Смех - это звук, который звучит, когда кто-то счастлив или происходит смешная вещь</p>
+            </div>
+            <div class="word-card__usage-block">
+              <p class="text">The sound of her laugh filled the room.</p>
+              <p class="text text_translation">Звук ее смеха заполнил комнату.</p>
+            </div>
+          </div>
+        </div>
+        <div class="word-card">
+          <div class="word-card__img"></div>
+          <div class="word-card__text-block">
+            <h3 class="word-card__title">Laugh</h3>
+            <div class="word-card__translation text">смех</div>
+            <div class="word-card__transcript-wrapper">
+              <div class="word-card__transcript-text text">[læf]</div>
+              <div class="word-card__transcript-icon"></div>
+            </div>
+            <div class="word-card__usage-block">
+              <p class="text">Laugh is the sound made when someone is happy or a funny thing occurs.</p>
+              <p class="text text_translation">Смех - это звук, который звучит, когда кто-то счастлив или происходит смешная вещь</p>
+            </div>
+            <div class="word-card__usage-block">
+              <p class="text">The sound of her laugh filled the room.</p>
+              <p class="text text_translation">Звук ее смеха заполнил комнату.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`
 
 }
+
+
+
+export default Render

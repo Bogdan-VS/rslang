@@ -26,7 +26,7 @@
   border-radius: 10px;
 }
 
-.level-button-text {
+.level-button {
   color: #898d91;
   font-family: 'Gilroy-Bold', serif;
   font-size: 24px;
@@ -34,27 +34,28 @@
   transition: color .3s;
 }
 
-#a1 span:hover {
+#a1:hover,
+#a1 .active {
   color: #1943EF;
 }
 
-#a2 span:hover {
+#a2:hover {
   color: #FF9900;
 }
 
-#b1 span:hover {
+#b1:hover {
   color: #4DADF7;
 }
 
-#b2 span:hover {
+#b2:hover {
   color: #F03E3D;
 }
 
-#c1 span:hover {
+#c1:hover {
   color: #7752BE;
 }
 
-#c2 span:hover {
+#c2:hover {
   color: #FAB005;
 }
 
