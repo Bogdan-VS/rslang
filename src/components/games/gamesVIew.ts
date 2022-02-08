@@ -3,12 +3,12 @@ export default class GamesView {
   main: HTMLElement;
 
   constructor() {
-    this.main = document.getElementById('main') as HTMLElement;
+    this.main = document.getElementById('mainPage') as HTMLElement;
   }
 
   renderPage() {
     const content = `
-    <section class="section games-section">
+    <section class="section games-section" id="games">
     <div class="games-section__games-container">
       <div class="games-section__game">
         <div class="games-section__game__content">
