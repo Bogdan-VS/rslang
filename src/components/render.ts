@@ -5,9 +5,9 @@ class Render {
     <div class="header__logo" id="logo">RSLang.</div>
     <nav class="header__nav">
       <ul class="header__nav-container">
-        <li class="header__nav-item text"><a href="#" class="header__nav-item">Главная</a></li>
+        <li class="header__nav-item text"><a href="first" class="header__nav-item">Главная</a></li>
         <li class="header__nav-item text"><a href="#" class="header__nav-item">Учебник</a></li>
-        <li class="header__nav-item text"><a href="#" class="header__nav-item">Игры
+        <li class="header__nav-item text"><a href="games" class="header__nav-item">Игры
           <span class="nav__select-arrow"></span>
           <ul class="nav__sub-menu">
             <li class="sub-menu__item audio-game"><a href="#">Аудио-вызов</a></li>
@@ -49,7 +49,7 @@ ${Render.renderAuthorize()}
     document.body.appendChild(root);
   };
 
-  private static renderMainPage = () => `<section class="main-section">
+  public static renderMainPage = () => `<section class="main-section id="first">
     <div class="container section-container main-container">
       <div class="main-section__text-container">
         <h1 class="title">RS Lang</h1>
