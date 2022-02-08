@@ -49,7 +49,7 @@ ${Render.renderAuthorize()}
     document.body.appendChild(root);
   };
 
-  private static renderMainPage = () => `<section class="main-section">
+  private static renderMainPage = () => `<section class="main-section id="main">
     <div class="container section-container main-container">
       <div class="main-section__text-container">
         <h1 class="title">RS Lang</h1>
