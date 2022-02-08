@@ -1,9 +1,20 @@
+import SprintController from "./sprint/sprintController";
 
 export default class GamesView {
   main: HTMLElement;
 
+  sprintController: SprintController;
+
   constructor() {
+    this.sprintController = new SprintController();
     this.main = document.getElementById('mainPage') as HTMLElement;
+    this.main.addEventListener('click', async event => {
+      const target = <HTMLElement>event.target;
+    
+      if (target.classList.contains('button')) {
+        this.sprintController.activate();
+      }
+    });
   }
 
   renderPage() {

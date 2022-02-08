@@ -7,5 +7,4 @@ Render.render();
 const authorize = new Authorize();
 const app = new AppController();
 app.start();
-
 authorize.init();

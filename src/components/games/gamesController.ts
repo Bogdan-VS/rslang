@@ -1,4 +1,5 @@
-import GamesView from "./gamesVIew";
+import GamesView from "./gamesView";
+
 
 export default class GamesController {
 
