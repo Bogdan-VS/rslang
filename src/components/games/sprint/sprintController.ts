@@ -86,6 +86,7 @@ export default class SprintController {
       this.sprintView.addTimer(this.seconds.toString());
       this.seconds -= 1;
       if (this.seconds === -1) {
+        this.sprintView.restartGameTimer();
         clearInterval(this.roundTime);
         this.seconds = 60;
         this.sprintView.addTimer(' ');
@@ -93,14 +94,12 @@ export default class SprintController {
     }, 1000);
   }
 
-
   addLoadTimer() {
     this.intervalLoaderTime = window.setInterval(() => {
       this.sprintView.getLoaderTime(this.loadTime);
       this.loadTime -= 1;
       if (this.loadTime === -1) {
         this.addGameTimer();
-
         clearInterval(this.intervalLoaderTime);
         this.loadTime = 5;
       }
@@ -108,9 +107,11 @@ export default class SprintController {
   }
 
   startRound() {
+    this.sprintView.toggleStartScreen();
     this.makeGameArray(this.hard.toString());
     this.sprintView.getPreloader();
     this.addLoadTimer();
+   
     // this.game = true;
   }
 

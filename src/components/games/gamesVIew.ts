@@ -1,5 +1,6 @@
 import SprintController from "./sprint/sprintController";
 
+
 export default class GamesView {
   main: HTMLElement;
 
@@ -8,10 +9,10 @@ export default class GamesView {
   constructor() {
     this.sprintController = new SprintController();
     this.main = document.getElementById('mainPage') as HTMLElement;
-    this.main.addEventListener('click', async event => {
+    this.main.addEventListener('click', event => {
       const target = <HTMLElement>event.target;
     
-      if (target.classList.contains('button')) {
+      if (target.classList.contains('content-item__button')) {
         this.sprintController.activate();
       }
     });
@@ -79,4 +80,5 @@ export default class GamesView {
  
   this.main.innerHTML = content;    
   }
+
 }
