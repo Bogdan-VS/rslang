@@ -1,5 +1,8 @@
+import { IWord } from "../../../utils/api/interfaces";
+import SprintController from "./sprintController";
 
 export default class SprintView {
+
   main: HTMLElement;
 
   timer: HTMLElement;
@@ -16,17 +19,29 @@ export default class SprintView {
 
   loader: HTMLElement;
 
+  loadCounter: HTMLElement;
 
-  constructor() {
+  currentWord: HTMLElement;
+
+  currentTranslation: HTMLElement;
+
+  timeoutLoaderHide: number;
+  
+  startBtn: HTMLButtonElement;
+
+  sprintController: SprintController;
+
+
+  constructor(sprintController: SprintController) {
+    this.sprintController = sprintController;
     this.main = document.getElementById('mainPage') as HTMLElement;
-    this.timer = document.querySelector('game__sprint__time__count') as HTMLElement;
-    this.preloader = document.querySelector('game__sprint__preloader') as HTMLElement;
-    this.preloadCounter = document.querySelector('game__sprint__loader__count') as HTMLElement;
-    this.loader = document.querySelector('game__sprint__loader') as HTMLElement;
+    this.timeoutLoaderHide = 0;
     this.gameLevels = 6;
     this.gameTime = 60;
     this.audio = new Audio();
-  }
+
+    }
+
 
   renderPage() {
     const content = `
@@ -34,12 +49,14 @@ export default class SprintView {
     <h2 class="game__startScreen-title">Sprint</h2>
     <p class="game__startScreen-desc">Ваша задача указать, совпадают ли слово и перевод<br>По кнопкам можко кликать
       мышкой или нажимать на клавиатуре стрелку влево(Верно), стрелку вправо(Неверно)</p><button class="btn"
-      id="startGame">Начать</button><a class="btn" href="#/">Назад</a>
+      id="startGame">Начать</button>
+      <a class="btn prevBtn" href="#/">Назад</a>
+      <div class="levels" id="levels">
+      ${this.renderLevels()}
       <div class="game__sprint__user-words-block">
         <div class="game__sprint__user-words-button">Мои слова</div>
         <p class="game__sprint__user-words-notification"></p>
      </div> 
-     ${this.renderLevels()}
       <div class="game__sprint__user-words-block">
       <div class="game__sprint__user-words-button">Мои слова</div>
       <p class="game__sprint__user-words-notification"></p>
@@ -91,8 +108,22 @@ export default class SprintView {
         <div class="btn  btn-circle-false">Неверно</div>
       </div>
       <div class="game__sprint__btns"></div>
+      <div class="game__sprint__preloader hide__loader">
+        <div class="game__sprint__loader__count"></div>
+        <div class="game__sprint__loader"></div>
+       </div>
     </section>`;
     this.main.innerHTML = content; 
+    this.startBtn = document.getElementById('startGame') as HTMLButtonElement;
+    this.currentWord = document.querySelector('.game__sprint__word');
+    this.timer = document.querySelector('.game__sprint__time__count') as HTMLElement;
+    this.preloader = document.querySelector('.game__sprint__preloader') as HTMLElement;
+    this.preloadCounter = document.querySelector('.game__sprint__loader__count') as HTMLElement;
+    this.loader = document.querySelector('.game__sprint__loader') as HTMLElement;
+    this.loadCounter = document.querySelector('.game__sprint__loader__count');
+    this.currentWord = document.querySelector('.game__sprint__word');
+    this.currentTranslation = document.querySelector('.game__sprint__translation');
+    this.startBtn.addEventListener('click', () => this.sprintController.startRound())
     return this.main.innerHTML   
   }
 
@@ -135,6 +166,42 @@ export default class SprintView {
     document.querySelector('.circle').classList.add('start_timer');
     return this.timer;
   }
+
+  addTimer(second: string) {
+    this.timer.innerHTML = `${second}`;
+  }
+
+
+  getTrueCouple(trueword: IWord, truetranslate: IWord) {
+    this.currentWord.textContent = `${trueword.word}`;
+    this.currentTranslation.textContent = `${truetranslate.wordTranslate}`;
+  }
+
+  getFalseCouple(trueword: IWord, falsetranslate: IWord['word']) {
+    this.currentWord.innerHTML = `${trueword.word}`;
+    this.currentTranslation.innerHTML = `${falsetranslate}`;
+  }
+
+  startGameTimer() {
+    document.querySelector('.circle').classList.add('start_timer');
+    return this.timer;
+  }
+
+  getPreloader() {
+    this.timeoutLoaderHide = window.setTimeout(() => {
+      if (!this.preloader.classList.contains('hide__loader')) {
+        clearInterval(this.timeoutLoaderHide);
+        this.preloader.classList.add('hide__loader');
+        this.startGameTimer();
+      }
+    }, 6000);
+  }
+
+  getLoaderTime(timeItem: number) {
+    this.loadCounter.innerHTML = `${timeItem}`;
+  }
+
+  
 
 
 }
