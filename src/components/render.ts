@@ -1,13 +1,17 @@
+import { IWord } from '../utils/api/interfaces';
+import WorkBook from './workBook';
+import { dataWords } from '../utils/api/const';
+
 class Render {
 
-    static render = () => {
+    static render = (words: IWord[]) => {
         const html = `<header class="header">
   <div class="container header__container">
     <div class="header__logo" id="logo">RSLang.</div>
     <nav class="header__nav">
       <ul class="header__nav-container">
         <li class="header__nav-item text"><a href="#" class="header__nav-item">Главная</a></li>
-        <li class="header__nav-item text"><a href="#" class="header__nav-item">Учебник</a></li>
+        <li class="header__nav-item text"><a href="#" class="header__nav-item" id="workBookButton">Учебник</a></li>
         <li class="header__nav-item text"><a href="#" class="header__nav-item">Игры
           <span class="nav__select-arrow"></span>
           <ul class="nav__sub-menu">
@@ -22,8 +26,8 @@ class Render {
   </div>
 </header>
 <main>
-<div id="mainPage" style="display: none">${Render.renderMainPage()}</div>
-<div id="workBookPage">${Render.renderWorkBookPage()}</div>
+<div id="mainPage" style="display: block">${Render.renderMainPage()}</div>
+<div id="workBookPage" style="display: none">${Render.renderWorkBookPage(words)}</div>
 </main>
 <footer>
   <div class="container footer-container">
@@ -110,123 +114,46 @@ class Render {
     </div>
   </section>`
 
-    private static renderWorkBookPage = () => `<div class="container work-book__container">
+    static renderWorkBookPage = (words: IWord[]) => `<div class="container work-book__container">
       <h2>Учебник</h2>
       <div class="levels-wrapper">
-        <button class="level-button" id="a1">
+        <button class="level-button level-a1" id="a1">
           Easy A1
         </button>
-        <button class="level-button" id="a2">
+        <button class="level-button level-a2" id="a2">
           Easy A2
         </button>
-        <button class="level-button" id="b1">
+        <button class="level-button level-b1" id="b1">
           Medium B1
         </button>
-        <button class="level-button" id="b2">
+        <button class="level-button level-b2" id="b2">
           Medium B2
         </button>
-        <button class="level-button" id="c1">
+        <button class="level-button level-c1" id="c1">
           Hard C1
         </button>
-        <button class="level-button" id="c2">
+        <button class="level-button level-c2" id="c2">
           Hard C2
         </button>
       </div>
+        <div class="levels__pagination">
+          <button class="pagination__item pagination__arrow prev" disabled>←</button>
+          <button class="pagination__item pagination__arrow next">→</button>
+        </div>
+      <div class="words-container">${Render.renderWordsContainer(words)}</div>
       <div class="levels__pagination">
-        <ul>
-          <li class="pagination__item pagination__arrow"><span></span></li>
-          <li class="pagination__item "><span>1</span></li>
-          <li class="pagination__item "><span>2</span></li>
-          <li class="pagination__item "><span>3</span></li>
-          <li class="pagination__item "><span>4</span></li>
-          <li class="pagination__item "><span>5</span></li>
-          <li class="pagination__item "><span>...</span></li>
-          <li class="pagination__item "><span>30</span></li>
-          <li class="pagination__item pagination__arrow"><span></span></li>
-        </ul>
-      </div>
-      <div class="words-container">
-        <div class="word-card">
-          <div class="word-card__img"></div>
-          <div class="word-card__text-block">
-            <h3 class="word-card__title">Laugh</h3>
-            <div class="word-card__translation text">смех</div>
-            <div class="word-card__transcript-wrapper">
-              <div class="word-card__transcript-text text">[læf]</div>
-              <div class="word-card__transcript-icon"></div>
-            </div>
-            <div class="word-card__usage-block">
-              <p class="text">Laugh is the sound made when someone is happy or a funny thing occurs.</p>
-              <p class="text text_translation">Смех - это звук, который звучит, когда кто-то счастлив или происходит смешная вещь</p>
-            </div>
-            <div class="word-card__usage-block">
-              <p class="text">The sound of her laugh filled the room.</p>
-              <p class="text text_translation">Звук ее смеха заполнил комнату.</p>
-            </div>
-          </div>
-        </div>
-        <div class="word-card">
-          <div class="word-card__img"></div>
-          <div class="word-card__text-block">
-            <h3 class="word-card__title">Laugh</h3>
-            <div class="word-card__translation text">смех</div>
-            <div class="word-card__transcript-wrapper">
-              <div class="word-card__transcript-text text">[læf]</div>
-              <div class="word-card__transcript-icon"></div>
-            </div>
-            <div class="word-card__usage-block">
-              <p class="text">Laugh is the sound made when someone is happy or a funny thing occurs.</p>
-              <p class="text text_translation">Смех - это звук, который звучит, когда кто-то счастлив или происходит смешная вещь</p>
-            </div>
-            <div class="word-card__usage-block">
-              <p class="text">The sound of her laugh filled the room.</p>
-              <p class="text text_translation">Звук ее смеха заполнил комнату.</p>
-            </div>
-          </div>
-        </div>
-        <div class="word-card">
-          <div class="word-card__img"></div>
-          <div class="word-card__text-block">
-            <h3 class="word-card__title">Laugh</h3>
-            <div class="word-card__translation text">смех</div>
-            <div class="word-card__transcript-wrapper">
-              <div class="word-card__transcript-text text">[læf]</div>
-              <div class="word-card__transcript-icon"></div>
-            </div>
-            <div class="word-card__usage-block">
-              <p class="text">Laugh is the sound made when someone is happy or a funny thing occurs.</p>
-              <p class="text text_translation">Смех - это звук, который звучит, когда кто-то счастлив или происходит смешная вещь</p>
-            </div>
-            <div class="word-card__usage-block">
-              <p class="text">The sound of her laugh filled the room.</p>
-              <p class="text text_translation">Звук ее смеха заполнил комнату.</p>
-            </div>
-          </div>
-        </div>
-        <div class="word-card">
-          <div class="word-card__img"></div>
-          <div class="word-card__text-block">
-            <h3 class="word-card__title">Laugh</h3>
-            <div class="word-card__translation text">смех</div>
-            <div class="word-card__transcript-wrapper">
-              <div class="word-card__transcript-text text">[læf]</div>
-              <div class="word-card__transcript-icon"></div>
-            </div>
-            <div class="word-card__usage-block">
-              <p class="text">Laugh is the sound made when someone is happy or a funny thing occurs.</p>
-              <p class="text text_translation">Смех - это звук, который звучит, когда кто-то счастлив или происходит смешная вещь</p>
-            </div>
-            <div class="word-card__usage-block">
-              <p class="text">The sound of her laugh filled the room.</p>
-              <p class="text text_translation">Звук ее смеха заполнил комнату.</p>
-            </div>
-          </div>
+          <button class="pagination__item pagination__arrow prev" disabled><span>←</span></button>
+          <button class="pagination__item pagination__arrow next"><span>→</span></button>
         </div>
       </div>
     </div>`
 
+    static renderWordsContainer = (words: IWord[]) => `
+    ${words.map((word) => `
+${WorkBook.renderWordCard(word)}
+  `).join('')}`
+
 }
 
-
-
 export default Render
+
