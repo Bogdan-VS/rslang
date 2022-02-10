@@ -42,10 +42,13 @@ export default class SprintController {
 
   factor: number;
 
+  answered: Set<IWord['wordTranslate']>;
+
   constructor() {
     this.currentToken = currentToken;
     this.sprintModel = new SprintModel();
     this.sprintView = new SprintView(this);
+    this.answered = new Set;
     this.level = '0';
     this.step = 0;
     this.loadTime = 5;
@@ -83,9 +86,10 @@ export default class SprintController {
 
   static translateCheck(word: IWord['wordTranslate'], wrongTranslate: Array<IWord['wordTranslate']>) {
     const result = wrongTranslate.filter((e) => e !== word);
+
+    // console.log(result)
     return result;
   }
-
 
   makeQuestion() {
     const rand = Math.floor(Math.random() * 2);
@@ -93,9 +97,17 @@ export default class SprintController {
       this.sprintView.getTrueCouple(this.trueArray[this.step], this.trueArray[this.step]);
       this.isCorrect = true;
     } else {
-      this.sprintView.getFalseCouple(this.trueArray[this.step],
-        this.sprintModel.shuffleArray(SprintController.translateCheck(this.trueArray[this.step].wordTranslate,
-        this.sprintModel.gameFalseWords))[this.step]);
+      const filteredArr = SprintController.translateCheck(this.trueArray[this.step].wordTranslate,
+      this.sprintModel.gameFalseWords);
+      const temp = this.sprintModel.shuffleArray(filteredArr);
+      temp.unshift(this.trueArray[this.step].wordTranslate);
+
+      while (this.answered.has(temp[this.step])) {;
+        const chunk = this.sprintModel.shuffleArray(filteredArr);
+        temp[this.step] = chunk[this.step]
+      }
+      this.sprintView.getFalseCouple(this.trueArray[this.step], temp[this.step])
+
       this.isCorrect = false;
     }
   }
@@ -127,15 +139,19 @@ export default class SprintController {
     }, 1000);
   }
 
-  startRound() {
+  async startRound() {
     this.sprintView.toggleStartScreen();
-    this.makeGameArray(this.level);
+    await this.makeGameArray(this.level);
+    // console.log(this.trueArray)
+    // console.log(this.sprintModel.gameFalseWords)
     this.sprintView.getPreloader();
     this.addLoadTimer();
   }
 
   checkAnswer(target: string) {
-    if ((this.isCorrect && target === 'trueBtn') || (!this.isCorrect && target === 'falseBtn')) { 
+    if ((this.isCorrect && target === 'trueBtn') || (!this.isCorrect && target === 'falseBtn')) {
+      this.answered.add(this.trueArray[this.step].wordTranslate)
+      console.log(this.answered) 
       this.correctCount += 1;
       this.trueArray[this.step].correct = true;
       this.progressArray.push(this.trueArray[this.step]);
@@ -149,8 +165,8 @@ export default class SprintController {
       this.trueArray[this.step].correct = false;
       this.progressArray.push(this.trueArray[this.step]);
       this.factor = 1;
+      this.step += 1;
       this.makeQuestion();
     }
-
   }
 }

@@ -193,7 +193,7 @@ export default class SprintView {
     this.currentTranslation.textContent = `${truetranslate.wordTranslate}`;
   }
 
-  getFalseCouple(trueword: IWord, falsetranslate: IWord['word']) {
+  getFalseCouple(trueword: IWord, falsetranslate: IWord['wordTranslate']) {
     this.currentWord.innerHTML = `${trueword.word}`;
     this.currentTranslation.innerHTML = `${falsetranslate}`;
   }
