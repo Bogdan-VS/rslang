@@ -35,6 +35,10 @@ export default class SprintView {
 
   gameField: HTMLElement;
 
+  trueBtn: HTMLElement;
+
+  falseBtn: HTMLElement;
+
 
   constructor(sprintController: SprintController) {
     this.sprintController = sprintController;
@@ -101,12 +105,12 @@ export default class SprintView {
         </div>
         <div class="game__sprint__checkAnswer__area" id="game__sprint__checkAnswer__area"></div>
         <div class="game__sprint__btns">
-          <div class="button btn-circle-true">Верно</div>
+          <div class="button btn-true" id="trueBtn">Верно</div>
           <div class="game__sprint__play-content">
             <div class="game__sprint__word"></div>
             <div class="game__sprint__translation"></div>
           </div>
-          <div class="button  btn-circle-false">Неверно</div>
+          <div class="button  btn-false" id="falseBtn">Неверно</div>
         </div>
       </div>
     </section>
@@ -116,19 +120,27 @@ export default class SprintView {
    </div>`;
     this.main.innerHTML = content; 
     this.startBtn = document.getElementById('startGame') as HTMLButtonElement;
-    this.currentWord = document.querySelector('.game__sprint__word');
+    this.currentWord = document.querySelector('.game__sprint__word') as HTMLElement;
     this.timer = document.querySelector('.game__sprint__time__count') as HTMLElement;
     this.preloader = document.querySelector('.game__preloader') as HTMLElement;
     this.preloadCounter = document.querySelector('.game__loader__count') as HTMLElement;
     this.loader = document.querySelector('.game__sprint__loader') as HTMLElement;
-    this.loadCounter = document.querySelector('.game__loader__count');
-    this.currentWord = document.querySelector('.game__sprint__word');
-    this.currentTranslation = document.querySelector('.game__sprint__translation');
-    this.gameField = document.querySelector('.game__sprint');
-
-    this.startScreen = document.querySelector('.game__startScreen')
+    this.loadCounter = document.querySelector('.game__loader__count') as HTMLElement;
+    this.currentWord = document.querySelector('.game__sprint__word') as HTMLElement;
+    this.currentTranslation = document.querySelector('.game__sprint__translation') as HTMLElement;
+    this.gameField = document.querySelector('.game__sprint') as HTMLElement;
+    this.startScreen = document.querySelector('.game__startScreen') as HTMLElement;
+    this.trueBtn = document.querySelector('.btn-true') as HTMLButtonElement;
+    this.falseBtn = document.querySelector('.btn-false') as HTMLButtonElement;
     this.startBtn.addEventListener('click', () => this.sprintController.startRound());
-    return this.main.innerHTML   
+    this.main.addEventListener('click', async event => {
+      const target = <HTMLElement>event.target;
+      if (target.id === 'falseBtn' || target.id === 'trueBtn') {
+        console.log(target)
+        this.sprintController.checkAnswer(target.id);
+      }
+    });
+    return this.main.innerHTML;
   }
 
   renderLevels() {

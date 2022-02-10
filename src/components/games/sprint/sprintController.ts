@@ -1,5 +1,6 @@
 import { currentToken } from '../../../utils/api/const';
 import { IToken, IWord } from '../../../utils/api/interfaces';
+
 import SprintModel from './sprintModel';
 import SprintView from './sprintView';
 
@@ -11,9 +12,7 @@ export default class SprintController {
 
   sprintModel: SprintModel;
 
-  level: number;
-
-  hard: number;
+  level: string;
 
   step: number;
 
@@ -35,28 +34,50 @@ export default class SprintController {
 
   seconds: number;
 
+  correctCount: number;
+
+  progressArray: IWord[];
+
+  score: number;
+
+  factor: number;
+
   constructor() {
     this.currentToken = currentToken;
     this.sprintModel = new SprintModel();
     this.sprintView = new SprintView(this);
-    this.level = 0;
-    this.hard = 0;
+    this.level = '0';
     this.step = 0;
     this.loadTime = 5;
     this.trueArray = [];
+    this.progressArray = [];
     this.isCorrect = true;
     this.intervalLoaderTime = 0;
     this.roundTime = 0;
     this.seconds = 60;
+    this.correctCount = 0;
+    this.score = 0;
+    this.factor = 1;
   }
 
   activate(): void {
     this.sprintView.renderPage();
+    this.chooseLvl();
+  }
+
+  chooseLvl() {
+    document.querySelectorAll('.radio').forEach((elem) => {
+      elem.addEventListener('click', () => {
+        this.level = elem.id.slice(5);
+        this.wordControl = false;
+        return this.level;
+      });
+    });
   }
 
   async makeGameArray(group: string) {
     this.trueArray = await this.sprintModel.getSomeWords(group);
-    this.makeQuestions();
+    this.makeQuestion();
     return this.trueArray;
   }
 
@@ -66,7 +87,7 @@ export default class SprintController {
   }
 
 
-  makeQuestions() {
+  makeQuestion() {
     const rand = Math.floor(Math.random() * 2);
     if (rand) {
       this.sprintView.getTrueCouple(this.trueArray[this.step], this.trueArray[this.step]);
@@ -108,12 +129,28 @@ export default class SprintController {
 
   startRound() {
     this.sprintView.toggleStartScreen();
-    this.makeGameArray(this.hard.toString());
+    this.makeGameArray(this.level);
     this.sprintView.getPreloader();
     this.addLoadTimer();
-   
-    // this.game = true;
   }
 
+  checkAnswer(target: string) {
+    if ((this.isCorrect && target === 'trueBtn') || (!this.isCorrect && target === 'falseBtn')) { 
+      this.correctCount += 1;
+      this.trueArray[this.step].correct = true;
+      this.progressArray.push(this.trueArray[this.step]);
+      this.progressArray[this.step].correct = true;
+      this.score += 10 * this.factor;
+      this.step += 1;
+      this.makeQuestion();
+    }
+    else {
+      this.correctCount = 0;
+      this.trueArray[this.step].correct = false;
+      this.progressArray.push(this.trueArray[this.step]);
+      this.factor = 1;
+      this.makeQuestion();
+    }
 
+  }
 }
