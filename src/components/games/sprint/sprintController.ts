@@ -44,6 +44,8 @@ export default class SprintController {
 
   answered: Set<IWord['wordTranslate']>;
 
+  bonusStar: number;
+
   constructor() {
     this.currentToken = currentToken;
     this.sprintModel = new SprintModel();
@@ -59,6 +61,7 @@ export default class SprintController {
     this.roundTime = 0;
     this.seconds = 60;
     this.correctCount = 0;
+    this.bonusStar = 0;
     this.score = 0;
     this.factor = 1;
   }
@@ -99,14 +102,14 @@ export default class SprintController {
     } else {
       const filteredArr = SprintController.translateCheck(this.trueArray[this.step].wordTranslate,
       this.sprintModel.gameFalseWords);
-      const temp = this.sprintModel.shuffleArray(filteredArr);
-      temp.unshift(this.trueArray[this.step].wordTranslate);
+      const shuffledArr = this.sprintModel.shuffleArray(filteredArr);
+      shuffledArr.unshift(this.trueArray[this.step].wordTranslate);
 
-      while (this.answered.has(temp[this.step])) {;
-        const chunk = this.sprintModel.shuffleArray(filteredArr);
-        temp[this.step] = chunk[this.step]
+      while (this.answered.has(shuffledArr[this.step])) {;
+        const reshuffledArr = this.sprintModel.shuffleArray(filteredArr);
+        shuffledArr[this.step] = reshuffledArr[this.step]
       }
-      this.sprintView.getFalseCouple(this.trueArray[this.step], temp[this.step])
+      this.sprintView.getFalseCouple(this.trueArray[this.step], shuffledArr[this.step])
 
       this.isCorrect = false;
     }
@@ -151,12 +154,14 @@ export default class SprintController {
   checkAnswer(target: string) {
     if ((this.isCorrect && target === 'trueBtn') || (!this.isCorrect && target === 'falseBtn')) {
       this.answered.add(this.trueArray[this.step].wordTranslate)
-      console.log(this.answered) 
       this.correctCount += 1;
+      this.bonusCounter();
       this.trueArray[this.step].correct = true;
       this.progressArray.push(this.trueArray[this.step]);
       this.progressArray[this.step].correct = true;
       this.score += 10 * this.factor;
+      this.sprintView.getScore(this.score);
+      this.addBonusCheck();
       this.step += 1;
       this.makeQuestion();
     }
@@ -169,4 +174,56 @@ export default class SprintController {
       this.makeQuestion();
     }
   }
+
+  addBonusCheck() {
+    switch (this.correctCount) {
+      case 1:
+        this.sprintView.getBonusCheck('1');
+        break;
+      case 2:
+        this.sprintView.getBonusCheck('2');
+        break;
+      case 3:
+        this.sprintView.getBonusCheck('2');
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  addBonusStar() {
+    switch (this.bonusStar) {
+      case 1:
+        this.sprintView.getBonusStar('1');
+        break;
+      case 2:
+        this.sprintView.getBonusStar('2');
+        break;
+      case 3:
+        this.sprintView.getBonusStar('3');
+        break;
+      case 4:
+        this.sprintView.getBonusStar('4');
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  bonusCounter() {
+    if (this.correctCount === 4 && this.factor < 16) {
+      this.factor *= 2;
+      this.sprintView.showBonus(this.factor);
+      this.bonusStar += 1;
+      this.addBonusStar();
+      this.sprintView.getScore(this.score);
+      setTimeout(() => {
+        this.sprintView.clearBonus();
+      }, 300);
+      this.correctCount = 0;
+    }
+  }
+
 }
