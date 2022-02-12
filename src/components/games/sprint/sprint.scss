@@ -1,3 +1,88 @@
+:root {
+  --greenblue: #28c38a;
+  --cyan: #00CDCD;
+  --charcoal-grey-raw: 55,56,60;
+  --charcoal-grey: #37383c;
+  --bluish-grey: #7e919f;
+  --bluish-grey-raw: 126,145,159;
+  --azul-raw: 37,130,231;
+  --azul: #2582e7;
+  --light-gray: #ccd4dc;
+  --error-red: #f44336;
+  --bg: #0d3848;
+}
+
+.levels .radio__input:checked ~ .radio__decor {
+  box-shadow: 0 0 0.3rem 0.2rem var(--bluish-grey);
+  width: 4.5rem;
+  height: 4.5rem;
+}
+
+.levels .radio:nth-last-child(1) .radio__decor {
+  background-image: url(/src/assets/img/Sprint/6.svg);
+  animation-delay:0.42s;
+ 
+}
+.levels .radio:nth-last-child(2) .radio__decor {
+  background-image: url(/src/assets/img/Sprint/5.svg);
+  animation-delay:0.35s;
+  
+}
+.levels .radio:nth-last-child(3) .radio__decor {
+  background-image: url(/src/assets/img/Sprint/4.svg);
+  animation-delay:0.28s;
+  
+}
+.levels .radio:nth-last-child(4) .radio__decor {
+  background-image: url(/src/assets/img/Sprint/3.svg);
+  animation-delay:0.21s;
+
+}
+.levels .radio:nth-last-child(5) .radio__decor {
+  background-image: url(/src/assets/img/Sprint/2.svg);
+  animation-delay:0.14s;
+}
+.levels .radio:nth-last-child(6) .radio__decor {
+  background-image: url(/src/assets/img/Sprint/1.svg);
+  animation-delay:0.07s;
+}
+
+.bouncy{
+  animation:bouncy 5s infinite linear;
+  position:relative;
+}
+
+@keyframes bouncy {
+  0%{top:0em}
+  40%{top:0em}
+  43%{top:-0.9em}
+  46%{top:0em}
+  48%{top:-0.4em}
+  50%{top:0em}
+  100%{top:0em;}
+}
+
+
+.levels .radio__decor {
+    position: relative;
+    display: block;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 7%;
+    background-image: url(/src/assets/img/Sprint/1.svg);
+    background-size: cover;
+}
+
+.levels .radio__input {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+
 .game__startScreen {
   position: fixed;
   top: 0;
@@ -13,12 +98,100 @@
   color: #fff;
   background-size: cover;
   background-position: center;
-  background-color: #4DADF7;
+  background-color: var(--bg);
   margin-top: 0px;
 }
 
 .game__startScreen .button {
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
+}
+.game__startScreen .button:hover {
+  color: var(--bg);
+  background-color: var(--light-gray);
+}
+
+.fill {
+  font-size: 20px;
+  font-weight: 200;
+  letter-spacing: 1px;
+  padding: 13px 50px 13px;
+  outline: 0;
+  border: 1px solid #FFF;
+  border-radius: none;
+  cursor: pointer;
+  position: relative;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.fill::after {
+  content: "";
+  background-color: var(--bluish-grey);
+  width: 100%;
+  z-index: -1;
+  position: absolute;
+  height: 100%;
+  top: 7px;
+  left: 7px;
+  transition: 0.2s;
+}
+
+.fill:hover::after {
+  top: 0px;
+  left: 0px;
+}
+
+// .prevBtn {
+//   font-size: 20px;
+//   font-weight: 200;
+//   letter-spacing: 1px;
+//   padding: 13px 30px 13px;
+//   outline: 0;
+//   border: 1px solid black;
+//   cursor: pointer;
+//   position: relative;
+//   background-color: rgba(0, 0, 0, 0);
+
+// }
+
+.prevBtn div {
+  transition: transform 0.8s;
+}
+
+.prevBtn:hover div {
+  transform: translateX(6px);
+}
+
+.prevBtn b {
+  opacity: 0;
+  font-size: 24px;
+  transition: 0.2s;
+  position: absolute;
+  left: 20px;
+  top: 9px;
+}
+
+.prevBtn::after {
+  content: "";
+  background-color: var(--cyan);
+  width: 100%;
+  z-index: -1;
+  position: absolute;
+  height: 100%;
+  top: 7px;
+  left: 7px;
+}
+
+.game__startScreen .prevBtn:hover  {
+  background-color: var(--cyan);
+}
+
+.prevBtn:hover b {
+  opacity: 1;
+  transform: translateX(6px);
+}
+
+.prevBtn-left::before {
+  content: "\226A";
 }
 
 .game__preloader {
@@ -27,7 +200,9 @@
   width: 100%;
   height: 100%;
   position: fixed;
-  background-color: #7752BE;
+  background-image: url(/src/assets/img/Sprint/bg.jpg);
+  background-repeat: no-repeat;
+  background-size: 100%;
   z-index: 3;
   transition: 1s all;
   opacity: 1;
@@ -36,15 +211,15 @@
 }
 
 .game__loader__count {
-    position: relative;
-    left: 49.5%;
-    top: 47%;
-    margin-left: -12px;
-    margin-top: -23px;
-    z-index: 4;
-    font-size: 70px;
-    font-weight: 400;
-    color: #FFF;
+  position: relative;
+  left: 49.5%;
+  top: 47%;
+  margin-left: -12px;
+  margin-top: -23px;
+  z-index: 4;
+  font-size: 70px;
+  font-weight: 400;
+  color: #FFF;
 }
 
 .game__preloader .game__loader {
@@ -58,6 +233,13 @@
   border-top-color: #FAB005 ;
   transform: translate(-50%, -50%);
   animation: 1s spin infinite linear;
+}
+
+.game__preloader .game__loader-desc {
+  position: absolute;
+  left: 46%;
+  top: 60%;
+  color: #fff;
 }
 
 .hide__loader {
@@ -84,13 +266,18 @@
 }
 
 .game__sprint__wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 0;
-  max-width: 1020px;
-  min-width: 320px;
-  margin: 0 auto;
+  margin: 60px auto 0;
+  border-radius: 8px;
+  border: 1px solid #fff;
+  background-color: hsla(0,0%,100%,.06);
+  max-width: 484px;
+  // display: flex;
+  // flex-direction: column;
+  // align-items: center;
+  // padding-top: 0;
+  // max-width: 1020px;
+  // min-width: 320px;
+  // margin: 0 auto;
 }
 
 .game__sprint {
@@ -99,8 +286,53 @@
   width: 100%;
   height: 100%;
   margin: 0;
-  background-color: #4DADF7;
+  background-color: var(--bg);
+  background-position: bottom,0 0,100% 0;
+  // background-image: url(/src/assets/img/Sprint/bg-layer-bottom.svg),
+  // url(/src/assets/img/Sprint/bg-layer-top.svg),
+  // url(/src/assets/img/Sprint/bg-layer-right.svg);
+  // background-repeat: no-repeat,no-repeat,no-repeat;
+  // background-size: 100%,auto,auto;
+  // -webkit-transition: background-image 10s ease-in-out;
+  // transition: background-image 10s ease-in-out;
 }
+
+.game__sprint {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background-color: var(--bg);
+  background-position: bottom,0 0,100% 0;
+  background-image: url(/src/assets/img/Sprint/bg-layer-bottom.svg),
+  url(/src/assets/img/Sprint/bg-layer-top.svg),
+  url(/src/assets/img/Sprint/bg-layer-right.svg);
+  background-repeat: no-repeat,no-repeat,no-repeat;
+  background-size: 100%,auto,auto;
+  animation: 1s para linear;
+}
+
+@keyframes para {
+  0% {
+    background-position:
+    0 150%, -30% 0, 130% 0;
+  }
+  100%{
+      background-position:
+      0 100%,0 0,100% 0;
+  }
+}
+
+  @keyframes slide{
+    0%{
+      background-position: 0, 0, 0;
+      transform: translate3d(0, 0, 0);
+    }
+    100%{
+      transform: translate3d(-1692px, 0, 0);
+    }
+  }
 
 .game__sprint__main-field {
   display: flex;
@@ -253,6 +485,11 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  margin-bottom: 2rem;
+}
+
+.levels__wrap .radio:last-child {
+  margin-right: 0;
 }
 
 .levels .radio {
@@ -260,5 +497,10 @@
   margin-right: 0.7rem;
   cursor: pointer;
 }
+
+.levels__title {
+  margin-bottom: 2rem;
+}
+
 
 

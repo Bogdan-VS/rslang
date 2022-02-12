@@ -43,6 +43,8 @@ export default class SprintView {
   answerArea: HTMLElement;
 
   currentBonus: HTMLElement;
+
+  bgTop: HTMLElement;
   
 
   constructor(sprintController: SprintController) {
@@ -52,7 +54,6 @@ export default class SprintView {
     this.gameLevels = 6;
     this.gameTime = 60;
     this.audio = new Audio();
-
     }
 
 
@@ -62,12 +63,14 @@ export default class SprintView {
     <h2 class="game__startScreen-title">Sprint</h2>
     <p class="game__startScreen-desc">Ваша задача указать, совпадают ли слово и перевод<br>По кнопкам можко кликать
       мышкой или нажимать на клавиатуре стрелку влево(Верно), стрелку вправо(Неверно)</p>
-      <button class="button" id="startGame">Начать</button>
-      <a class="button prevBtn" href="#/">Назад</a>
+      <button class="button fill" id="startGame">Начать</button>
+      <a class="button prevBtn fill" href="#/">
+      <div>Назад</div>
+      <b class="prevBtn-left"></b></a>
       <div class="levels" id="levels">
       ${this.renderLevels()}
       <div class="game__sprint__user-words-block">
-        <div class=" button game__sprint__user-words-button">Мои слова</div>
+        <div class="button game__sprint__user-words-button fill">Мои слова</div>
         <p class="game__sprint__user-words-notification"></p>
      </div> 
     </section>
@@ -84,11 +87,15 @@ export default class SprintView {
         </div>
       </div>
     <section class="game__sprint hide">
+      <div class="game__sprint__bg-top"></div>
+      <div class="game__sprint__bg-bottom"></div>
       <div class="game__sprint__wrap">
         <div class="game__sprint__main-field">
-          <div class="game__sprint__score">Счёт:</div><a class="close" href="/#/games">
-          <svg class="svg_icon" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+          <div class="game__sprint__score">Счёт:</div>
+          <a class="close" href="/#/games">
+            <svg class="svg_icon" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+            </svg> 
           </a>
           <div class="game__sprint__bonus__star" id="current_Bonus">
             <div class="game__sprint__bonus__area__1" id="current_Bonus__area__1"></div>
@@ -122,6 +129,7 @@ export default class SprintView {
     <div class="game__preloader hide__loader">
       <div class="game__loader__count"></div>
       <div class="game__loader"></div>
+      <p class="game__loader-desc text">Приготовьтесь</p>
    </div>`;
     this.main.innerHTML = content; 
     this.startBtn = document.getElementById('startGame') as HTMLButtonElement;
@@ -141,6 +149,7 @@ export default class SprintView {
     this.scoreElem = document.querySelector('.game__sprint__score') as HTMLElement;
     this.answerArea = document.getElementById('game__sprint__checkAnswer__area') as HTMLElement;
     this.currentBonus = document.getElementById('current_Bonus') as HTMLElement;
+    this.bgTop = document.querySelector('.sprint__game__bg-top');
     this.main.addEventListener('click', async event => {
       const target = <HTMLElement>event.target;
       if (target.id === 'falseBtn' || target.id === 'trueBtn') {
@@ -174,6 +183,7 @@ export default class SprintView {
     radioElement.className = 'radio';
     const spanElement = document.createElement('span');
     spanElement.className = 'radio__decor';
+    spanElement.classList.add('bouncy');
     const InputElement = document.createElement('input');
     InputElement.className = 'radio__input';
     InputElement.value = i.toString();
@@ -214,6 +224,7 @@ export default class SprintView {
       </g>
     </svg>
   `;
+
 
   getBonusCheck(i: string) {
     const check = `<img src="../../../assets/img/Sprint/checkMarker.png" class="game__sprint__true__check__item" alt="true">`;
@@ -314,6 +325,7 @@ export default class SprintView {
         this.preloader.classList.add('hide__loader');
         this.startGameTimer();
         this.toggleGameControls();
+        this.showBg();
       }
     }, 6000);
   }
@@ -332,6 +344,10 @@ export default class SprintView {
 
   getScore(score: number): void {
     this.scoreElem.textContent = `Очки: ${score}`;
+  }
+
+  showBg() {
+    this.bgTop.classList.toggle('bg-top-active')
   }
 
   
