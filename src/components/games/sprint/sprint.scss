@@ -64,13 +64,13 @@
 
 
 .levels .radio__decor {
-    position: relative;
-    display: block;
-    width: 4rem;
-    height: 4rem;
-    border-radius: 7%;
-    background-image: url(/src/assets/img/Sprint/1.svg);
-    background-size: cover;
+  position: relative;
+  display: block;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 7%;
+  background-image: url(/src/assets/img/Sprint/1.svg);
+  background-size: cover;
 }
 
 .levels .radio__input {
@@ -139,19 +139,6 @@
   top: 0px;
   left: 0px;
 }
-
-// .prevBtn {
-//   font-size: 20px;
-//   font-weight: 200;
-//   letter-spacing: 1px;
-//   padding: 13px 30px 13px;
-//   outline: 0;
-//   border: 1px solid black;
-//   cursor: pointer;
-//   position: relative;
-//   background-color: rgba(0, 0, 0, 0);
-
-// }
 
 .prevBtn div {
   transition: transform 0.8s;
@@ -271,13 +258,6 @@
   border: 1px solid #fff;
   background-color: hsla(0,0%,100%,.06);
   max-width: 484px;
-  // display: flex;
-  // flex-direction: column;
-  // align-items: center;
-  // padding-top: 0;
-  // max-width: 1020px;
-  // min-width: 320px;
-  // margin: 0 auto;
 }
 
 .game__sprint {
@@ -288,13 +268,6 @@
   margin: 0;
   background-color: var(--bg);
   background-position: bottom,0 0,100% 0;
-  // background-image: url(/src/assets/img/Sprint/bg-layer-bottom.svg),
-  // url(/src/assets/img/Sprint/bg-layer-top.svg),
-  // url(/src/assets/img/Sprint/bg-layer-right.svg);
-  // background-repeat: no-repeat,no-repeat,no-repeat;
-  // background-size: 100%,auto,auto;
-  // -webkit-transition: background-image 10s ease-in-out;
-  // transition: background-image 10s ease-in-out;
 }
 
 .game__sprint {
@@ -336,47 +309,53 @@
   }
 
 .game__sprint__main-field {
+  position: relative;
   display: flex;
-  justify-content: space-around;
-  width: 80%;
+  padding: 28px 28px 10px;
 }
 
 .game__sprint__time__block {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 30%;
+  position: absolute;
+  top: 50px;
+  left: 50px;
+  cursor: pointer;
 }
 
-.game__sprint__time__block_svg {
-  position: relative;
-  z-index: 1;
-  margin-right: -114px;
-  margin-top: 20px;
-  margin-right: -112px
-  }
-
-
 .game__sprint__time__count {
-  font-style: normal;
-  font-weight: bold;
   font-size: 70px;
-  color: #FF7549;
+  font-weight: 300;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #fff;
   position: relative;
   width: 80px;
   text-align: center;
   margin-top: 17px;
   }
 
+ .circle-text {
+  fill: #fff;
+  font-size: 30px;
+  font-weight: 300;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #fff;
+}
+  
+
 
 .timer_svg {
   background-color: transparent;
-  transform: rotate(-90deg);
 }
 
 .timer_svg .circle {
-  stroke: #FF7549;
-  stroke-width: 15;
+  background-color: transparent;
+  stroke: var(--greenblue);
+  stroke-width: 5;
   fill: transparent;
 }
 
@@ -386,10 +365,19 @@
 }
 
 .start_timer {
-  animation: 80s clocktimer linear;
+  animation: 400s clocktimer linear;
 }
 
-.game__sprint__bonus__area__count {
+.game__sprint__question-wrapper {
+  position: static;
+  width: 100%;
+  min-height: 256px;
+  height: 282px;
+  padding: 0;
+  border: none;
+}
+
+.game__sprint__bonus-field {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -397,38 +385,240 @@
   position: relative;
 }
 
-.game__sprint__checkAnswer__area {
-  height: 150px;
-  width: 50%;
-  margin-bottom: 1%;
-  color: #FAB005;
-  font-size: 2.5rem;
-  font-weight: 500;
-  text-align: center;
-  text-transform: uppercase;
+.game__sprint__bonus__check {
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.game__sprint__bonus__area__2,
+.game__sprint__bonus__area__3 {
+  margin-left: 18px;
 }
 
-.game__sprint__play-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 60%;
-  border-radius: 5px;
-  background-color: #7752BE;
-  border: 5px solid #FF7549;
+.game__sprint__bonus__area__1,
+.game__sprint__bonus__area__2,
+.game__sprint__bonus__area__3 {
+  width: 26px;
+  height: 26px;
+  background-position: 50%;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+
+.empty {
+  background-image: url(/src/assets/img/Sprint/empty-circle.svg);
+}
+
+.filled {
+  background-image: url(/src/assets/img/Sprint/check.svg);
+}
+
+.game__sprint__bonus_note {
+  display: inline-flex;
+  font-size: 14px;
+  font-weight: 400;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #fff;
+  position: absolute;
+  top: 26px;
+  margin-top: 14px;
+}
+
+.game__sprint__bonus__item {
+  position: absolute;
+  background-position: 50%;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.game__sprint__bonus__area__count .item1 {
+  width: 54px;
+  height: 63px;
+  bottom: -2px;
+  left: 0;
+  background-image: url(/src/assets/img/Sprint/parrot1.svg);
+}
+
+.game__sprint__bonus__area__count .item2 {
+  width: 54px;
+  height: 52px;
+  bottom: 1px;
+  left: 56px;
+  background-image: url(/src/assets/img/Sprint/parrot2.svg);
+}
+.game__sprint__bonus__area__count .item3 {
+  width: 44px;
+  height: 58px;
+  bottom: -3px;
+  right: 48px;
+  background-image: url(/src/assets/img/Sprint/parrot3.svg);
+}
+.game__sprint__bonus__area__count .item4 {
+  width: 45px;
+  height: 65px;
+  bottom: -3px;
+  right: 0px;
+  background-image: url(/src/assets/img/Sprint/parrot4.svg);
+}
+
+.game__sprint__bonus__area__branch {
+  width: 204px;
+  height: 6px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 6px;
+  background-image: url(/src/assets/img/Sprint/tree-branch.svg);
+}
+
+
+.game__sprint__sound {
+  display: inline-block;
+  position: absolute;
+  z-index: 10;
+  width: 40px;
+  height: 40px;
+  right: 17px;
+  top: 17px;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.game__sprint__button__content {
+  position: absolute;
+  min-width: auto;
+  width: 36px;
+  height: 36px;
+  top: 1px;
+  left: 1px;
+  margin: -1px;
+}
+
+.sound-icon {
+  color: #fff!important;
+  transition: all .3s ease-out;
+}
+
+.sound-icon>svg {
+  width: 100%;
+  height: 100%;
+}
+
+.game__sprint__btn-sound {
+  width: 23px;
+  height: 24px;
+  position: absolute;
+  top: -45px;
+  background-image: url(/src/assets/img/Sprint/sound.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: 0;
+  right: 4px;
+  cursor: pointer;
+
+}
+.game__sprint__btn-sound-muted {
+  background-image: url(/src/assets/img/Sprint/muted.svg);
+}
+
+.game__sprint__bonus__area__count {
+  display: inline-flex;
   position: relative;
-  z-index: 1;
+  width: 204px;
+  height: 64px;
+  margin: 65px 0 30px;
+
 }
 
 .game__sprint__word, 
 .game__sprint__translation {
-  width: 100%;
-  color: #FAB005;
-  font-size: 1.8rem;
-  font-weight: 500;
+  font-size: 36px;
+  font-weight: 400;
+  font-stretch: normal;
+  font-style: normal;
   text-align: center;
-  text-transform: uppercase;
+  line-height: 1;
+  letter-spacing: normal;
+  color: #fff;
+}
+
+.game__sprint__translation {
+  margin-top: 12px;
+  font-size: 26px;
+  font-weight: 400;
+  color: var(--light-gray);
+}
+
+.game__sprint__btns-field {
+  display: flex;
+  min-height: 86px;
+  padding: 18px 28px;
+  padding-bottom: 70px;
+  background-color: transparent;
+}
+
+.game__sprint__btns-wrap {
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  padding-left: 0;
+}
+
+.game__sprint__btns-wrap .button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border: 2px solid transparent;
+  width: 183px;
+  height: 50px;
+  font-size: 20px;
+  font-weight: 400;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.2;
+  letter-spacing: normal;
+  color: #fff;
+  white-space: nowrap;
+  margin: 16px 9px 0px 9px;
+  padding: 0 8px;
+  box-shadow: none;
+  transition: all .3s ease-out;
+  cursor: pointer;
+}
+
+.btn-false {
+  position: relative;
+  background-color: var(--error-red);
+}
+
+.btn-true {
+  position: relative;
+  background-color: var(--greenblue);
+}
+.btn-true::after,
+.btn-false::after {
+  position: absolute;
+  bottom: -45px;
+  display: block;
+  color: var(--bluish-grey);
+  font-size: 28px;
+}
+.btn-true::after {
+  right: 74px;
+  content: "\2192";
+
+}
+.btn-false::after {
+  left: 74px;
+  content: "\2190";
 }
 
 .game__sprint__btns {
@@ -437,6 +627,10 @@
   justify-content: center;
   width: 80%;
   padding-left: 3%;
+}
+
+.game__sprint__btns__content {
+  pointer-events: none;
 }
 
 @keyframes clocktimer {
@@ -503,12 +697,12 @@
 }
 
 .game__sprint__score {
-  width: 140px;
+  width: 80px;
   height: 40px;
   display: inline-flex;
   justify-content: center;
   position: absolute;
-  top: 90px;
+  top: -70px;
   font-size: 30px;
   font-weight: 600;
   font-stretch: normal;
@@ -516,6 +710,7 @@
   line-height: normal;
   letter-spacing: normal;
   color: #fff;
+  left: calc(50% - 40px);
 }
 
 

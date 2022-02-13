@@ -184,7 +184,7 @@ export default class SprintController {
         this.sprintView.getBonusCheck('2');
         break;
       case 3:
-        this.sprintView.getBonusCheck('2');
+        this.sprintView.getBonusCheck('3');
         break;
 
       default:

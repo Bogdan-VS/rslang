@@ -1,5 +1,6 @@
 import { IWord } from "../../../utils/api/interfaces";
 import SprintController from "./sprintController";
+
 export default class SprintView {
 
   main: HTMLElement;
@@ -40,7 +41,7 @@ export default class SprintView {
 
   scoreElem: HTMLElement;
 
-  answerArea: HTMLElement;
+  bonusNote: HTMLElement;
 
   currentBonus: HTMLElement;
 
@@ -92,7 +93,7 @@ export default class SprintView {
           <div class="game__sprint__question-wrapper">
             <button class="game__sprint__sound">
               <span class="game__sprint__button__content">
-                <span class="sound-icon">
+                <span class="sound-icon" style="width: 33px; height: 33px; color: rgb(125, 145, 159);">
                   <svg svg xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 32 32">
                     <path fill="currentColor"
@@ -105,16 +106,19 @@ export default class SprintView {
             <div class="game__sprint__score"></div>
             <div class="game__sprint__btn-sound game__sprint__btn-sound-muted"></div>
             <div class="game__sprint__bonus-field">
-              <div class="game__sprint__bonus__star" id="current_Bonus">
-                <div class="game__sprint__bonus__area__1" id="current_Bonus__area__1"></div>
-                <div class="game__sprint__bonus__area__2" id="current_Bonus__area__2"></div>
-                <div class="game__sprint__bonus__area__3" id="current_Bonus__area__3"></div>
+              <div class="game__sprint__bonus__check" id="current_Bonus">
+                <div class="game__sprint__bonus__area__1 empty" id="current_Bonus__area__1"></div>
+                <div class="game__sprint__bonus__area__2 empty" id="current_Bonus__area__2"></div>
+                <div class="game__sprint__bonus__area__3 empty" id="current_Bonus__area__3"></div>
+              </div>
+              <div class="game__sprint__bonus_note">
+                <span></span>
               </div>
               <div class="game__sprint__bonus__area__count" id="game__sprint__bonus__area__count">
-                <div class="game__sprint__bonus__item1" id="game__sprint__bonus__item1"></div>
-                <div class="game__sprint__bonus__item2" id="game__sprint__bonus__item2"></div>
-                <div class="game__sprint__bonus__item3" id="game__sprint__bonus__item3"></div>
-                <div class="game__sprint__bonus__item4" id="game__sprint__bonus__item4"></div>
+                <div class="game__sprint__bonus__item" id="game__sprint__bonus__item1"></div>
+                <div class="game__sprint__bonus__item" id="game__sprint__bonus__item2"></div>
+                <div class="game__sprint__bonus__item" id="game__sprint__bonus__item3"></div>
+                <div class="game__sprint__bonus__item" id="game__sprint__bonus__item4"></div>
                 <div class="game__sprint__bonus__area__branch"></div>
               </div>
             </div>
@@ -141,14 +145,15 @@ export default class SprintView {
       </div>
       <div class="game__sprint__time__block">
         <div class="game__sprint__time__block_svg"><svg class="timer_svg" width="150" height="150">
-            <circle class="circle" cx="80" cy="80" r="60"></circle>undefined
+            <circle class="circle" cx="80" cy="80" r="60"  transform='rotate(-90 75 77)'></circle>
+            <text class="circle-text" x="50%" y="50%" dy=".3em" text-anchor="middle" style="fill: rgb(255, 255, 255);">||</text>
           </svg></div>
         <div class="game__sprint__time__count"></div>
       </div>
       <div class="game__sprint__exit">
         <a class="close" href="/#/games">
           <svg class="svg_icon" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
           </svg> 
         </a>
       </div>
@@ -162,7 +167,8 @@ export default class SprintView {
     this.main.innerHTML = content; 
     this.startBtn = document.getElementById('startGame') as HTMLButtonElement;
     this.currentWord = document.querySelector('.game__sprint__word') as HTMLElement;
-    this.timer = document.querySelector('.game__sprint__time__count') as HTMLElement;
+    // this.timer = document.querySelector('.game__sprint__time__count') as HTMLElement;
+    this.timer = document.querySelector('.circle-text') as HTMLElement;
     this.preloader = document.querySelector('.game__preloader') as HTMLElement;
     this.preloadCounter = document.querySelector('.game__loader__count') as HTMLElement;
     this.loader = document.querySelector('.game__sprint__loader') as HTMLElement;
@@ -175,13 +181,16 @@ export default class SprintView {
     this.falseBtn = document.querySelector('.btn-false') as HTMLButtonElement;
     this.startBtn.addEventListener('click', () => this.sprintController.startRound());
     this.scoreElem = document.querySelector('.game__sprint__score') as HTMLElement;
-    this.answerArea = document.getElementById('game__sprint__checkAnswer__area') as HTMLElement;
+    this.bonusNote = document.querySelector('.game__sprint__bonus_note') as HTMLElement;
     this.currentBonus = document.getElementById('current_Bonus') as HTMLElement;
     this.bgTop = document.querySelector('.sprint__game__bg-top');
     this.main.addEventListener('click', async event => {
       const target = <HTMLElement>event.target;
       if (target.id === 'falseBtn' || target.id === 'trueBtn') {
         this.sprintController.checkAnswer(target.id);
+      }
+      if (target.classList.contains('circle start_timer')) {
+        this.sprintController.togglePlay();
       }
     });
     return this.main.innerHTML;
@@ -255,42 +264,52 @@ export default class SprintView {
 
 
   getBonusCheck(i: string) {
-    const check = `<img src="../../../assets/img/Sprint/checkMarker.png" class="game__sprint__true__check__item" alt="true">`;
+    // const check = `<img src="../../../assets/img/Sprint/check.svg" class="game__sprint__true__check__item" alt="true">`;
 
-    document.querySelector(`.game__sprint__bonus__area__${i}`).insertAdjacentHTML('beforeend', check);
+    // document.querySelector(`.game__sprint__bonus__area__${i}`).insertAdjacentHTML('beforeend', check);
+    const check = `<img src="../../../assets/img/Sprint/check.svg" class="game__sprint__true__check__item" alt="true">`;
+
+    document.querySelector(`.game__sprint__bonus__area__${i}`).classList.add('filled');
   }
 
   getBonusStar(i: string) {
-    let color = '';
-    switch (i) {
-      case '1':
-        color = 'green';
-      break;
-      case '2':
-        color = 'yellow';
-        break;
-      case '3':
-        color = 'red'; 
-        break;
-      default:
-      break;
-    }
-        const star = `
-    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-    class="game__sprint__bonus__item__planet__icon${i}" alt="bonus">
-      x="0px"
-      y="0px"
-      viewBox="0 0 1000 1000"
-      enable-background="new 0 0 1000 1000"
-      xml:space="preserve">
-      ${this.renderBonus(color)}
-    </svg>
-  `;
-    document.querySelector(`.game__sprint__bonus__item${i}`).insertAdjacentHTML('beforeend', star);
+    // let color = '';
+    // switch (i) {
+    //   case '1':
+    //     color = 'green';
+    //   break;
+    //   case '2':
+    //     color = 'yellow';
+    //     break;
+    //   case '3':
+    //     color = 'red'; 
+    //     break;
+    //   default:
+    //   break;
+    // }
+  //       const star = `
+  //   <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  //   class="game__sprint__bonus__item__planet__icon${i}" alt="bonus">
+  //     x="0px"
+  //     y="0px"
+  //     viewBox="0 0 1000 1000"
+  //     enable-background="new 0 0 1000 1000"
+  //     xml:space="preserve">
+  //     ${this.renderBonus(color)}
+  //   </svg>
+  // `;
+  //   document.querySelector(`.game__sprint__bonus__item${i}`).insertAdjacentHTML('beforeend', star);
+    const parrot = document.getElementById(`game__sprint__bonus__item${i}`) as HTMLElement;
+    parrot.classList.add(`item${i}`);
+    // parrot.className(`game__sprint__bonus__item${i}`);
+    // parrot.className('wew')
+    // background-image: url(/src/assets/img/Sprint/parrot1.svg);
+    // parrot.style.background = 'red';
+    // ../../../utils/api/interfaces
   }
 
   showBonus(factor: number): void {
-    this.answerArea.innerHTML = `Умножение очков на ${factor}!`;
+    this.bonusNote.innerHTML = `Умножение очков на ${factor}!`;
     this.hideBonus();
   }
 
@@ -300,8 +319,8 @@ export default class SprintView {
       clearTimeout(answerTimer);
     }
     answerTimer = setTimeout(() => {
-      this.answerArea.innerHTML = ' ';
-    }, 2000);
+      this.bonusNote.innerHTML = ' ';
+    }, 200000);
   }
 
   clearBonus() {
