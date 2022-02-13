@@ -266,7 +266,7 @@
 }
 
 .game__sprint__wrap {
-  margin: 60px auto 0;
+  margin: 108px auto 0;
   border-radius: 8px;
   border: 1px solid #fff;
   background-color: hsla(0,0%,100%,.06);
@@ -308,6 +308,7 @@
   background-image: url(/src/assets/img/Sprint/bg-layer-bottom.svg),
   url(/src/assets/img/Sprint/bg-layer-top.svg),
   url(/src/assets/img/Sprint/bg-layer-right.svg);
+  padding: 30px 32px 100px;
   background-repeat: no-repeat,no-repeat,no-repeat;
   background-size: 100%,auto,auto;
   animation: 1s para linear;
@@ -389,12 +390,11 @@
 }
 
 .game__sprint__bonus__area__count {
-  height: 300px;
-  width: 80%;
   display: flex;
-  justify-items: center;
+  flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
-  justify-content: center;
+  position: relative;
 }
 
 .game__sprint__checkAnswer__area {
@@ -500,6 +500,22 @@
 
 .levels__title {
   margin-bottom: 2rem;
+}
+
+.game__sprint__score {
+  width: 140px;
+  height: 40px;
+  display: inline-flex;
+  justify-content: center;
+  position: absolute;
+  top: 90px;
+  font-size: 30px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #fff;
 }
 
 
