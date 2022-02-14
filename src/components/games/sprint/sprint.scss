@@ -252,6 +252,16 @@
   transition: opacity 0.6s;
 }
 
+.game__sprint .correct{
+  animation: blink-correct 0.2s;
+  animation-iteration-count: 3;
+}
+
+.game__sprint .incorrect{
+  animation: blink-incorrect 0.2s;
+  animation-iteration-count: 3;
+}
+
 .game__sprint__wrap {
   margin: 108px auto 0;
   border-radius: 8px;
@@ -732,4 +742,12 @@
   }
 }
 
+@keyframes blink-correct { 
+  50% { border-color: var(--greenblue); 
+  }
+}
+@keyframes blink-incorrect { 
+  50% { border-color: var(--error-red); 
+  }
+}
 

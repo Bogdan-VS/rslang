@@ -1,5 +1,7 @@
 import { currentToken } from '../../../utils/api/const';
 import { IToken, IWord } from '../../../utils/api/interfaces';
+import correctAudio from '../../../assets/sounds/sprint-correct.mp3';
+import errorAudio from '../../../assets/sounds/sprint-error.mp3';
 
 import SprintModel from './sprintModel';
 import SprintView from './sprintView';
@@ -46,6 +48,12 @@ export default class SprintController {
 
   bonusStar: number;
 
+  audioList: Record<string, string>;
+
+  audio: HTMLAudioElement;
+
+  isMuted: boolean;
+
   constructor() {
     this.currentToken = currentToken;
     this.sprintModel = new SprintModel();
@@ -64,6 +72,12 @@ export default class SprintController {
     this.bonusStar = 0;
     this.score = 0;
     this.factor = 1;
+    this.audio = new Audio();
+    this.audioList = {
+      correct: correctAudio,
+      error: errorAudio,
+    };
+    this.isMuted = false;
   }
 
   activate(): void {
@@ -172,22 +186,24 @@ export default class SprintController {
       this.answered.add(this.trueArray[this.step].wordTranslate)
       this.correctCount += 1;
       this.bonusCounter();
-      this.sprintView.playAudio('correct');
+      this.playAudio('correct');
       this.trueArray[this.step].correct = true;
       this.progressArray.push(this.trueArray[this.step]);
       this.progressArray[this.step].correct = true;
       this.score += 10 * this.factor;
       this.sprintView.getScore(this.score);
       this.addBonusCheck();
+      this.sprintView.changeBorderCorrect()
       this.step += 1;
       this.makeQuestion();
     }
     else {
-      this.sprintView.playAudio('error');
+      this.playAudio('error');
       this.correctCount = 0;
       this.trueArray[this.step].correct = false;
       this.progressArray.push(this.trueArray[this.step]);
       this.factor = 1;
+      this.sprintView.changeBorderIncorrect()
       this.step += 1;
       this.makeQuestion();
     }
@@ -251,6 +267,23 @@ export default class SprintController {
     else {
       this.sprintView.timer.innerHTML = '||';
       clearInterval(this.roundTime);
+    }
+  }
+
+  toggleVolume() {
+    if (this.isMuted) {
+      this.isMuted = false;
+    }
+    else {
+      this.isMuted = true;
+    }
+    this.sprintView.soundBtn.classList.toggle('game__sprint__btn-sound-muted')
+  }
+
+  playAudio(sound: string) {
+    if (!this.isMuted) {
+      this.audio.src = this.audioList[sound];
+      this.audio.play().catch(() => this.audio.currentTime);
     }
   }
 

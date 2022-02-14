@@ -1,7 +1,6 @@
 import { IWord } from "../../../utils/api/interfaces";
 import SprintController from "./sprintController";
-import correctAudio from '../../../assets/sounds/sprint-correct.mp3';
-import errorAudio from '../../../assets/sounds/sprint-error.mp3';
+
 
 export default class SprintView {
 
@@ -12,8 +11,6 @@ export default class SprintView {
   gameLevels: number;
 
   gameTime: number;
-
-  audio: HTMLAudioElement;
 
   preloader: HTMLElement;
 
@@ -37,6 +34,8 @@ export default class SprintView {
 
   gameField: HTMLElement;
 
+  gameArea: HTMLElement;
+
   trueBtn: HTMLElement;
 
   falseBtn: HTMLElement;
@@ -48,8 +47,10 @@ export default class SprintView {
   currentBonus: HTMLElement;
 
   soundIcon: HTMLElement;
+
+  soundBtn: HTMLButtonElement;
   
-  audioList: Record<string, string>;
+
 
   constructor(sprintController: SprintController) {
     this.sprintController = sprintController;
@@ -57,11 +58,6 @@ export default class SprintView {
     this.timeoutLoaderHide = 0;
     this.gameLevels = 6;
     this.gameTime = 60;
-    this.audio = new Audio();
-    this.audioList = {
-      correct: correctAudio,
-      error: errorAudio,
-    };
     }
 
 
@@ -111,7 +107,7 @@ export default class SprintView {
               </span>
             </button>
             <div class="game__sprint__score"></div>
-            <div class="game__sprint__btn-sound game__sprint__btn-sound-muted"></div>
+            <div class="game__sprint__btn-sound"></div>
             <div class="game__sprint__bonus-field">
               <div class="game__sprint__bonus__check" id="current_Bonus">
                 <div class="game__sprint__bonus__area__1 empty" id="current_Bonus__area__1"></div>
@@ -190,7 +186,9 @@ export default class SprintView {
     this.scoreElem = document.querySelector('.game__sprint__score') as HTMLElement;
     this.bonusNote = document.querySelector('.game__sprint__bonus_note') as HTMLElement;
     this.currentBonus = document.getElementById('current_Bonus') as HTMLElement;
+    this.gameArea = document.querySelector('.game__sprint__wrap') as HTMLElement;
     this.soundIcon = document.querySelector('.game__sprint__button__content') as HTMLElement;
+    this.soundBtn = document.querySelector('.game__sprint__btn-sound') as HTMLButtonElement;
     this.main.addEventListener('click', async event => {
       const target = <HTMLElement>event.target;
       if (target.id === 'falseBtn' || target.id === 'trueBtn') {
@@ -201,6 +199,9 @@ export default class SprintView {
       }
       if (target.classList.contains('game__sprint__sound')) {
         this.sprintController.playWord();
+      }
+      if (target.classList.contains('game__sprint__btn-sound')) {
+        this.sprintController.toggleVolume();
       }
     });
     return this.main.innerHTML;
@@ -399,12 +400,21 @@ export default class SprintView {
   }
 
   getScore(score: number): void {
-    this.scoreElem.textContent = `Очки: ${score}`;
+    this.scoreElem.textContent = `${score}`;
   }
 
-  playAudio(sound: string) {
-    this.audio.src = this.audioList[sound];
-    this.audio.play().catch(() => this.audio.currentTime);
+  changeBorderCorrect() {
+    this.gameArea.classList.add('correct');
+    setTimeout(() => {
+      this.gameArea.classList.remove('correct');
+    }, 300);
+  }
+
+  changeBorderIncorrect() {
+    this.gameArea.classList.add('incorrect');
+    setTimeout(() => {
+      this.gameArea.classList.remove('incorrect');
+    }, 300);
   }
 
 
