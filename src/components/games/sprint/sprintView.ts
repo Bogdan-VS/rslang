@@ -1,5 +1,7 @@
 import { IWord } from "../../../utils/api/interfaces";
 import SprintController from "./sprintController";
+import correctAudio from '../../../assets/sounds/sprint-correct.mp3';
+import errorAudio from '../../../assets/sounds/sprint-error.mp3';
 
 export default class SprintView {
 
@@ -45,8 +47,9 @@ export default class SprintView {
 
   currentBonus: HTMLElement;
 
-  bgTop: HTMLElement;
+  soundIcon: HTMLElement;
   
+  audioList: Record<string, string>;
 
   constructor(sprintController: SprintController) {
     this.sprintController = sprintController;
@@ -55,6 +58,10 @@ export default class SprintView {
     this.gameLevels = 6;
     this.gameTime = 60;
     this.audio = new Audio();
+    this.audioList = {
+      correct: correctAudio,
+      error: errorAudio,
+    };
     }
 
 
@@ -96,7 +103,7 @@ export default class SprintView {
                 <span class="sound-icon" style="width: 33px; height: 33px; color: rgb(125, 145, 159);">
                   <svg svg xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 32 32">
-                    <path fill="currentColor"
+                    <path fill="#fff"
                       d="M15.788 13.007a3 3 0 110 5.985c.571 3.312 2.064 5.675 3.815 5.675 2.244 0 4.064-3.88 4.064-8.667 0-4.786-1.82-8.667-4.064-8.667-1.751 0-3.244 2.363-3.815 5.674zM19 26c-3.314 0-12-4.144-12-10S15.686 6 19 6s6 4.477 6 10-2.686 10-6 10z"
                       fill-rule="evenodd"></path>
                   </svg>
@@ -183,14 +190,17 @@ export default class SprintView {
     this.scoreElem = document.querySelector('.game__sprint__score') as HTMLElement;
     this.bonusNote = document.querySelector('.game__sprint__bonus_note') as HTMLElement;
     this.currentBonus = document.getElementById('current_Bonus') as HTMLElement;
-    this.bgTop = document.querySelector('.sprint__game__bg-top');
+    this.soundIcon = document.querySelector('.game__sprint__button__content') as HTMLElement;
     this.main.addEventListener('click', async event => {
       const target = <HTMLElement>event.target;
       if (target.id === 'falseBtn' || target.id === 'trueBtn') {
         this.sprintController.checkAnswer(target.id);
       }
-      if (target.classList.contains('circle start_timer')) {
+      if (target.classList.contains('start_timer')) {
         this.sprintController.togglePlay();
+      }
+      if (target.classList.contains('game__sprint__sound')) {
+        this.sprintController.playWord();
       }
     });
     return this.main.innerHTML;
@@ -372,7 +382,6 @@ export default class SprintView {
         this.preloader.classList.add('hide__loader');
         this.startGameTimer();
         this.toggleGameControls();
-        this.showBg();
       }
     }, 6000);
   }
@@ -393,11 +402,12 @@ export default class SprintView {
     this.scoreElem.textContent = `Очки: ${score}`;
   }
 
-  showBg() {
-    this.bgTop.classList.toggle('bg-top-active')
+  playAudio(sound: string) {
+    this.audio.src = this.audioList[sound];
+    this.audio.play().catch(() => this.audio.currentTime);
   }
 
-  
+
 
 
 }

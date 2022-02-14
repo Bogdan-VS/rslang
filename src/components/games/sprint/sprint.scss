@@ -344,6 +344,7 @@
   line-height: normal;
   letter-spacing: normal;
   color: #fff;
+  pointer-events: none;
 }
   
 
@@ -499,11 +500,18 @@
   top: 1px;
   left: 1px;
   margin: -1px;
+  pointer-events: none;
+  border-radius: 50%;
+}
+
+.pulse {
+  border-radius: 50%;
+  animation: pulse-blue 2s linear;
 }
 
 .sound-icon {
-  color: #fff!important;
   transition: all .3s ease-out;
+  pointer-events: none;
 }
 
 .sound-icon>svg {
@@ -713,5 +721,15 @@
   left: calc(50% - 40px);
 }
 
+@keyframes pulse-blue {
+  0% {
+    transform: scale(0.85);
+    background-color: var(--azul);
+    box-shadow: 0px 0px 0px 0px var(--azul);
+  }
+  100% {
+    box-shadow: 0px 0px 5px 15px rgba(35, 130, 220,0);
+  }
+}
 
 

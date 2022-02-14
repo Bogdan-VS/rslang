@@ -115,20 +115,36 @@ export default class SprintController {
     }
   }
 
+  // addGameTimer() {
+  //   clearInterval(this.roundTime);
+  //   this.roundTime = window.setInterval(() => {
+  //     this.sprintView.addTimer(this.seconds.toString());
+  //     this.seconds -= 1;
+  //     if (this.seconds === -1) {
+  //       this.sprintView.restartGameTimer();
+  //       clearInterval(this.roundTime);
+  //       this.seconds = 60;
+  //       this.sprintView.addTimer(' ');
+  //     }
+  //   }, 1000);
+  // }
+
   addGameTimer() {
     clearInterval(this.roundTime);
-    this.seconds = 60;
-    this.roundTime = window.setInterval(() => {
-      this.sprintView.addTimer(this.seconds.toString());
-      this.seconds -= 1;
-      if (this.seconds === -1) {
-        this.sprintView.restartGameTimer();
-        clearInterval(this.roundTime);
-        this.seconds = 60;
-        this.sprintView.addTimer(' ');
-      }
-    }, 1000);
+    this.roundTime = window.setInterval(this.onTick.bind(this), 1000);
+    this.onTick();
   }
+
+  onTick() {
+    this.sprintView.addTimer(this.seconds.toString());
+    this.seconds -= 1;
+    if (this.seconds === -1) {
+      this.sprintView.restartGameTimer();
+      clearInterval(this.roundTime);
+      this.seconds = 60;
+      this.sprintView.addTimer(' ');
+  }
+  }   
 
   addLoadTimer() {
     this.intervalLoaderTime = window.setInterval(() => {
@@ -156,6 +172,7 @@ export default class SprintController {
       this.answered.add(this.trueArray[this.step].wordTranslate)
       this.correctCount += 1;
       this.bonusCounter();
+      this.sprintView.playAudio('correct');
       this.trueArray[this.step].correct = true;
       this.progressArray.push(this.trueArray[this.step]);
       this.progressArray[this.step].correct = true;
@@ -166,6 +183,7 @@ export default class SprintController {
       this.makeQuestion();
     }
     else {
+      this.sprintView.playAudio('error');
       this.correctCount = 0;
       this.trueArray[this.step].correct = false;
       this.progressArray.push(this.trueArray[this.step]);
@@ -224,6 +242,29 @@ export default class SprintController {
       }, 300);
       this.correctCount = 0;
     }
+  }
+
+  togglePlay() {
+    if (this.sprintView.timer.innerHTML === '||') {
+      this.addGameTimer();
+    }
+    else {
+      this.sprintView.timer.innerHTML = '||';
+      clearInterval(this.roundTime);
+    }
+  }
+
+  playWord() {
+    clearTimeout();
+    this.sprintView.soundIcon.classList.add('pulse');
+    setTimeout(
+      () => this.sprintView.soundIcon.classList.remove('pulse'),
+      1000
+    );
+    const audio = new Audio;
+    const audioPath = this.trueArray[this.step].audio;
+    audio.src = `http://localhost:8080/${audioPath}`;
+    audio.play()
   }
 
 }
