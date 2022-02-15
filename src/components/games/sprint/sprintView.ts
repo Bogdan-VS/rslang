@@ -44,11 +44,15 @@ export default class SprintView {
 
   bonusNote: HTMLElement;
 
-  currentBonus: HTMLElement;
+  currentBonus: NodeListOf<HTMLElement>;
+
+  currentFactor: NodeListOf<HTMLElement>;
 
   soundIcon: HTMLElement;
 
   soundBtn: HTMLButtonElement;
+
+  timerCircle: HTMLElement;
   
 
 
@@ -118,7 +122,7 @@ export default class SprintView {
                 <span></span>
               </div>
               <div class="game__sprint__bonus__area__count" id="game__sprint__bonus__area__count">
-                <div class="game__sprint__bonus__item" id="game__sprint__bonus__item1"></div>
+                <div class="game__sprint__bonus__item item1" id="game__sprint__bonus__item1"></div>
                 <div class="game__sprint__bonus__item" id="game__sprint__bonus__item2"></div>
                 <div class="game__sprint__bonus__item" id="game__sprint__bonus__item3"></div>
                 <div class="game__sprint__bonus__item" id="game__sprint__bonus__item4"></div>
@@ -172,6 +176,7 @@ export default class SprintView {
     this.currentWord = document.querySelector('.game__sprint__word') as HTMLElement;
     // this.timer = document.querySelector('.game__sprint__time__count') as HTMLElement;
     this.timer = document.querySelector('.circle-text') as HTMLElement;
+    this.timerCircle = document.querySelector('.circle') as HTMLElement;
     this.preloader = document.querySelector('.game__preloader') as HTMLElement;
     this.preloadCounter = document.querySelector('.game__loader__count') as HTMLElement;
     this.loader = document.querySelector('.game__sprint__loader') as HTMLElement;
@@ -185,7 +190,8 @@ export default class SprintView {
     this.startBtn.addEventListener('click', () => this.sprintController.startRound());
     this.scoreElem = document.querySelector('.game__sprint__score') as HTMLElement;
     this.bonusNote = document.querySelector('.game__sprint__bonus_note') as HTMLElement;
-    this.currentBonus = document.getElementById('current_Bonus') as HTMLElement;
+    this.currentBonus = document.querySelectorAll('.game__sprint__bonus__check .empty') as NodeListOf<HTMLElement>;
+    this.currentFactor = document.querySelectorAll('.game__sprint__bonus__area__count .game__sprint__bonus__item') as NodeListOf<HTMLElement>;
     this.gameArea = document.querySelector('.game__sprint__wrap') as HTMLElement;
     this.soundIcon = document.querySelector('.game__sprint__button__content') as HTMLElement;
     this.soundBtn = document.querySelector('.game__sprint__btn-sound') as HTMLButtonElement;
@@ -334,17 +340,8 @@ export default class SprintView {
     }, 200000);
   }
 
-  clearBonus() {
-    const bonusArea = this.currentBonus.childNodes as NodeListOf<HTMLElement>;
-    bonusArea.forEach((elem) => {
-      while (elem.firstChild) {
-        elem.removeChild(elem.firstChild);
-      }
-    });
-  }
-
   startTimer() {
-    document.querySelector('.circle').classList.add('start_timer');
+    this.timerCircle.classList.add('start_timer');
     return this.timer;
   }
 
@@ -384,7 +381,7 @@ export default class SprintView {
         this.startGameTimer();
         this.toggleGameControls();
       }
-    }, 6000);
+    }, 1);
   }
 
   getLoaderTime(timeItem: number) {

@@ -54,6 +54,8 @@ export default class SprintController {
 
   isMuted: boolean;
 
+  isPaused: boolean;
+
   constructor() {
     this.currentToken = currentToken;
     this.sprintModel = new SprintModel();
@@ -65,11 +67,12 @@ export default class SprintController {
     this.trueArray = [];
     this.progressArray = [];
     this.isCorrect = true;
+    this.isPaused = false;
     this.intervalLoaderTime = 0;
     this.roundTime = 0;
     this.seconds = 60;
     this.correctCount = 0;
-    this.bonusStar = 0;
+    this.bonusStar = 1;
     this.score = 0;
     this.factor = 1;
     this.audio = new Audio();
@@ -103,8 +106,6 @@ export default class SprintController {
 
   static translateCheck(word: IWord['wordTranslate'], wrongTranslate: Array<IWord['wordTranslate']>) {
     const result = wrongTranslate.filter((e) => e !== word);
-
-    // console.log(result)
     return result;
   }
 
@@ -129,19 +130,6 @@ export default class SprintController {
     }
   }
 
-  // addGameTimer() {
-  //   clearInterval(this.roundTime);
-  //   this.roundTime = window.setInterval(() => {
-  //     this.sprintView.addTimer(this.seconds.toString());
-  //     this.seconds -= 1;
-  //     if (this.seconds === -1) {
-  //       this.sprintView.restartGameTimer();
-  //       clearInterval(this.roundTime);
-  //       this.seconds = 60;
-  //       this.sprintView.addTimer(' ');
-  //     }
-  //   }, 1000);
-  // }
 
   addGameTimer() {
     clearInterval(this.roundTime);
@@ -175,8 +163,6 @@ export default class SprintController {
   async startRound() {
     this.sprintView.toggleStartScreen();
     await this.makeGameArray(this.level);
-    // console.log(this.trueArray)
-    // console.log(this.sprintModel.gameFalseWords)
     this.sprintView.getPreloader();
     this.addLoadTimer();
   }
@@ -202,10 +188,13 @@ export default class SprintController {
       this.correctCount = 0;
       this.trueArray[this.step].correct = false;
       this.progressArray.push(this.trueArray[this.step]);
-      this.factor = 1;
+      this.clearBonus();
       this.sprintView.changeBorderIncorrect()
       this.step += 1;
       this.makeQuestion();
+      this.factor = 1;
+      this.removeBonusStar();
+      this.bonusStar = 1;
     }
   }
 
@@ -254,19 +243,38 @@ export default class SprintController {
       this.addBonusStar();
       this.sprintView.getScore(this.score);
       setTimeout(() => {
-        this.sprintView.clearBonus();
+        this.clearBonus();
       }, 300);
       this.correctCount = 0;
     }
   }
 
+
+  clearBonus() {
+  this.sprintView.currentBonus.forEach((elem) => {
+      elem.classList.remove('filled');
+    });
+  }
+
+  removeBonusStar() {
+    for (let i = this.sprintView.currentFactor.length; i > this.factor; i -= 1) {
+      if (this.sprintView.currentFactor[i-1].classList.contains(`item${i}`)) {
+        this.sprintView.currentFactor[i-1].classList.remove(`item${i}`)
+      }
+    }
+  };
+
   togglePlay() {
     if (this.sprintView.timer.innerHTML === '||') {
       this.addGameTimer();
+      this.isPaused = false;
+      this.sprintView.timerCircle.style.animationPlayState = 'running';
     }
     else {
       this.sprintView.timer.innerHTML = '||';
       clearInterval(this.roundTime);
+      this.isPaused = true;
+      this.sprintView.timerCircle.style.animationPlayState = 'paused';
     }
   }
 
