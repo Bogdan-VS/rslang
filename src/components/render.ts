@@ -1,4 +1,5 @@
 import { IWord } from '../utils/api/interfaces';
+// eslint-disable-next-line import/no-cycle
 import WorkBook from './workBook';
 import { dataWords } from '../utils/api/const';
 
