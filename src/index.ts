@@ -7,6 +7,6 @@ const api = new Api()
 api.getWords('0', '0').then(r => {
     const words = r;
     Render.render(words)
-    new WorkBook()
+    const workBook = new WorkBook();
 })
 
