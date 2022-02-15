@@ -1,12 +1,17 @@
+import { IWord } from '../utils/api/interfaces';
+import WorkBook from './workBook';
+import { dataWords } from '../utils/api/const';
+
+
 class Render {
-  static render = () => {
-    const html = `<header class="header">
+    static render = (words?: IWord[]) => {
+        const html = `<header class="header">
   <div class="container header__container">
     <div class="header__logo" id="logo">RSLang.</div>
     <nav class="header__nav">
       <ul class="header__nav-container">
         <li class="header__nav-item text"><a href="#" class="header__nav-item">Главная</a></li>
-        <li class="header__nav-item text"><a href="#" class="header__nav-item">Учебник</a></li>
+        <li class="header__nav-item text"><a href="#" class="header__nav-item" id="workBookButton">Учебник</a></li>
         <li class="header__nav-item text"><a href="#" class="header__nav-item">Игры
           <span class="nav__select-arrow"></span>
           <ul class="nav__sub-menu">
@@ -25,6 +30,7 @@ class Render {
 ${Render.renderMainPage()}
 ${Render.renderAuthorize()}
 </div>
+<div id="workBookPage" style="display: none">${Render.renderWorkBookPage(words)}</div>
 </main>
 <footer>
   <div class="container footer-container">
@@ -109,7 +115,46 @@ ${Render.renderAuthorize()}
         </div>
       </div>
     </div>
-  </section>`;
+  </section>`
+
+    static renderWorkBookPage = (words: IWord[]) => `<div class="container work-book__container">
+      <h2>Учебник</h2>
+      <div class="levels-wrapper">
+        <button class="level-button level-a1" id="a1">
+          Easy A1
+        </button>
+        <button class="level-button level-a2" id="a2">
+          Easy A2
+        </button>
+        <button class="level-button level-b1" id="b1">
+          Medium B1
+        </button>
+        <button class="level-button level-b2" id="b2">
+          Medium B2
+        </button>
+        <button class="level-button level-c1" id="c1">
+          Hard C1
+        </button>
+        <button class="level-button level-c2" id="c2">
+          Hard C2
+        </button>
+      </div>
+        <div class="levels__pagination">
+          <button class="pagination__item pagination__arrow prev" disabled>←</button>
+          <button class="pagination__item pagination__arrow next">→</button>
+        </div>
+      <div class="words-container">${Render.renderWordsContainer(words)}</div>
+      <div class="levels__pagination">
+          <button class="pagination__item pagination__arrow prev" disabled><span>←</span></button>
+          <button class="pagination__item pagination__arrow next"><span>→</span></button>
+        </div>
+      </div>
+    </div>`
+
+    static renderWordsContainer = (words: IWord[]) => `
+    ${words.map((word) => `
+${WorkBook.renderWordCard(word)}
+  `).join('')}`
 
   private static renderAuthorize = () => `
   <div class="auth" id="auth" action="#">
