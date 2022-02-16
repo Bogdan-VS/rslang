@@ -53,9 +53,24 @@ export default class SprintView {
   soundBtn: HTMLButtonElement;
 
   timerCircle: HTMLElement;
+
+  close: HTMLElement;
+
+  successBlock: HTMLElement;
   
+  failBlock: HTMLElement;
 
+  resultPopup: HTMLElement;
 
+  successBlockCorrect: HTMLElement;
+
+  failBlockErrors: HTMLElement;
+
+  popupCloseBtn: HTMLButtonElement;
+
+  restartGameBtn: HTMLButtonElement;
+
+  
   constructor(sprintController: SprintController) {
     this.sprintController = sprintController;
     this.main = document.getElementById('mainPage') as HTMLElement;
@@ -85,12 +100,12 @@ export default class SprintView {
       <div class="game__options" id="gameOptions"></div>
       <div class="resultPopup">
         <div class="resultPopup__wrap">
-          <div class="resultPopup__title">Ошибок<span class="errors"></span></div>
-          <div class="resultPopup__errors"></div>
-          <div class="resultPopup__title">Знаю<span class="success"></span></div>
+          <div class="resultPopup__title">Ошибок<span class="resultPopup__errors"></span></div>
+          <div class="resultPopup__fail"></div>
+          <div class="resultPopup__title">Знаю<span class="resultPopup__correct"></span></div>
           <div class="resultPopup__success"></div>
-          <div class="resultPopup__btns"><button class="button" id="closePopup">Закрыть</button>
-            <button class="button">Новая игра</button>
+          <div class="resultPopup__btns"><button class="button fill" id="closePopup">Закрыть</button>
+            <button class="button fill" id="restartGame">Играть</button>
             </div>
         </div>
       </div>
@@ -100,14 +115,7 @@ export default class SprintView {
           <div class="game__sprint__question-wrapper">
             <button class="game__sprint__sound">
               <span class="game__sprint__button__content">
-                <span class="sound-icon" style="width: 33px; height: 33px; color: rgb(125, 145, 159);">
-                  <svg svg xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 32 32">
-                    <path fill="#fff"
-                      d="M15.788 13.007a3 3 0 110 5.985c.571 3.312 2.064 5.675 3.815 5.675 2.244 0 4.064-3.88 4.064-8.667 0-4.786-1.82-8.667-4.064-8.667-1.751 0-3.244 2.363-3.815 5.674zM19 26c-3.314 0-12-4.144-12-10S15.686 6 19 6s6 4.477 6 10-2.686 10-6 10z"
-                      fill-rule="evenodd"></path>
-                  </svg>
-                </span>
+               ${this.renderSoundIcon()} 
               </span>
             </button>
             <div class="game__sprint__score"></div>
@@ -160,7 +168,7 @@ export default class SprintView {
       <div class="game__sprint__exit">
         <a class="close" href="/#/games">
           <svg class="svg_icon" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+            <path fill="#fff" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
           </svg> 
         </a>
       </div>
@@ -172,45 +180,20 @@ export default class SprintView {
       <p class="game__loader-desc text">Приготовьтесь</p>
    </div>`;
     this.main.innerHTML = content; 
-    this.startBtn = document.getElementById('startGame') as HTMLButtonElement;
-    this.currentWord = document.querySelector('.game__sprint__word') as HTMLElement;
-    // this.timer = document.querySelector('.game__sprint__time__count') as HTMLElement;
-    this.timer = document.querySelector('.circle-text') as HTMLElement;
-    this.timerCircle = document.querySelector('.circle') as HTMLElement;
-    this.preloader = document.querySelector('.game__preloader') as HTMLElement;
-    this.preloadCounter = document.querySelector('.game__loader__count') as HTMLElement;
-    this.loader = document.querySelector('.game__sprint__loader') as HTMLElement;
-    this.loadCounter = document.querySelector('.game__loader__count') as HTMLElement;
-    this.currentWord = document.querySelector('.game__sprint__word') as HTMLElement;
-    this.currentTranslation = document.querySelector('.game__sprint__translation') as HTMLElement;
-    this.gameField = document.querySelector('.game__sprint') as HTMLElement;
-    this.startScreen = document.querySelector('.game__startScreen') as HTMLElement;
-    this.trueBtn = document.querySelector('.btn-true') as HTMLButtonElement;
-    this.falseBtn = document.querySelector('.btn-false') as HTMLButtonElement;
-    this.startBtn.addEventListener('click', () => this.sprintController.startRound());
-    this.scoreElem = document.querySelector('.game__sprint__score') as HTMLElement;
-    this.bonusNote = document.querySelector('.game__sprint__bonus_note') as HTMLElement;
-    this.currentBonus = document.querySelectorAll('.game__sprint__bonus__check .empty') as NodeListOf<HTMLElement>;
-    this.currentFactor = document.querySelectorAll('.game__sprint__bonus__area__count .game__sprint__bonus__item') as NodeListOf<HTMLElement>;
-    this.gameArea = document.querySelector('.game__sprint__wrap') as HTMLElement;
-    this.soundIcon = document.querySelector('.game__sprint__button__content') as HTMLElement;
-    this.soundBtn = document.querySelector('.game__sprint__btn-sound') as HTMLButtonElement;
-    this.main.addEventListener('click', async event => {
-      const target = <HTMLElement>event.target;
-      if (target.id === 'falseBtn' || target.id === 'trueBtn') {
-        this.sprintController.checkAnswer(target.id);
-      }
-      if (target.classList.contains('start_timer')) {
-        this.sprintController.togglePlay();
-      }
-      if (target.classList.contains('game__sprint__sound')) {
-        this.sprintController.playWord();
-      }
-      if (target.classList.contains('game__sprint__btn-sound')) {
-        this.sprintController.toggleVolume();
-      }
-    });
+    this.addListeners();
     return this.main.innerHTML;
+  }
+
+  renderSoundIcon() {
+    return `
+    <span class="sound-icon" style="width: 33px; height: 33px; color: rgb(125, 145, 159);">
+    <svg svg xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 32 32">
+      <path fill="#fff"
+        d="M15.788 13.007a3 3 0 110 5.985c.571 3.312 2.064 5.675 3.815 5.675 2.244 0 4.064-3.88 4.064-8.667 0-4.786-1.82-8.667-4.064-8.667-1.751 0-3.244 2.363-3.815 5.674zM19 26c-3.314 0-12-4.144-12-10S15.686 6 19 6s6 4.477 6 10-2.686 10-6 10z"
+        fill-rule="evenodd"></path>
+    </svg>
+  </span>`
   }
 
   renderLevels() {
@@ -243,10 +226,108 @@ export default class SprintView {
     InputElement.value = i.toString();
     InputElement.type = 'radio';
     InputElement.name = 'group';
-    if (i === 0) InputElement.checked = true;
+    if (i === 0) InputElement.setAttribute('checked', 'true');
     radioElement.append(InputElement);
     radioElement.append(spanElement);
     return radioElement;
+  }
+
+  showPopupResult(words: IWord[]) {
+    this.sprintController.progressArray = words;
+    const score = this.sprintController.getScore();
+    const count = words.length;
+
+    this.successBlock.innerHTML = '';
+    this.failBlock.innerHTML = '';
+
+    this.failBlockErrors.textContent = (count - score).toString();
+    this.successBlockCorrect.textContent = score.toString();
+    this.sprintController.progressArray.forEach((word, key) => {
+      const objWord = { word, key };
+      if (word.correct) {
+        this.createPopupResult(objWord, this.successBlock);
+      } else {
+        this.createPopupResult(objWord, this.failBlock);
+      }
+    });
+
+    this.resultPopup.classList.add('active');
+    this.addResultListeners();
+  }
+
+  createPopupResult(objWord: {word: IWord, key: number}, block: HTMLElement) {
+    const listItem = document.createElement('div') as HTMLElement;
+    listItem.className = 'resultPopup__word';
+    listItem.dataset.id = objWord.key.toString();
+    listItem.innerHTML = `
+      ${this.renderSoundIcon()}
+      <div class="text word">${objWord.word.word}</div>
+      <div class="text">${objWord.word.transcription}</div>
+      <div class="text">${objWord.word.wordTranslate}</div>
+    `;
+    block.append(listItem);
+  }
+
+  addResultListeners() {
+    this.popupCloseBtn.addEventListener('click', () => {
+      this.sprintController.closeResultPopup();
+    });
+    this.restartGameBtn.addEventListener('click', () => {
+      this.sprintController.restartGame();
+      this.sprintController.closeResultPopup();
+    });
+    this.resultPopup.addEventListener('click', (e: MouseEvent) => {
+      this.sprintController.resultWordOnClick
+      (<HTMLElement>e.target);
+    });
+  }
+
+  addListeners() {
+    this.startBtn = document.getElementById('startGame') as HTMLButtonElement;
+    this.currentWord = document.querySelector('.game__sprint__word') as HTMLElement;
+    this.timer = document.querySelector('.circle-text') as HTMLElement;
+    this.timerCircle = document.querySelector('.circle') as HTMLElement;
+    this.preloader = document.querySelector('.game__preloader') as HTMLElement;
+    this.preloadCounter = document.querySelector('.game__loader__count') as HTMLElement;
+    this.loader = document.querySelector('.game__sprint__loader') as HTMLElement;
+    this.loadCounter = document.querySelector('.game__loader__count') as HTMLElement;
+    this.currentWord = document.querySelector('.game__sprint__word') as HTMLElement;
+    this.currentTranslation = document.querySelector('.game__sprint__translation') as HTMLElement;
+    this.gameField = document.querySelector('.game__sprint') as HTMLElement;
+    this.startScreen = document.querySelector('.game__startScreen') as HTMLElement;
+    this.trueBtn = document.querySelector('.btn-true') as HTMLButtonElement;
+    this.falseBtn = document.querySelector('.btn-false') as HTMLButtonElement;
+    this.startBtn.addEventListener('click', () => this.sprintController.startRound());
+    this.scoreElem = document.querySelector('.game__sprint__score') as HTMLElement;
+    this.bonusNote = document.querySelector('.game__sprint__bonus_note') as HTMLElement;
+    this.currentBonus = document.querySelectorAll('.game__sprint__bonus__check .empty') as NodeListOf<HTMLElement>;
+    this.currentFactor = document.querySelectorAll('.game__sprint__bonus__area__count .game__sprint__bonus__item') as NodeListOf<HTMLElement>;
+    this.gameArea = document.querySelector('.game__sprint__wrap') as HTMLElement;
+    this.soundIcon = document.querySelector('.game__sprint__button__content') as HTMLElement;
+    this.close = document.querySelector('.close') as HTMLElement;
+    this.soundBtn = document.querySelector('.game__sprint__btn-sound') as HTMLButtonElement;
+    this.successBlock = document.querySelector('.resultPopup__success') as HTMLElement;
+    this.failBlock = document.querySelector('.resultPopup__fail') as HTMLElement;
+    this.successBlockCorrect = document.querySelector('.resultPopup__correct') as HTMLElement;
+    this.failBlockErrors = document.querySelector('.resultPopup__errors') as HTMLElement;
+    this.resultPopup = document.querySelector('.resultPopup') as HTMLElement;
+    this.popupCloseBtn =document.getElementById('closePopup') as HTMLButtonElement;
+    this.restartGameBtn =document.getElementById('restartGame') as HTMLButtonElement;
+    this.main.addEventListener('click', async event => {
+      const target = <HTMLElement>event.target;
+      if (target.id === 'falseBtn' || target.id === 'trueBtn') {
+        this.sprintController.checkAnswer(target.id);
+      }
+      if (target.classList.contains('start_timer')) {
+        this.sprintController.togglePlay();
+      }
+      if (target.classList.contains('game__sprint__sound')) {
+        this.sprintController.playWord(this.sprintController.trueArray[this.sprintController.step].audio);
+      }
+      if (target.classList.contains('game__sprint__btn-sound')) {
+        this.sprintController.toggleVolume();
+      }
+    });
   }
 
   renderBonus = (color: string): string => `
@@ -280,54 +361,20 @@ export default class SprintView {
   `;
 
 
-  getBonusCheck(i: string) {
-    // const check = `<img src="../../../assets/img/Sprint/check.svg" class="game__sprint__true__check__item" alt="true">`;
-
-    // document.querySelector(`.game__sprint__bonus__area__${i}`).insertAdjacentHTML('beforeend', check);
-    const check = `<img src="../../../assets/img/Sprint/check.svg" class="game__sprint__true__check__item" alt="true">`;
-
-    document.querySelector(`.game__sprint__bonus__area__${i}`).classList.add('filled');
+  getBonusCheck(i: number) {
+    if (i) {
+      document.querySelector(`.game__sprint__bonus__area__${i}`).classList.add('filled');
+    }
+   
   }
 
-  getBonusStar(i: string) {
-    // let color = '';
-    // switch (i) {
-    //   case '1':
-    //     color = 'green';
-    //   break;
-    //   case '2':
-    //     color = 'yellow';
-    //     break;
-    //   case '3':
-    //     color = 'red'; 
-    //     break;
-    //   default:
-    //   break;
-    // }
-  //       const star = `
-  //   <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-  //   class="game__sprint__bonus__item__planet__icon${i}" alt="bonus">
-  //     x="0px"
-  //     y="0px"
-  //     viewBox="0 0 1000 1000"
-  //     enable-background="new 0 0 1000 1000"
-  //     xml:space="preserve">
-  //     ${this.renderBonus(color)}
-  //   </svg>
-  // `;
-  //   document.querySelector(`.game__sprint__bonus__item${i}`).insertAdjacentHTML('beforeend', star);
+  getBonusStar(i: number) {
     const parrot = document.getElementById(`game__sprint__bonus__item${i}`) as HTMLElement;
     parrot.classList.add(`item${i}`);
-    // parrot.className(`game__sprint__bonus__item${i}`);
-    // parrot.className('wew')
-    // background-image: url(/src/assets/img/Sprint/parrot1.svg);
-    // parrot.style.background = 'red';
-    // ../../../utils/api/interfaces
   }
 
   showBonus(factor: number): void {
     this.bonusNote.innerHTML = `Умножение очков на ${factor}!`;
-    this.hideBonus();
   }
 
   hideBonus() {
@@ -335,9 +382,10 @@ export default class SprintView {
     if (answerTimer) {
       clearTimeout(answerTimer);
     }
+    this.bonusNote.innerHTML = 'Серия прервана!';
     answerTimer = setTimeout(() => {
       this.bonusNote.innerHTML = ' ';
-    }, 200000);
+    }, 2000);
   }
 
   startTimer() {

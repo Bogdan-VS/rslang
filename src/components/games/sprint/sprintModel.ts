@@ -32,12 +32,20 @@ export default class SprintModel {
     return result;
   }
 
-  async getSomeWords(group: string) {
+  async getSomeWords(group: string): Promise<IWord[]> {
     let page = parseInt(this.page, 10);
-    page = Math.round(Math.random() * 5);
-    this.page = page.toString();
-    let data = await this.api.getWords(this.page, group);
+    const pages = new Set;
+    while (pages.size < 5) {
+      page = Math.floor(Math.random() * 29)
+      pages.add(page)
+    }
+    const pagesArr = [...pages] as number[];
+    const promiseArr = pagesArr.map((item) => this.api.getWords(item, group)) as Array<Promise<IWord[]>>;
+
+    let data = await (await Promise.all(promiseArr)).flat(1);
+    // let data =  a this.api.getWords(this.page, group);
     data = this.shuffleArray(data);
+    console.log(data)
     this.gameWords = [];
     this.gameFalseWords = [];
     data.forEach((elem) => {
