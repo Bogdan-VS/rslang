@@ -1,10 +1,10 @@
-import { IWord } from "../../../utils/api/interfaces";
-import SprintController from "./sprintController";
-
+import { IGamesController, IWord } from "../../../utils/api/interfaces";
 
 export default class SprintView {
 
   main: HTMLElement;
+
+  sprintController: IGamesController;
 
   timer: HTMLElement;
 
@@ -28,7 +28,7 @@ export default class SprintView {
   
   startBtn: HTMLButtonElement;
 
-  sprintController: SprintController;
+  gameController: IGamesController;
 
   startScreen: HTMLElement;
 
@@ -48,7 +48,7 @@ export default class SprintView {
 
   currentFactor: NodeListOf<HTMLElement>;
 
-  soundIcon: HTMLElement;
+  soundIcon: NodeListOf<HTMLElement>;
 
   soundBtn: HTMLButtonElement;
 
@@ -71,8 +71,8 @@ export default class SprintView {
   restartGameBtn: HTMLButtonElement;
 
   
-  constructor(sprintController: SprintController) {
-    this.sprintController = sprintController;
+  constructor(gameController: IGamesController) {
+    this.sprintController = gameController;
     this.main = document.getElementById('mainPage') as HTMLElement;
     this.timeoutLoaderHide = 0;
     this.gameLevels = 6;
@@ -115,7 +115,7 @@ export default class SprintView {
           <div class="game__sprint__question-wrapper">
             <button class="game__sprint__sound">
               <span class="game__sprint__button__content">
-               ${this.renderSoundIcon()} 
+               ${this.renderSoundIcon('#fff')} 
               </span>
             </button>
             <div class="game__sprint__score"></div>
@@ -184,12 +184,12 @@ export default class SprintView {
     return this.main.innerHTML;
   }
 
-  renderSoundIcon() {
+  renderSoundIcon(color: string) {
     return `
     <span class="sound-icon" style="width: 33px; height: 33px; color: rgb(125, 145, 159);">
     <svg svg xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 32 32">
-      <path fill="#fff"
+      <path fill="${color}"
         d="M15.788 13.007a3 3 0 110 5.985c.571 3.312 2.064 5.675 3.815 5.675 2.244 0 4.064-3.88 4.064-8.667 0-4.786-1.82-8.667-4.064-8.667-1.751 0-3.244 2.363-3.815 5.674zM19 26c-3.314 0-12-4.144-12-10S15.686 6 19 6s6 4.477 6 10-2.686 10-6 10z"
         fill-rule="evenodd"></path>
     </svg>
@@ -260,7 +260,7 @@ export default class SprintView {
     listItem.className = 'resultPopup__word';
     listItem.dataset.id = objWord.key.toString();
     listItem.innerHTML = `
-      ${this.renderSoundIcon()}
+      ${this.renderSoundIcon('#37383c')}
       <div class="text word">${objWord.word.word}</div>
       <div class="text">${objWord.word.transcription}</div>
       <div class="text">${objWord.word.wordTranslate}</div>
@@ -273,8 +273,8 @@ export default class SprintView {
       this.sprintController.closeResultPopup();
     });
     this.restartGameBtn.addEventListener('click', () => {
-      this.sprintController.restartGame();
       this.sprintController.closeResultPopup();
+      this.sprintController.restartGame();
     });
     this.resultPopup.addEventListener('click', (e: MouseEvent) => {
       this.sprintController.resultWordOnClick
@@ -303,7 +303,7 @@ export default class SprintView {
     this.currentBonus = document.querySelectorAll('.game__sprint__bonus__check .empty') as NodeListOf<HTMLElement>;
     this.currentFactor = document.querySelectorAll('.game__sprint__bonus__area__count .game__sprint__bonus__item') as NodeListOf<HTMLElement>;
     this.gameArea = document.querySelector('.game__sprint__wrap') as HTMLElement;
-    this.soundIcon = document.querySelector('.game__sprint__button__content') as HTMLElement;
+    this.soundIcon = document.querySelectorAll('.sound-icon') as NodeListOf<HTMLElement>;
     this.close = document.querySelector('.close') as HTMLElement;
     this.soundBtn = document.querySelector('.game__sprint__btn-sound') as HTMLButtonElement;
     this.successBlock = document.querySelector('.resultPopup__success') as HTMLElement;
@@ -311,8 +311,8 @@ export default class SprintView {
     this.successBlockCorrect = document.querySelector('.resultPopup__correct') as HTMLElement;
     this.failBlockErrors = document.querySelector('.resultPopup__errors') as HTMLElement;
     this.resultPopup = document.querySelector('.resultPopup') as HTMLElement;
-    this.popupCloseBtn =document.getElementById('closePopup') as HTMLButtonElement;
-    this.restartGameBtn =document.getElementById('restartGame') as HTMLButtonElement;
+    this.popupCloseBtn = document.getElementById('closePopup') as HTMLButtonElement;
+    this.restartGameBtn = document.getElementById('restartGame') as HTMLButtonElement;
     this.main.addEventListener('click', async event => {
       const target = <HTMLElement>event.target;
       if (target.id === 'falseBtn' || target.id === 'trueBtn') {
@@ -322,7 +322,8 @@ export default class SprintView {
         this.sprintController.togglePlay();
       }
       if (target.classList.contains('game__sprint__sound')) {
-        this.sprintController.playWord(this.sprintController.trueArray[this.sprintController.step].audio);
+        this.sprintController.playWord(this.sprintController.trueArray[this.sprintController.step].audio,
+          target);
       }
       if (target.classList.contains('game__sprint__btn-sound')) {
         this.sprintController.toggleVolume();

@@ -71,7 +71,7 @@ export default class SprintController {
     this.isPaused = false;
     this.intervalLoaderTime = 0;
     this.roundTime = 0;
-    this.seconds = 7;
+    this.seconds = 3;
     this.correctCount = 0;
     this.score = 0;
     this.factor = 1;
@@ -119,7 +119,6 @@ export default class SprintController {
     this.prevTranslate.push(wrongTranslate)
     if (this.prevTranslate.length === 2) {
       this.prevTranslate.shift();
-      console.log(this.prevTranslate)
     }
     
   }
@@ -261,7 +260,6 @@ export default class SprintController {
       this.factor *= 2;
       this.sprintView.showBonus(this.factor);
       this.addBonusStar();
-      console.log(this.factor)
       this.sprintView.getScore(this.score);
       setTimeout(() => {
         this.clearBonus();
@@ -316,11 +314,11 @@ export default class SprintController {
     }
   }
 
-  playWord(src: string) {
+  playWord(src: string, target: Element) {
     clearTimeout();
-    this.sprintView.soundIcon.classList.add('pulse');
+    target.classList.add('pulse');
     setTimeout(
-      () => this.sprintView.soundIcon.classList.remove('pulse'),
+      () => target.classList.remove('pulse'),
       1000
     );
     const audio = new Audio;
@@ -331,7 +329,9 @@ export default class SprintController {
   resultWordOnClick(elem: HTMLElement) {
     const word = elem.closest('.resultPopup__word') as HTMLElement;
     if (word) {
-      this.playWord(this.trueArray[parseInt(word.dataset.id, 10)].audio);
+      const soundIco = word.firstElementChild as HTMLElement;
+      this.playWord(this.trueArray[parseInt(word.dataset.id, 10)].audio, soundIco);
+
     }
   }
 

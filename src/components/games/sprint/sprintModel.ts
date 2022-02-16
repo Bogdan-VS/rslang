@@ -43,9 +43,7 @@ export default class SprintModel {
     const promiseArr = pagesArr.map((item) => this.api.getWords(item, group)) as Array<Promise<IWord[]>>;
 
     let data = await (await Promise.all(promiseArr)).flat(1);
-    // let data =  a this.api.getWords(this.page, group);
     data = this.shuffleArray(data);
-    console.log(data)
     this.gameWords = [];
     this.gameFalseWords = [];
     data.forEach((elem) => {

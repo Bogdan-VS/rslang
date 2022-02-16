@@ -10,7 +10,7 @@
     "noImplicitAny": true,
     "typeRoots": [
       "node_modules/@types",
-      "src/"
+      "src/types"
     ] 
   },
   "lib": ["es2015"]
