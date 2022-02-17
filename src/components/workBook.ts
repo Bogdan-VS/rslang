@@ -1,7 +1,9 @@
 import Api from '../server/api';
-import { IWord } from '../utils/api/interfaces';
+import { IUserToken, IWord } from '../utils/api/interfaces';
 import Render from './render';
 import colorThemes from '../utils/workBook/enums';
+import Display from '../utils/baseEnums';
+import { hardButtonTextContent, wordsPage } from '../utils/workBook/const';
 
 class WorkBook {
     private api: Api;
@@ -12,7 +14,28 @@ class WorkBook {
 
     private wordsGroup: string;
 
+    private hardBtn: NodeListOf<HTMLTemplateElement>;
+
+    private hardIndicator: NodeListOf<HTMLTemplateElement>;
+
+    private learnedIndicator: NodeListOf<HTMLTemplateElement>;
+
+    private hardLevel: HTMLTemplateElement;
+
+    static hardArr: IWord[];
+
+    private hardStatus: boolean;
+
+    private static learnedArr: IWord[];
+
     constructor() {
+        WorkBook.hardArr = [];
+        WorkBook.learnedArr = []
+        this.hardStatus = false
+        this.hardBtn = document.querySelectorAll('.word-card__button');
+        this.hardLevel = document.querySelector('.hard-button')
+        this.hardIndicator = document.querySelectorAll('.word-card__hard-indicator');
+        this.learnedIndicator = document.querySelectorAll('.word-card__learned-indicator');
         this.words = []
         this.api = new Api()
         this.listen()
@@ -21,7 +44,13 @@ class WorkBook {
     }
 
 
-    static renderWordCard = (word: IWord) => `<div class="word-card">
+    static renderWordCard = (word: IWord, color: string) =>
+        `
+          <div class="word-card studied-word">
+          <div class="word-card__hard-indicator" id="hard-indicator-${word.id}" style="display: ${WorkBook.hardArr.filter(i => i.id === word.id).length ? 'block' : 'none'}">
+         ${WorkBook.renderRibbonImg(color)}
+          </div>
+          <div class="word-card__learned-indicator ${WorkBook.learnedArr.filter(i => i.id === word.id).length ? 'word-card__hard-indicator_active' : 'word-card__hard-indicator_inactive'}" id="learned-btn-${word.id}"></div>
           <div class="word-card__img" style="background: url('https://raw.githubusercontent.com/SashaLado/react-rslang-be/main/${word.image}') center/cover"></div>
           <div class="word-card__text-block">
             <h3 class="word-card__title">${word.word}</h3>
@@ -38,11 +67,14 @@ class WorkBook {
               <p class="text">${word.textExample}</p>
               <p class="text text_translation">${word.textExampleTranslate}</p>
             </div>
+            <button class="button word-card__button" id="hardBtn-${word.id}">${WorkBook.hardArr.filter(i => i.id === word.id).length ? hardButtonTextContent.removeToHard.text : hardButtonTextContent.addToHard.text}</button>
           </div>
           <audio class="audio" id="audio1-${word.id}" src="https://raw.githubusercontent.com/SashaLado/react-rslang-be/main/${word.audio}"></audio>
           <audio class="audio" id="audio2-${word.id}" src="https://raw.githubusercontent.com/SashaLado/react-rslang-be/main/${word.audioExample}"></audio>
           <audio class="audio" id="audio3-${word.id}" src="https://raw.githubusercontent.com/SashaLado/react-rslang-be/main/${word.audioMeaning}"></audio>
         </div>`
+
+    static renderRibbonImg = (color: string) => `<?xml version="1.0" ?><svg fill="${color}" data-name="Livello 1" id="Livello_1" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg"><title/><path d="M98.78,0H29.22A7.21,7.21,0,0,0,22,7.19V120.8a7.08,7.08,0,0,0,4.42,6.63,7.22,7.22,0,0,0,7.87-1.5L63.14,97.59a1.23,1.23,0,0,1,1.72,0l28.86,28.33a7.21,7.21,0,0,0,7.87,1.5A7.08,7.08,0,0,0,106,120.8V7.19A7.21,7.21,0,0,0,98.78,0ZM100,120.8a1.14,1.14,0,0,1-.74,1.09,1.17,1.17,0,0,1-1.34-.25h0L69.06,93.31a7.26,7.26,0,0,0-10.13,0L30.08,121.64a1.18,1.18,0,0,1-1.34.25A1.14,1.14,0,0,1,28,120.8V7.19A1.21,1.21,0,0,1,29.22,6H98.78A1.21,1.21,0,0,1,100,7.19Z"/></svg>`
 
     async updateStateWords (page: string, group: string) {
         this.words = await this.api.getWords(page, group);
@@ -55,12 +87,13 @@ class WorkBook {
         if (wordsContainer) {
             this.wordsGroup = wordsGroup
             this.updateStateWords('0', wordsGroup).then((r) => {
-                wordsContainer.innerHTML = Render.renderWordsContainer(r);
+                wordsContainer.innerHTML = Render.renderWordsContainer(r, color);
                 const transcriptElements: NodeListOf<HTMLTemplateElement> = document.querySelectorAll('.word-card__transcript-text');
                 transcriptElements.forEach((el) => {
                     el.style.backgroundColor = color;
                 })
             });
+            wordsPage.category = wordsGroup;
         }
     }
 
@@ -79,6 +112,7 @@ class WorkBook {
                 wordsContainer.innerHTML = Render.renderWordsContainer(r);
             })
         }
+        wordsPage.page = page;
     }
 
     playSound (id: string) {
@@ -107,6 +141,69 @@ class WorkBook {
         workBookPage.style.display = 'block';
     }
 
+    checkAuthWorkBook() {
+        const learnedButton: NodeListOf<HTMLTemplateElement> = document.querySelectorAll('.word-card__learned-indicator');
+        const hardLevel: HTMLTemplateElement = document.querySelector('.hard-button')
+
+        if (localStorage.getItem('session')) {
+            hardLevel.style.display = Display.block;
+            hardLevel.onclick = () => {
+                const wordsContainer = document.querySelector('.words-container');
+                wordsContainer.innerHTML = Render.renderWordsContainer(WorkBook.hardArr);
+                document.getElementById('workBookPage').style.backgroundColor = colorThemes.hard.color;
+                const transcriptElements: NodeListOf<HTMLTemplateElement> = document.querySelectorAll('.word-card__transcript-text');
+                transcriptElements.forEach((el) => {
+                    el.style.backgroundColor = colorThemes.hard.color;
+                })
+            }
+            this.hardBtn.forEach((button) => {
+                button.style.display = Display.block;
+            })
+            learnedButton.forEach((button) => {
+                button.style.display = Display.block
+            })
+        } else {
+            this.hardBtn.forEach((button) => {
+                button.style.display = Display.none;
+            })
+            hardLevel.style.display = Display.none;
+        }
+    }
+
+    async addRemoveHard (target: HTMLButtonElement) {
+        const id = target.id.split('hardBtn-')[1];
+        const hardBtn = document.getElementById(`hardBtn-${id}`);
+        const hardIndicator = document.getElementById(`hard-indicator-${id}`);
+        const word = await this.api.getWord(id);
+        if (WorkBook.hardArr.filter(i => i.id === word.id).length) {
+            const index = WorkBook.hardArr.indexOf(word);
+            WorkBook.hardArr.splice(index, 1)
+            hardIndicator.style.display = Display.none;
+            hardBtn.innerHTML = hardButtonTextContent.addToHard.text;
+        } else {
+            WorkBook.hardArr.push(word);
+            hardIndicator.style.display = Display.block;
+            hardBtn.innerHTML = hardButtonTextContent.removeToHard.text;
+        }
+    }
+
+    async addRemoveLearned (target: HTMLButtonElement) {
+        const id = target.id.split('learned-btn-')[1];
+        const learnedBtn = document.getElementById(`learned-btn-${id}`);
+        const word = await this.api.getWord(id);
+        if (WorkBook.learnedArr.filter(i => i.id === word.id).length) {
+            const index = WorkBook.learnedArr.indexOf(word);
+            WorkBook.learnedArr.splice(index, 1)
+            learnedBtn.classList.toggle('word-card__hard-indicator_inactive', true);
+            learnedBtn.classList.toggle('word-card__hard-indicator_active', false);
+        } else {
+            WorkBook.learnedArr.push(word);
+            learnedBtn.classList.toggle('word-card__hard-indicator_inactive', false);
+            learnedBtn.classList.toggle('word-card__hard-indicator_active', true);
+        }
+    }
+
+
     async listen () {
         document.addEventListener('click', (e) => {
             const target = e.target  as HTMLButtonElement;
@@ -130,6 +227,10 @@ class WorkBook {
                 this.playSound(target.id)
             }  else if (target.id === 'workBookButton') {
                 this.showWorkBook()
+            }  else if (target.classList.contains('word-card__button')) {
+                this.addRemoveHard(target)
+            }  else if (target.classList.contains('word-card__learned-indicator')) {
+                this.addRemoveLearned(target)
             }
         })
     }

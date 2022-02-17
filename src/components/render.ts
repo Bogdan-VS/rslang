@@ -1,9 +1,17 @@
 import { IWord } from '../utils/api/interfaces';
 import WorkBook from './workBook';
 import { dataWords } from '../utils/api/const';
+import colorThemes from '../utils/workBook/enums';
 
 
 class Render {
+    private workBook: WorkBook;
+
+    constructor() {
+        this.workBook = new WorkBook()
+        this.workBook.checkAuthWorkBook()
+    }
+
     static render = (words?: IWord[]) => {
         const html = `<header class="header">
   <div class="container header__container">
@@ -138,12 +146,15 @@ ${Render.renderAuthorize()}
         <button class="level-button level-c2" id="c2">
           Hard C2
         </button>
+        <button class="level-button hard-button" id="hardLevel" style="display: none">
+          Сложные
+        </button>
       </div>
         <div class="levels__pagination">
           <button class="pagination__item pagination__arrow prev" disabled>←</button>
           <button class="pagination__item pagination__arrow next">→</button>
         </div>
-      <div class="words-container">${Render.renderWordsContainer(words)}</div>
+      <div class="words-container">${Render.renderWordsContainer(words, colorThemes.a1.color)}</div>
       <div class="levels__pagination">
           <button class="pagination__item pagination__arrow prev" disabled><span>←</span></button>
           <button class="pagination__item pagination__arrow next"><span>→</span></button>
@@ -151,9 +162,9 @@ ${Render.renderAuthorize()}
       </div>
     </div>`
 
-    static renderWordsContainer = (words: IWord[]) => `
+    static renderWordsContainer = (words: IWord[], color?: string) => `
     ${words.map((word) => `
-${WorkBook.renderWordCard(word)}
+${WorkBook.renderWordCard(word, color)}
   `).join('')}`
 
   private static renderAuthorize = () => `

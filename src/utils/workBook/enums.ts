@@ -5,7 +5,7 @@ const colorThemes = {
     b2: {color: '#F03E3D', wordsGroup: '3'},
     c1: {color: '#7752BE', wordsGroup: '4'},
     c2: {color: '#FAB005', wordsGroup: '5'},
-
+    hard: {color: '#2c2647'}
 }
 
 export default colorThemes

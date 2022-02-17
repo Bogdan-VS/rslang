@@ -4,14 +4,15 @@ import Authorize from './components/authorize';
 import Api from './server/api';
 import WorkBook from './components/workBook';
 
-Render.render();
-const authorize = new Authorize();
 
-authorize.init();
 const api = new Api()
 api.getWords('0', '0').then(r => {
     const words = r;
-    Render.render(words)
-    const workBook = new WorkBook();
+    const workBook = new WorkBook()
+    Render.render(words);
+    workBook.checkAuthWorkBook()
+
+    const authorize = new Authorize();
+    authorize.init();
 })
 

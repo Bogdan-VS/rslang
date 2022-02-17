@@ -1,27 +1,3 @@
-//.a1 {
-//  background-color: #1943EF;
-//}
-//
-//.a2 {
-//  background-color: #FF9900;
-//}
-
-//.b1 {
-//  background-color: #4DADF7;
-//}
-//
-//.b2 {
-//  background-color: #F03E3D;
-//}
-//
-//.c1 {
-//  background-color: #7752BE;
-//}
-//
-//.c2 {
-//  background-color: #FAB005;
-//}
-
 #workBookPage {
   background-color: #1943EF;
   transition: background-color .3s;
@@ -84,6 +60,7 @@
 }
 
 .word-card {
+  position: relative;
   width: 70%;
   background-color: white;
   border-radius: 10px;
@@ -91,6 +68,7 @@
   flex-direction: row;
   padding: 10px;
   gap: 20px;
+  overflow: hidden;
 }
 
 .word-card p {
@@ -184,3 +162,42 @@
   color: #898d91;
 }
 
+.word-card__button {
+  margin: 20px 0;
+}
+
+.word-card__hard-indicator {
+  position: absolute;
+  background: url("../assets/svg/ribbon.svg");
+  width: 50px;
+  height: 50px;
+  top: -2px;
+  right: 30px;
+  display: none;
+}
+
+.word-card__learned-indicator {
+  position: absolute;
+  background: url("../assets/svg/learned.svg");
+  width: 30px;
+  height: 30px;
+  top: 60px;
+  right: 40px;
+}
+
+.word-card__hard-indicator_active {
+  filter: brightness(0) saturate(100%) invert(60%) sepia(15%) saturate(5617%) hue-rotate(329deg) brightness(101%) contrast(102%);
+}
+
+.word-card__hard-indicator_inactive {
+  filter: brightness(0) saturate(100%) invert(60%) sepia(4%) saturate(329%) hue-rotate(169deg) brightness(91%) contrast(90%);
+}
+
+.word-card__hard-indicator-active {
+  display: block;
+}
+
+.hard-button {
+  background-color: #898d91;
+  color: white;
+}
