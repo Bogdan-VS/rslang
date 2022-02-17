@@ -22,6 +22,10 @@ export const repeatGameState = {
   chapter: '0',
 };
 
+export const stateWorkBook = {
+  display: 'none',
+};
+
 export const amount = ['1', '2', '3', '4', '5'];
 
 export default countPageToChepter;

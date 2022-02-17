@@ -1,10 +1,12 @@
 import Api from '../../server/api';
 import { IWord } from '../../utils/api/interfaces';
+import wordsPage from '../../utils/workBook/const';
 import countPageToChepter, {
   amount,
   renderBtn,
   repeatGameState,
   startGame,
+  stateWorkBook,
 } from './difference/const';
 import ProgressBar from './progress-bar';
 import Statistic from './statistic';
@@ -107,6 +109,8 @@ class AudioCall {
 
   audioCallPreloader: HTMLElement;
 
+  workBookPage: HTMLElement;
+
   constructor() {
     this.body = document.querySelector('body');
     this.api = new Api();
@@ -114,6 +118,7 @@ class AudioCall {
       'audio-call__ok-btn'
     ) as HTMLButtonElement;
     this.audioCallContainer = document.getElementById('audio-call');
+    this.workBookPage = document.getElementById('workBookPage');
     this.audioCallRegulationBtn = document.getElementById(
       'audio-call__regulation-btn'
     ) as HTMLButtonElement;
@@ -269,7 +274,17 @@ class AudioCall {
       this.body.style.overflow = 'hidden';
       this.audioCallContainer.classList.remove('hide');
     }, 2000);
-    this.getWordsToPlay();
+
+    if (this.workBookPage.style.display === stateWorkBook.display) {
+      this.getWordsToPlay();
+    } else {
+      this.formationListWords(wordsPage.page, wordsPage.category);
+      Utils.addAnimationWordsCollection(
+        this.audioCallSettings,
+        'audio-call__settings-disabled'
+      );
+    }
+
     startGame.start = true;
   }
 
@@ -280,6 +295,17 @@ class AudioCall {
       this.audioCallSettings,
       'audio-call__settings-disabled'
     );
+
+    if (
+      this.audioCallRegulation.classList.contains(
+        'audio-call__regulation-disabled'
+      )
+    ) {
+      this.audioCallRegulation.classList.remove(
+        'audio-call__regulation-disabled'
+      );
+    }
+
     startGame.start = false;
     AudioCall.cleanDataGame();
   }
@@ -319,14 +345,22 @@ class AudioCall {
   startGame() {
     Utils.renderPage(this.playContainer, this.audioCallPreloader);
     setTimeout(() => {
-      Utils.addAnimationWordsCollection(
-        this.audioCallSettings,
-        'audio-call__settings-disabled'
-      );
-      Utils.addAnimationWordsCollection(
-        this.audioCallRegulation,
-        'audio-call__regulation-disabled'
-      );
+      if (this.workBookPage.style.display === stateWorkBook.display) {
+        Utils.addAnimationWordsCollection(
+          this.audioCallSettings,
+          'audio-call__settings-disabled'
+        );
+        Utils.addAnimationWordsCollection(
+          this.audioCallRegulation,
+          'audio-call__regulation-disabled'
+        );
+      } else {
+        Utils.addAnimationWordsCollection(
+          this.audioCallRegulation,
+          'audio-call__regulation-disabled'
+        );
+      }
+
       this.generationWord();
     }, 2000);
   }

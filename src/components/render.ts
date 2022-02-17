@@ -11,7 +11,7 @@ class Render {
       <ul class="header__nav-container">
         <li class="header__nav-item text"><a href="#" class="header__nav-item">Главная</a></li>
         <li class="header__nav-item text"><a href="#" class="header__nav-item" id="workBookButton">Учебник</a></li>
-        <li class="header__nav-item text"><a href="#" class="header__nav-item">Игры
+        <li class="header__nav-item text" id="games"><a href="#" class="header__nav-item">Игры
           <span class="nav__select-arrow"></span>
           <ul class="nav__sub-menu">
             <li class="sub-menu__item audio-game"><a href="#">Аудио-вызов</a></li>
@@ -25,11 +25,11 @@ class Render {
   </div>
 </header>
 <main>
+${Render.renderAudioCall()}
+${Render.preloader()}
 <div id="mainPage">
 ${Render.renderMainPage()}
 ${Render.renderAuthorize()}
-${Render.renderAudioCall()}
-${Render.preloader()}
 </div>
 <div id="workBookPage" style="display: none">${Render.renderWorkBookPage(
       words
