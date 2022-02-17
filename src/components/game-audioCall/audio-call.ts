@@ -27,7 +27,7 @@ class AudioCall {
 
   audioCallContainer: HTMLElement;
 
-  audioCallBeginBtn: HTMLButtonElement;
+  audioCallBeginBtn: HTMLElement;
 
   audioCallClose: HTMLElement;
 
@@ -208,8 +208,8 @@ class AudioCall {
     ) as HTMLButtonElement;
     this.audioCallSettings = document.getElementById('audio-call__setting');
     this.audioCallBeginBtn = document.getElementById(
-      'games'
-    ) as HTMLButtonElement;
+      'callAudio-game'
+    ) as HTMLElement;
     this.audioCallPlayBtn = document.getElementById(
       'audio-call__play-btn'
     ) as HTMLButtonElement;

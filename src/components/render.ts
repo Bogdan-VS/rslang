@@ -11,13 +11,12 @@ class Render {
       <ul class="header__nav-container">
         <li class="header__nav-item text"><a href="#" class="header__nav-item">Главная</a></li>
         <li class="header__nav-item text"><a href="#" class="header__nav-item" id="workBookButton">Учебник</a></li>
-        <li class="header__nav-item text" id="games"><a href="#" class="header__nav-item">Игры
-          <span class="nav__select-arrow"></span>
+        <li class="header__nav-item text" id="games">Игры
           <ul class="nav__sub-menu">
-            <li class="sub-menu__item audio-game"><a href="#">Аудио-вызов</a></li>
+            <li class="sub-menu__item" id="callAudio-game"><a href="#">Аудио-вызов</a></li>
             <li class="sub-menu__item sprint-game"><a href="#">Спринт</a></li>
           </ul>
-        </a></li>
+        </li>
         <li class="header__nav-item text"><a href="#" class="header__nav-item">Статистика</a></li>
       </ul>
     </nav>
