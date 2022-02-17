@@ -159,6 +159,19 @@ ${Render.renderAuthorize()}
           <button class="pagination__item pagination__arrow prev" disabled><span>←</span></button>
           <button class="pagination__item pagination__arrow next"><span>→</span></button>
         </div>
+      <div class="games-part__container">
+        <h2>Попробуй свои силы</h2>
+        <div class="games-wrapper">
+          <button class="games__item level-button" id="sprint-Btn">
+            <h2>Спринт</h2>
+            <p class="text">Как можно быстрее определи верный перевод слова или нет.</p>
+          </button>
+          <button class="games__item level-button" id="audioCall-Btn">
+            <h2>Аудиовызов</h2>
+            <p class="text">Попробуй понять, какое слово было произнесено.</p>
+          </button>
+        </div>
+      </div>
       </div>
     </div>`
 

@@ -123,9 +123,22 @@
 }
 
 .word-card__transcript-icon {
-  background: url("../assets/svg/sound.svg") no-repeat center/cover;
-  width: 25px;
-  height: 25px;
+  background: url("../assets/svg/sound.svg") no-repeat center/80%;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+}
+
+.word-card__transcript-icon,
+.word-card__learned-indicator {
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0);
+  transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.word-card__transcript-icon:hover,
+.word-card__learned-indicator:hover {
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, .5), 0 0 20px rgba(255, 255, 255, .2);
+  cursor: pointer;
 
 }
 
@@ -178,11 +191,13 @@
 
 .word-card__learned-indicator {
   position: absolute;
-  background: url("../assets/svg/learned.svg");
-  width: 30px;
-  height: 30px;
+  background: url("../assets/svg/learned.svg") center/80% no-repeat;
+  width: 40px;
+  height: 40px;
   top: 60px;
-  right: 40px;
+  right: 35px;
+  border-radius: 50%;
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
 }
 
 .word-card__hard-indicator_active {
@@ -200,4 +215,29 @@
 .hard-button {
   background-color: #898d91;
   color: white;
+}
+
+.games-wrapper {
+  width: 70%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+.games__item {
+  width: 47%;
+  padding: 20px;
+  height: auto;
+}
+
+.games__item h2 {
+  margin: 0;
+  color: #ff9900 !important;
+  cursor: pointer;
+}
+
+.games__item:hover,
+.games__item:focus {
+  box-shadow: 0 0.5em 0.5em -0.4em #ff9900;
+  transform: translateY(-0.25em);
 }
