@@ -4,4 +4,6 @@
 @use 'base';
 @use 'header';
 @use 'authorize';
-@use '../components/games/sprint/sprint.scss';
+@use 'work-book';
+@use 'audio-call';
+@use 'preloader';

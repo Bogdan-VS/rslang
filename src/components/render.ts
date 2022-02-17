@@ -1,19 +1,29 @@
+import { IWord } from '../utils/api/interfaces';
+// eslint-disable-next-line import/no-cycle
+import WorkBook from './workBook';
+
 class Render {
-  static render = () => {
+  static render = (words?: IWord[]) => {
     const html = `<header class="header">
   <div class="container header__container">
     <div class="header__logo" id="logo">RSLang.</div>
     <nav class="header__nav">
       <ul class="header__nav-container">
+<<<<<<< HEAD
         <li class="header__nav-item text"><a href="first" class="header__nav-item">Главная</a></li>
         <li class="header__nav-item text"><a href="#" class="header__nav-item">Учебник</a></li>
         <li class="header__nav-item text"><a href="games" class="header__nav-item">Игры
           <span class="nav__select-arrow"></span>
+=======
+        <li class="header__nav-item text"><a href="#" class="header__nav-item">Главная</a></li>
+        <li class="header__nav-item text"><a href="#" class="header__nav-item" id="workBookButton">Учебник</a></li>
+        <li class="header__nav-item text" id="games">Игры
+>>>>>>> develop
           <ul class="nav__sub-menu">
-            <li class="sub-menu__item audio-game"><a href="#">Аудио-вызов</a></li>
+            <li class="sub-menu__item" id="callAudio-game"><a href="#">Аудио-вызов</a></li>
             <li class="sub-menu__item sprint-game"><a href="#">Спринт</a></li>
           </ul>
-        </a></li>
+        </li>
         <li class="header__nav-item text"><a href="#" class="header__nav-item">Статистика</a></li>
       </ul>
     </nav>
@@ -21,10 +31,15 @@ class Render {
   </div>
 </header>
 <main>
+${Render.renderAudioCall()}
+${Render.preloader()}
 <div id="mainPage">
 ${Render.renderMainPage()}
 ${Render.renderAuthorize()}
 </div>
+<div id="workBookPage" style="display: none">${Render.renderWorkBookPage(
+      words
+    )}</div>
 </main>
 <footer>
   <div class="container footer-container">
@@ -111,6 +126,51 @@ ${Render.renderAuthorize()}
     </div>
   </section>`;
 
+  static renderWorkBookPage = (
+    words: IWord[]
+  ) => `<div class="container work-book__container">
+      <h2>Учебник</h2>
+      <div class="levels-wrapper">
+        <button class="level-button level-a1" id="a1">
+          Easy A1
+        </button>
+        <button class="level-button level-a2" id="a2">
+          Easy A2
+        </button>
+        <button class="level-button level-b1" id="b1">
+          Medium B1
+        </button>
+        <button class="level-button level-b2" id="b2">
+          Medium B2
+        </button>
+        <button class="level-button level-c1" id="c1">
+          Hard C1
+        </button>
+        <button class="level-button level-c2" id="c2">
+          Hard C2
+        </button>
+      </div>
+        <div class="levels__pagination">
+          <button class="pagination__item pagination__arrow prev" disabled>←</button>
+          <button class="pagination__item pagination__arrow next">→</button>
+        </div>
+      <div class="words-container">${Render.renderWordsContainer(words)}</div>
+      <div class="levels__pagination">
+          <button class="pagination__item pagination__arrow prev" disabled><span>←</span></button>
+          <button class="pagination__item pagination__arrow next"><span>→</span></button>
+        </div>
+      </div>
+    </div>`;
+
+  static renderWordsContainer = (words: IWord[]) => `
+    ${words
+      .map(
+        (word) => `
+${WorkBook.renderWordCard(word)}
+  `
+      )
+      .join('')}`;
+
   private static renderAuthorize = () => `
   <div class="auth" id="auth" action="#">
     <div class="auth__wrapper">
@@ -174,6 +234,198 @@ ${Render.renderAuthorize()}
       </div>
     </div>
     <div class="auth__close" id="auth-close"></div>
+  </div>
+  `;
+
+  private static renderAudioCall = () => `
+  <section class="audio-call-container hide" id="audio-call">
+    <div class="audio-call__wrapper">
+      <div class="audio-call__start-container audio-game" id="game-start-cont">
+        <h4 class="audio-call__title">Аудиовызов</h4>
+        <p class="audio-call__subtitle">
+          Тренировка улучшает восприятие речи на слух
+        </p>
+        <button class="audio-call__btn" id="audio-call__start-btn">Начать</button>
+      </div>
+      <div class="audio-call__play-container audio-game hide" id="game-play-cont">
+        <audio src="#" id="audio-call__track"></audio>
+        <div class="audio-call__repeat-container">
+          <button class="play-btn active-block" id="audio-call__repeat-btn">
+            <svg display="none" xmlns="http://www.w3.org/2000/svg" version="1.1">
+              <symbol id="audio-call-btn" viewBox="0 0 122.88 96.65">
+                <path d="M11,22.84H36.47L58.17,1A3.44,3.44,0,0,1,63,1a3.39,3.39,0,0,1,1,2.44h0V93.2a3.46,3.46,0,0,1-5.93,2.41L36.65,77.49H11a11,11,0,0,1-11-11V33.83a11,11,0,0,1,11-11Zm65.12,15a3.22,3.22,0,1,1,6.1-2,43.3,43.3,0,0,1,1.56,13.27c-.09,4.76-.78,9.44-2.13,12.21a3.23,3.23,0,1,1-5.8-2.83c.93-1.92,1.43-5.59,1.5-9.48a37.13,37.13,0,0,0-1.23-11.12Zm16.64-12a3.23,3.23,0,0,1,6-2.48c3,7.18,4.61,16.23,4.75,25.22s-1.17,17.72-4,24.77a3.22,3.22,0,1,1-6-2.4C96,64.64,97.15,56.66,97,48.6s-1.58-16.36-4.28-22.81Zm16.09-10.23a3.22,3.22,0,1,1,5.8-2.8,86.65,86.65,0,0,1,8.24,36.44c.09,12.22-2.37,24.39-7.73,34.77a3.22,3.22,0,0,1-5.73-3c4.88-9.43,7.11-20.56,7-31.77a80,80,0,0,0-7.6-33.69ZM37.89,29.74H11A4.11,4.11,0,0,0,6.9,33.83V66.51A4.11,4.11,0,0,0,11,70.6h26.9s2,.69,2.21.83L57.16,85.8v-74L40.52,28.53a3.46,3.46,0,0,1-2.63,1.21Z"/>
+              </symbol>
+            </svg>
+            <svg class="audio-call__img">
+              <use xlink:href="#audio-call-btn"></use>
+            </svg>
+          </button>
+          <div class="audio-call__repeat-sucsses-container" id="repeat-sucsses-container">
+            <span class="repeat-word-img"></span>
+            <div class="repeat-sucsses__subtitle-container">
+              <button class="audio-call__subtitle-repeat-btn" id="audio-call__subtitle-repeat-btn">
+                <svg display="none" xmlns="http://www.w3.org/2000/svg" version="1.1">
+                  <symbol id="audio-call__subtitle-btn" viewBox="0 0 122.88 96.65">
+                    <path d="M11,22.84H36.47L58.17,1A3.44,3.44,0,0,1,63,1a3.39,3.39,0,0,1,1,2.44h0V93.2a3.46,3.46,0,0,1-5.93,2.41L36.65,77.49H11a11,11,0,0,1-11-11V33.83a11,11,0,0,1,11-11Zm65.12,15a3.22,3.22,0,1,1,6.1-2,43.3,43.3,0,0,1,1.56,13.27c-.09,4.76-.78,9.44-2.13,12.21a3.23,3.23,0,1,1-5.8-2.83c.93-1.92,1.43-5.59,1.5-9.48a37.13,37.13,0,0,0-1.23-11.12Zm16.64-12a3.23,3.23,0,0,1,6-2.48c3,7.18,4.61,16.23,4.75,25.22s-1.17,17.72-4,24.77a3.22,3.22,0,1,1-6-2.4C96,64.64,97.15,56.66,97,48.6s-1.58-16.36-4.28-22.81Zm16.09-10.23a3.22,3.22,0,1,1,5.8-2.8,86.65,86.65,0,0,1,8.24,36.44c.09,12.22-2.37,24.39-7.73,34.77a3.22,3.22,0,0,1-5.73-3c4.88-9.43,7.11-20.56,7-31.77a80,80,0,0,0-7.6-33.69ZM37.89,29.74H11A4.11,4.11,0,0,0,6.9,33.83V66.51A4.11,4.11,0,0,0,11,70.6h26.9s2,.69,2.21.83L57.16,85.8v-74L40.52,28.53a3.46,3.46,0,0,1-2.63,1.21Z"/>
+                  </symbol>
+                </svg>
+                <svg class="audio-call__img">
+                  <use xlink:href="#audio-call__subtitle-btn"></use>
+                </svg>
+              </button>
+              <span class="audio-call__repeat-text"></span>
+            </div>
+          </div>
+        </div>
+        <ol class="audio-call__collection audio-call__collection-active">
+          <li class="audio-call__collection-item" data-count="1"><span class="call-number">1</span>lorem</li>
+          <li class="audio-call__collection-item" data-count="2"><span class="call-number">2</span>lorem</li>
+          <li class="audio-call__collection-item" data-count="3"><span class="call-number">3</span>lorem</li>
+          <li class="audio-call__collection-item" data-count="4"><span class="call-number">4</span>lorem</li>
+          <li class="audio-call__collection-item" data-count="5"><span class="call-number">5</span>lorem</li>
+        </ol>
+        <button class="audio-call__btn" id="audio-call__play-btn">
+          Не знаю
+          <svg display="none" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <symbol id="audio-call__play-btn-img" viewBox="0 0 122.88 96.65">
+              <path d="M41.762,27.26v8.294c0,0.571,0.305,1.1,0.8,1.385l20.212,11.669c1.066,0.616,1.066,2.155,0,2.771L42.562,63.048   c-0.495,0.286-0.8,0.814-0.8,1.385v8.294c0,1.231,1.333,2.001,2.399,1.385l39.375-22.733c1.066-0.616,1.066-2.155,0-2.771   L44.161,25.875C43.095,25.259,41.762,26.029,41.762,27.26z"/>
+              <path d="M83.537,48.608L44.161,25.875c-0.193-0.112-0.395-0.164-0.597-0.19l37.972,21.923c1.066,0.616,1.066,2.155,0,2.771   L42.161,73.112c-0.1,0.058-0.205,0.092-0.308,0.126c0.308,0.914,1.401,1.398,2.308,0.874l39.375-22.733   C84.603,50.763,84.603,49.224,83.537,48.608z"/>
+              <path d="M41.762,27.26v8.294c0,0.571,0.305,1.1,0.8,1.385l20.212,11.669   c1.066,0.616,1.066,2.155,0,2.771L42.562,63.048c-0.495,0.286-0.8,0.814-0.8,1.385v8.294c0,1.231,1.333,2.001,2.399,1.385   l39.375-22.733c1.066-0.616,1.066-2.155,0-2.771L44.161,25.875C43.095,25.259,41.762,26.029,41.762,27.26z"/>
+              <path d="M14.664,27.273v8.294c0,0.571,0.305,1.1,0.8,1.385l20.212,11.669c1.066,0.616,1.066,2.155,0,2.771L15.464,63.061   c-0.495,0.286-0.8,0.814-0.8,1.385v8.294c0,1.231,1.333,2.001,2.399,1.385l39.375-22.733c1.066-0.616,1.066-2.155,0-2.771   L17.063,25.888C15.997,25.272,14.664,26.042,14.664,27.273z"/>
+              <path d="M56.438,48.621L17.063,25.888c-0.193-0.112-0.395-0.164-0.597-0.19l37.972,21.923c1.066,0.616,1.066,2.155,0,2.771   L15.063,73.125c-0.1,0.058-0.205,0.092-0.308,0.126c0.308,0.914,1.401,1.398,2.308,0.874l39.375-22.733   C57.505,50.776,57.505,49.237,56.438,48.621z"/>
+              <path d="M14.664,27.273v8.294c0,0.571,0.305,1.1,0.8,1.385l20.212,11.669   c1.066,0.616,1.066,2.155,0,2.771L15.464,63.061c-0.495,0.286-0.8,0.814-0.8,1.385v8.294c0,1.231,1.333,2.001,2.399,1.385   l39.375-22.733c1.066-0.616,1.066-2.155,0-2.771L17.063,25.888C15.997,25.272,14.664,26.042,14.664,27.273z"/>
+            </symbol>
+          </svg>
+          <svg class="audio-call__play-arrow">
+            <use xlink:href="#audio-call__play-btn-img"></use>
+          </svg>
+        </button>
+      </div>
+      <div class="audio-call__statistics audio-game hide" id="audio-call__statistics">
+        <div class="audio-call__statistics-page">
+          <div class="statistics-page__main-container">
+            <div class="call__statistics-page statistics__page-1">
+              <h3 class="call__statistics-title">Отличный результат</h3>
+              <div class="statistics-subtitle__container">
+                <p class="call__statistics-subtitle">Изучено слов:
+                  <span class="statistics-subtitle__item-1" id="call-statistics__studied">5</span>
+                </p>
+                <p class="call__statistics-subtitle">На изучении:
+                  <span class="statistics-subtitle__item-2" id="call-statistics__not-studied">15</span>
+                </p>
+              </div>
+              <div class="diagram-container">
+                <div class="diagram-container__item">
+                  <canvas class="audio-call__canvas" id="audio-call__canvas"></canvas>
+                  <span class="audio-call__canvas-procent" id="audio-call__canvas-procent"></span>
+                </div>
+              </div>
+            </div>
+            <div class="call__statistics-page statistics__page-2">
+
+            </div>
+          </div>
+          <div class="swipe-container">
+            <span class="swipe-container__item swipe-container__item-active" data-statistic="page-1"></span>
+            <span class="swipe-container__item" data-statistic="page-2"></span>
+          </div>
+          <div class="call-statistics__bnt-container">
+            <button class="call-statistics__btn" id="statistics-btn-repeat">Повторить игру</button>
+            <button class="call-statistics__btn" id="statistics-btn-end">Закончить игру</button>
+          </div>
+        </div>
+      </div>
+      <div class="audio-call__settings" id="audio-call__setting">
+        <h4 class="audio-call__settings-title">Выберете раздел</h4>
+        <button class="audio-call__settings-btn" id="audio-call__settings-btn">
+          <svg display="none" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <symbol id="audio-call__settings-img" viewBox="0 0 122.88 96.65">
+              <path d="M41.762,27.26v8.294c0,0.571,0.305,1.1,0.8,1.385l20.212,11.669c1.066,0.616,1.066,2.155,0,2.771L42.562,63.048   c-0.495,0.286-0.8,0.814-0.8,1.385v8.294c0,1.231,1.333,2.001,2.399,1.385l39.375-22.733c1.066-0.616,1.066-2.155,0-2.771   L44.161,25.875C43.095,25.259,41.762,26.029,41.762,27.26z"/>
+              <path d="M83.537,48.608L44.161,25.875c-0.193-0.112-0.395-0.164-0.597-0.19l37.972,21.923c1.066,0.616,1.066,2.155,0,2.771   L42.161,73.112c-0.1,0.058-0.205,0.092-0.308,0.126c0.308,0.914,1.401,1.398,2.308,0.874l39.375-22.733   C84.603,50.763,84.603,49.224,83.537,48.608z"/>
+              <path d="M41.762,27.26v8.294c0,0.571,0.305,1.1,0.8,1.385l20.212,11.669   c1.066,0.616,1.066,2.155,0,2.771L42.562,63.048c-0.495,0.286-0.8,0.814-0.8,1.385v8.294c0,1.231,1.333,2.001,2.399,1.385   l39.375-22.733c1.066-0.616,1.066-2.155,0-2.771L44.161,25.875C43.095,25.259,41.762,26.029,41.762,27.26z"/>
+              <path d="M14.664,27.273v8.294c0,0.571,0.305,1.1,0.8,1.385l20.212,11.669c1.066,0.616,1.066,2.155,0,2.771L15.464,63.061   c-0.495,0.286-0.8,0.814-0.8,1.385v8.294c0,1.231,1.333,2.001,2.399,1.385l39.375-22.733c1.066-0.616,1.066-2.155,0-2.771   L17.063,25.888C15.997,25.272,14.664,26.042,14.664,27.273z"/>
+              <path d="M56.438,48.621L17.063,25.888c-0.193-0.112-0.395-0.164-0.597-0.19l37.972,21.923c1.066,0.616,1.066,2.155,0,2.771   L15.063,73.125c-0.1,0.058-0.205,0.092-0.308,0.126c0.308,0.914,1.401,1.398,2.308,0.874l39.375-22.733   C57.505,50.776,57.505,49.237,56.438,48.621z"/>
+              <path d="M14.664,27.273v8.294c0,0.571,0.305,1.1,0.8,1.385l20.212,11.669   c1.066,0.616,1.066,2.155,0,2.771L15.464,63.061c-0.495,0.286-0.8,0.814-0.8,1.385v8.294c0,1.231,1.333,2.001,2.399,1.385   l39.375-22.733c1.066-0.616,1.066-2.155,0-2.771L17.063,25.888C15.997,25.272,14.664,26.042,14.664,27.273z"/>
+            </symbol>
+          </svg>
+          <svg class="audio-call__arrow">
+            <use xlink:href="#audio-call__settings-img"></use>
+          </svg>
+        </button>
+        <div class="audio-call__settings-chapter" id="audio-call__settings-chapter">
+          <div class="settings-chapter__container">
+            <input type="radio" name="chapter" id="chapter-1" class="settings-chapter__container-item" value="0" checked></input>
+            <label for="chapter-1">Раздел 1</label>
+          </div>
+          <div class="settings-chapter__container">
+            <input type="radio" name="chapter" id="chapter-2" class="settings-chapter__container-item" value="1"></input>
+            <label for="chapter-2">Раздел 2</label>
+          </div>
+          <div class="settings-chapter__container">
+            <input type="radio" name="chapter" id="chapter-3" class="settings-chapter__container-item" value="2"></input>
+            <label for="chapter-3">Раздел 3</label>
+          </div>
+          <div class="settings-chapter__container">
+            <input type="radio" name="chapter" id="chapter-4" class="settings-chapter__container-item" value="3"></input>
+            <label for="chapter-4">Раздел 4</label>
+          </div>
+          <div class="settings-chapter__container">
+            <input type="radio" name="chapter" id="chapter-5" class="settings-chapter__container-item" value="4"></input>
+            <label for="chapter-5">Раздел 5</label>
+          </div>
+          <div class="settings-chapter__container">
+            <input type="radio" name="chapter" id="chapter-6" class="settings-chapter__container-item" value="5"></input>
+            <label for="chapter-6">Раздел 6</label>
+          </div>
+          <button class="audio-call__btn" id="audio-call__ok-btn">Ок</button>
+        </div>
+      </div>
+      <div class="audio-call__regulation" id="audio-call-regulation">
+        <button class="audio-call__regulation-btn" id="audio-call__regulation-btn">
+          <svg display="none" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <symbol id="audio-call__regulation-img" viewBox="0 0 122.88 96.65">
+              <path d="M41.762,27.26v8.294c0,0.571,0.305,1.1,0.8,1.385l20.212,11.669c1.066,0.616,1.066,2.155,0,2.771L42.562,63.048   c-0.495,0.286-0.8,0.814-0.8,1.385v8.294c0,1.231,1.333,2.001,2.399,1.385l39.375-22.733c1.066-0.616,1.066-2.155,0-2.771   L44.161,25.875C43.095,25.259,41.762,26.029,41.762,27.26z"/>
+              <path d="M83.537,48.608L44.161,25.875c-0.193-0.112-0.395-0.164-0.597-0.19l37.972,21.923c1.066,0.616,1.066,2.155,0,2.771   L42.161,73.112c-0.1,0.058-0.205,0.092-0.308,0.126c0.308,0.914,1.401,1.398,2.308,0.874l39.375-22.733   C84.603,50.763,84.603,49.224,83.537,48.608z"/>
+              <path d="M41.762,27.26v8.294c0,0.571,0.305,1.1,0.8,1.385l20.212,11.669   c1.066,0.616,1.066,2.155,0,2.771L42.562,63.048c-0.495,0.286-0.8,0.814-0.8,1.385v8.294c0,1.231,1.333,2.001,2.399,1.385   l39.375-22.733c1.066-0.616,1.066-2.155,0-2.771L44.161,25.875C43.095,25.259,41.762,26.029,41.762,27.26z"/>
+              <path d="M14.664,27.273v8.294c0,0.571,0.305,1.1,0.8,1.385l20.212,11.669c1.066,0.616,1.066,2.155,0,2.771L15.464,63.061   c-0.495,0.286-0.8,0.814-0.8,1.385v8.294c0,1.231,1.333,2.001,2.399,1.385l39.375-22.733c1.066-0.616,1.066-2.155,0-2.771   L17.063,25.888C15.997,25.272,14.664,26.042,14.664,27.273z"/>
+              <path d="M56.438,48.621L17.063,25.888c-0.193-0.112-0.395-0.164-0.597-0.19l37.972,21.923c1.066,0.616,1.066,2.155,0,2.771   L15.063,73.125c-0.1,0.058-0.205,0.092-0.308,0.126c0.308,0.914,1.401,1.398,2.308,0.874l39.375-22.733   C57.505,50.776,57.505,49.237,56.438,48.621z"/>
+              <path d="M14.664,27.273v8.294c0,0.571,0.305,1.1,0.8,1.385l20.212,11.669   c1.066,0.616,1.066,2.155,0,2.771L15.464,63.061c-0.495,0.286-0.8,0.814-0.8,1.385v8.294c0,1.231,1.333,2.001,2.399,1.385   l39.375-22.733c1.066-0.616,1.066-2.155,0-2.771L17.063,25.888C15.997,25.272,14.664,26.042,14.664,27.273z"/>
+            </symbol>
+          </svg>
+          <svg class="audio-call__regulation-arrow" id="audio-call__regulation-arrow">
+            <use xlink:href="#audio-call__regulation-img"></use>
+          </svg>
+        </button>
+        <h4 class="audio-call__regulation-title">Правила игры</h4>
+        <div class="audio-call__discription" id="audio-call-discription">
+          <p class="audio-call__discription-item">
+            В этой игре вы должны правильно указать перевод озвученого слова.
+          </p>
+          <p class="audio-call__discription-item">
+            Если вы начинаете игру со страницы учебника, то все слова находящиеся на странице попадут в игру.
+          </p>
+          <p class="audio-call__discription-item">
+            Если вы начинаете игру с главной страницы, то вы можете выбрать уровень сложности. Всего в игре шесть уровней сложности, которые соответствуют каждому разделу из учебника. Так же есть 7 раздел, в котором находятся сложные для изучения слова. Чтобы запустить игру с этими словами нужно перейти в этот раздел и кликнуть на игру.  
+          </p>
+          <p class="audio-call__discription-item">
+            В самой игре так же предусмотрено управление с клавиатуры.<br>
+            Пробел - переход к следующему слову.<br>
+            Клавиша к или r - повторить слово.<br>
+            Цифры 1, 2, 3, 4, 5 - выбор слова.<br>
+          </p>
+          <p class="audio-call__discription-item">
+            Приятной вам игры!
+          </p>
+        </div>
+      </div>
+      <span class="audio-call__close" id="audio-call__close"></span>
+    </div>
+  </section>
+  `;
+
+  private static preloader = () => `
+  <div class="preloader-page" id="preloader-page">
+    <span class="loader-page__item">Загрузка...</span>
   </div>
   `;
 }

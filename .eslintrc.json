@@ -28,6 +28,8 @@
   "rules": {
     "no-console": "warn",
     "no-unused-vars": "warn",
+    "no-param-reassign": "warn",
+    "no-plusplus": "warn",
     "func-names": "off",
     "no-process-exit": "off",
     "object-shorthand": "off",
