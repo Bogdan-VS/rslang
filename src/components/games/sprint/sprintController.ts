@@ -84,7 +84,9 @@ export default class SprintController {
   }
 
   activate(): void {
+    this.sprintView.removeListeners();
     this.sprintView.renderPage();
+    this.sprintView.addListeners();
     this.chooseLvl();
 
     const keyDownCb = this.keyPress.bind(this);
@@ -92,6 +94,11 @@ export default class SprintController {
     this.sprintView.close.addEventListener('click', () => {
       clearInterval(this.roundTime);
     });
+
+  }
+
+  deactivate() {
+    this.sprintView.removeListeners();
   }
 
   chooseLvl() {
@@ -221,23 +228,6 @@ export default class SprintController {
 
   }
 
-  // addBonusCheck() {
-  //   switch (this.correctCount) {
-  //     case 1:
-  //       this.sprintView.getBonusCheck('1');
-  //       break;
-  //     case 2:
-  //       this.sprintView.getBonusCheck('2');
-  //       break;
-  //     case 3:
-  //       this.sprintView.getBonusCheck('3');
-  //       break;
-
-  //     default:
-  //       break;
-  //   }
-  // }
-
   addBonusStar() {
     switch (this.factor) {
       case 2:
@@ -354,9 +344,25 @@ export default class SprintController {
   }
 
   restartGame() {
+ 
+    this.deactivate();
+    document.getElementById('mainPage').removeEventListener('click', this.sprintView.clickHandler, false);
+    document.getElementById('mainPage').innerHTML = ' ';
     this.activate();
+    this.answered.clear();
+    this.step = 0;
+    this.loadTime = 5;
+    this.trueArray = [];
+    this.progressArray = [];
+    this.prevTranslate = [];
+    this.isCorrect = true;
+    this.isPaused = false;
+    this.intervalLoaderTime = 0;
+    this.roundTime = 0;
+    this.seconds = 3;
+    this.correctCount = 0;
+    this.score = 0;
+    this.factor = 1;
   }
-
-
 
 }

@@ -542,6 +542,14 @@
   background-size: contain;
 }
 
+.game__sprint__bonus__area__count .item1,
+.game__sprint__bonus__area__count .item2,
+.game__sprint__bonus__area__count .item3,
+.game__sprint__bonus__area__count .item4 {
+  animation: slide-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) reverse both;
+}
+
+
 .game__sprint__bonus__area__count .item1 {
   width: 54px;
   height: 63px;
@@ -557,6 +565,7 @@
   left: 56px;
   background-image: url(/src/assets/img/Sprint/parrot2.svg);
 }
+
 .game__sprint__bonus__area__count .item3 {
   width: 44px;
   height: 58px;
@@ -847,11 +856,23 @@
 }
 
 @keyframes blink-correct { 
-  50% { border-color: var(--greenblue); 
+  50% { 
+    border-color: var(--greenblue); 
   }
 }
 @keyframes blink-incorrect { 
-  50% { border-color: var(--error-red); 
+  50% { 
+    border-color: var(--error-red); 
   }
 }
+
+@keyframes slide-top {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50px);
+  }
+}
+
 

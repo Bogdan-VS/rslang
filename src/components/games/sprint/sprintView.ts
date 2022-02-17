@@ -69,7 +69,6 @@ export default class SprintView {
   popupCloseBtn: HTMLButtonElement;
 
   restartGameBtn: HTMLButtonElement;
-
   
   constructor(gameController: IGamesController) {
     this.sprintController = gameController;
@@ -180,7 +179,6 @@ export default class SprintView {
       <p class="game__loader-desc text">Приготовьтесь</p>
    </div>`;
     this.main.innerHTML = content; 
-    this.addListeners();
     return this.main.innerHTML;
   }
 
@@ -313,23 +311,27 @@ export default class SprintView {
     this.resultPopup = document.querySelector('.resultPopup') as HTMLElement;
     this.popupCloseBtn = document.getElementById('closePopup') as HTMLButtonElement;
     this.restartGameBtn = document.getElementById('restartGame') as HTMLButtonElement;
-    this.main.addEventListener('click', async event => {
-      const target = <HTMLElement>event.target;
-      if (target.id === 'falseBtn' || target.id === 'trueBtn') {
-        this.sprintController.checkAnswer(target.id);
-      }
-      if (target.classList.contains('start_timer')) {
-        this.sprintController.togglePlay();
-      }
-      if (target.classList.contains('game__sprint__sound')) {
-        this.sprintController.playWord(this.sprintController.trueArray[this.sprintController.step].audio,
-          target);
-      }
-      if (target.classList.contains('game__sprint__btn-sound')) {
-        this.sprintController.toggleVolume();
-      }
-    });
+    this.gameField.addEventListener('click', (event) => this.clickHandler(event));
+      
   }
+
+  clickHandler (event: MouseEvent) {
+    const target = <HTMLElement>event.target;
+    if (target.id === 'falseBtn' || target.id === 'trueBtn') {
+      this.sprintController.checkAnswer(target.id);
+    }
+    if (target.classList.contains('start_timer')) {
+      this.sprintController.togglePlay();
+    }
+    if (target.classList.contains('game__sprint__sound')) {
+      this.sprintController.playWord(this.sprintController.trueArray[this.sprintController.step].audio,
+        target);
+    }
+    if (target.classList.contains('game__sprint__btn-sound')) {
+      this.sprintController.toggleVolume();
+    }
+  };
+  
 
   renderBonus = (color: string): string => `
     <svg
@@ -463,7 +465,11 @@ export default class SprintView {
     }, 300);
   }
 
+  removeListeners() {
+    this.main.removeEventListener('click', this.clickHandler, false);
+    // this.trueBtn.removeEventListener('click', this.sprintController.checkAnswer.bind(this), false);
+    // this.main.removeEventListener('click', Event,  false);
 
-
+  }
 
 }
