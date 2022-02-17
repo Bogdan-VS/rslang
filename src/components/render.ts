@@ -29,6 +29,7 @@ class Render {
 ${Render.renderMainPage()}
 ${Render.renderAuthorize()}
 ${Render.renderAudioCall()}
+${Render.preloader()}
 </div>
 <div id="workBookPage" style="display: none">${Render.renderWorkBookPage(
       words
@@ -414,6 +415,12 @@ ${WorkBook.renderWordCard(word)}
       <span class="audio-call__close" id="audio-call__close"></span>
     </div>
   </section>
+  `;
+
+  private static preloader = () => `
+  <div class="preloader-page" id="preloader-page">
+    <span class="loader-page__item">Загрузка...</span>
+  </div>
   `;
 }
 
