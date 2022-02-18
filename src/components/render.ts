@@ -1,7 +1,7 @@
 import { IWord } from '../utils/api/interfaces';
 import WorkBook from './workBook';
 import { dataWords } from '../utils/api/const';
-import colorThemes from '../utils/workBook/enums';
+import { colorThemes } from '../utils/workBook/enums';
 
 
 class Render {
@@ -9,7 +9,7 @@ class Render {
 
     constructor() {
         this.workBook = new WorkBook()
-        this.workBook.checkAuthWorkBook()
+        WorkBook.checkAuthWorkBook()
     }
 
     static render = (words?: IWord[]) => {
@@ -151,14 +151,11 @@ ${Render.renderAuthorize()}
         </button>
       </div>
         <div class="levels__pagination">
-          <button class="pagination__item pagination__arrow prev" disabled>←</button>
+          <button class="pagination__item pagination__arrow prev">←</button>
+          <span id="page" class="page-num">1</span>
           <button class="pagination__item pagination__arrow next">→</button>
         </div>
       <div class="words-container">${Render.renderWordsContainer(words, colorThemes.a1.color)}</div>
-      <div class="levels__pagination">
-          <button class="pagination__item pagination__arrow prev" disabled><span>←</span></button>
-          <button class="pagination__item pagination__arrow next"><span>→</span></button>
-        </div>
       <div class="games-part__container">
         <h2>Попробуй свои силы</h2>
         <div class="games-wrapper">

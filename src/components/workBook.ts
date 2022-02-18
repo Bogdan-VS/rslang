@@ -1,7 +1,7 @@
 import Api from '../server/api';
 import { IUserToken, IWord } from '../utils/api/interfaces';
 import Render from './render';
-import colorThemes from '../utils/workBook/enums';
+import { colorThemes, bgGradient } from '../utils/workBook/enums';
 import Display from '../utils/baseEnums';
 import { hardButtonTextContent, wordsPage } from '../utils/workBook/const';
 
@@ -28,19 +28,22 @@ class WorkBook {
 
     private static learnedArr: IWord[];
 
-    constructor() {
+    private pageNum: HTMLTemplateElement;
+
+    constructor(words?: IWord[]) {
         WorkBook.hardArr = [];
-        WorkBook.learnedArr = []
-        this.hardStatus = false
+        WorkBook.learnedArr = [];
+        this.hardStatus = false;
         this.hardBtn = document.querySelectorAll('.word-card__button');
         this.hardLevel = document.querySelector('.hard-button')
         this.hardIndicator = document.querySelectorAll('.word-card__hard-indicator');
         this.learnedIndicator = document.querySelectorAll('.word-card__learned-indicator');
-        this.words = []
-        this.api = new Api()
-        this.listen()
+        this.words = words;
+        this.api = new Api();
+        this.listen();
         this.currentPage = 1;
-        this.wordsGroup = colorThemes.a1.wordsGroup
+        this.wordsGroup = colorThemes.a1.wordsGroup;
+        wordsPage.color = colorThemes.a1.color;
     }
 
 
@@ -50,7 +53,7 @@ class WorkBook {
           <div class="word-card__hard-indicator" id="hard-indicator-${word.id}" style="display: ${WorkBook.hardArr.filter(i => i.id === word.id).length ? 'block' : 'none'}">
          ${WorkBook.renderRibbonImg(color)}
           </div>
-          <div class="word-card__learned-indicator ${WorkBook.learnedArr.filter(i => i.id === word.id).length ? 'word-card__hard-indicator_active' : 'word-card__hard-indicator_inactive'}" id="learned-btn-${word.id}"></div>
+          <div class="word-card__learned-indicator ${WorkBook.learnedArr.filter(i => i.id === word.id).length ? 'word-card__hard-indicator_active' : 'word-card__hard-indicator_inactive'}" id="learned-btn-${word.id}" style="display: ${WorkBook.checkAuthWorkBook() ? 'block' : 'none'}"></div>
           <div class="word-card__img" style="background: url('https://raw.githubusercontent.com/SashaLado/react-rslang-be/main/${word.image}') center/cover"></div>
           <div class="word-card__text-block">
             <h3 class="word-card__title">${word.word}</h3>
@@ -67,7 +70,7 @@ class WorkBook {
               <p class="text">${word.textExample}</p>
               <p class="text text_translation">${word.textExampleTranslate}</p>
             </div>
-            <button class="button word-card__button" id="hardBtn-${word.id}">${WorkBook.hardArr.filter(i => i.id === word.id).length ? hardButtonTextContent.removeToHard.text : hardButtonTextContent.addToHard.text}</button>
+            <button class="button word-card__button" id="hardBtn-${word.id}" style="display: ${WorkBook.checkAuthWorkBook() ? 'block' : 'none'}">${WorkBook.hardArr.filter(i => i.id === word.id).length ? hardButtonTextContent.removeToHard.text : hardButtonTextContent.addToHard.text}</button>
           </div>
           <audio class="audio" id="audio1-${word.id}" src="https://raw.githubusercontent.com/SashaLado/react-rslang-be/main/${word.audio}"></audio>
           <audio class="audio" id="audio2-${word.id}" src="https://raw.githubusercontent.com/SashaLado/react-rslang-be/main/${word.audioExample}"></audio>
@@ -82,7 +85,7 @@ class WorkBook {
     }
 
     changeColorThem ({ color, wordsGroup }: {color: string, wordsGroup: string}, target: HTMLButtonElement) {
-        document.getElementById('workBookPage').style.backgroundColor = color;
+        document.getElementById('workBookPage').style.background = color;
         const wordsContainer = document.querySelector('.words-container');
         if (wordsContainer) {
             this.wordsGroup = wordsGroup
@@ -92,6 +95,9 @@ class WorkBook {
                 transcriptElements.forEach((el) => {
                     el.style.backgroundColor = color;
                 })
+                this.currentPage = 1;
+                wordsPage.color = color;
+                this.checkPage()
             });
             wordsPage.category = wordsGroup;
         }
@@ -110,9 +116,43 @@ class WorkBook {
         if (wordsContainer) {
             this.updateStateWords(page, this.wordsGroup).then((r) => {
                 wordsContainer.innerHTML = Render.renderWordsContainer(r);
+                this.checkPage()
             })
         }
         wordsPage.page = page;
+    }
+
+    checkPage () {
+        const pageNum = document.querySelector('.page-num');
+        const workBookPage = document.getElementById('workBookPage');
+        const gamesButtons = document.querySelectorAll('.games__item') as unknown as HTMLButtonElement[];
+        const {color} = wordsPage;
+        const specialWords: IWord[] = [];
+        const wordsLimit = 20;
+        const arr = this.words;
+        let disabled = false;
+
+        pageNum.textContent = this.currentPage.toString()
+        arr.forEach((word) => {
+            if (WorkBook.hardArr.filter(i => i.id === word.id).length || WorkBook.learnedArr.filter(i => i.id === word.id).length) {
+                specialWords.push(word)
+            }
+        })
+        if (specialWords.length === wordsLimit) {
+            pageNum.classList.add('page_special');
+            workBookPage.style.background = bgGradient.background;
+            workBookPage.style.animation = bgGradient.animation;
+            disabled = true;
+        } else {
+            pageNum.classList.remove('page_special');
+            workBookPage.style.background = color;
+            workBookPage.style.animation = 'none';
+            disabled = false;
+        }
+
+        gamesButtons.forEach((button) => {
+            button.disabled = disabled;
+        })
     }
 
     playSound (id: string) {
@@ -137,37 +177,35 @@ class WorkBook {
         const mainPage = document.getElementById('mainPage');
         const workBookPage = document.getElementById('workBookPage');
 
-        mainPage.style.display = 'none';
-        workBookPage.style.display = 'block';
+        mainPage.style.display = Display.none;
+        workBookPage.style.display = Display.block;
     }
 
-    checkAuthWorkBook() {
+    static checkAuthWorkBook() {
         const learnedButton: NodeListOf<HTMLTemplateElement> = document.querySelectorAll('.word-card__learned-indicator');
+        const hardButton: NodeListOf<HTMLTemplateElement> = document.querySelectorAll('.word-card__button');
         const hardLevel: HTMLTemplateElement = document.querySelector('.hard-button')
 
         if (localStorage.getItem('session')) {
-            hardLevel.style.display = Display.block;
-            hardLevel.onclick = () => {
-                const wordsContainer = document.querySelector('.words-container');
-                wordsContainer.innerHTML = Render.renderWordsContainer(WorkBook.hardArr);
-                document.getElementById('workBookPage').style.backgroundColor = colorThemes.hard.color;
-                const transcriptElements: NodeListOf<HTMLTemplateElement> = document.querySelectorAll('.word-card__transcript-text');
-                transcriptElements.forEach((el) => {
-                    el.style.backgroundColor = colorThemes.hard.color;
-                })
+            if (hardLevel) {
+                hardLevel.style.display = Display.block;
+                hardLevel.onclick = () => {
+                    const wordsContainer = document.querySelector('.words-container');
+                    wordsContainer.innerHTML = Render.renderWordsContainer(WorkBook.hardArr);
+                    document.getElementById('workBookPage').style.backgroundColor = colorThemes.hard.color;
+                    const transcriptElements: NodeListOf<HTMLTemplateElement> = document.querySelectorAll('.word-card__transcript-text');
+                    transcriptElements.forEach((el) => {
+                        el.style.backgroundColor = colorThemes.hard.color;
+                    })
+                }
             }
-            this.hardBtn.forEach((button) => {
-                button.style.display = Display.block;
-            })
-            learnedButton.forEach((button) => {
-                button.style.display = Display.block
-            })
-        } else {
-            this.hardBtn.forEach((button) => {
-                button.style.display = Display.none;
-            })
+            return true
+        }
+        if (hardLevel) {
             hardLevel.style.display = Display.none;
         }
+        return false
+
     }
 
     async addRemoveHard (target: HTMLButtonElement) {
@@ -185,6 +223,7 @@ class WorkBook {
             hardIndicator.style.display = Display.block;
             hardBtn.innerHTML = hardButtonTextContent.removeToHard.text;
         }
+        this.checkPage()
     }
 
     async addRemoveLearned (target: HTMLButtonElement) {
@@ -201,6 +240,7 @@ class WorkBook {
             learnedBtn.classList.toggle('word-card__hard-indicator_inactive', false);
             learnedBtn.classList.toggle('word-card__hard-indicator_active', true);
         }
+        this.checkPage()
     }
 
 

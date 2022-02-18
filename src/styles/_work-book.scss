@@ -1,6 +1,20 @@
 #workBookPage {
-  background-color: #1943EF;
+  background: #1943EF;
   transition: background-color .3s;
+  background-size: 400% 100%;
+  animation: none;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 #workBookPage h2 {
@@ -56,7 +70,7 @@
 }
 
 #c2:hover {
-  color: #FAB005;
+  color: #FF7549;
 }
 
 .word-card {
@@ -147,15 +161,29 @@
   display: flex;
   padding: 30px;
   flex-wrap: wrap;
-  list-style: none;
   align-items: center;
   justify-content: center;
+}
+
+.levels__pagination span {
+  color: #fff;
+  display: inline-block;
+  border-radius: 50%;
+  background-color: transparent;
+  width: 25px;
+  height: 25px;
+  text-align: center;
+}
+
+.page_special {
+  background-color: #fff !important;
+  color: #FF7549 !important;
 }
 
 .pagination__item {
   color: white;
   height: 32px;
-  margin: 0 3px;
+  margin: 0 8px;
   padding: 0 6px;
   min-width: 32px;
   box-sizing: border-box;
@@ -176,6 +204,7 @@
 }
 
 .word-card__button {
+  display: none;
   margin: 20px 0;
 }
 
@@ -190,6 +219,7 @@
 }
 
 .word-card__learned-indicator {
+  display: none;
   position: absolute;
   background: url("../assets/svg/learned.svg") center/80% no-repeat;
   width: 40px;
@@ -213,6 +243,7 @@
 }
 
 .hard-button {
+  display: none;
   background-color: #898d91;
   color: white;
 }
@@ -240,4 +271,13 @@
 .games__item:focus {
   box-shadow: 0 0.5em 0.5em -0.4em #ff9900;
   transform: translateY(-0.25em);
+}
+
+.games__item:disabled:hover {
+  box-shadow: none;
+  transform: none;
+}
+
+.games__item:disabled p {
+  color: #333333;
 }
