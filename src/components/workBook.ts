@@ -75,7 +75,7 @@ class WorkBook {
           <audio class="audio" id="audio1-${word.id}" src="https://raw.githubusercontent.com/SashaLado/react-rslang-be/main/${word.audio}"></audio>
           <audio class="audio" id="audio2-${word.id}" src="https://raw.githubusercontent.com/SashaLado/react-rslang-be/main/${word.audioExample}"></audio>
           <audio class="audio" id="audio3-${word.id}" src="https://raw.githubusercontent.com/SashaLado/react-rslang-be/main/${word.audioMeaning}"></audio>
-        </div>`
+        </div>`;
 
     static renderRibbonImg = (color: string) => `<?xml version="1.0" ?><svg fill="${color}" data-name="Livello 1" id="Livello_1" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg"><title/><path d="M98.78,0H29.22A7.21,7.21,0,0,0,22,7.19V120.8a7.08,7.08,0,0,0,4.42,6.63,7.22,7.22,0,0,0,7.87-1.5L63.14,97.59a1.23,1.23,0,0,1,1.72,0l28.86,28.33a7.21,7.21,0,0,0,7.87,1.5A7.08,7.08,0,0,0,106,120.8V7.19A7.21,7.21,0,0,0,98.78,0ZM100,120.8a1.14,1.14,0,0,1-.74,1.09,1.17,1.17,0,0,1-1.34-.25h0L69.06,93.31a7.26,7.26,0,0,0-10.13,0L30.08,121.64a1.18,1.18,0,0,1-1.34.25A1.14,1.14,0,0,1,28,120.8V7.19A1.21,1.21,0,0,1,29.22,6H98.78A1.21,1.21,0,0,1,100,7.19Z"/></svg>`
 
@@ -155,27 +155,35 @@ class WorkBook {
         })
     }
 
-    playSound (id: string) {
-        const audios = document.querySelectorAll('audio') as unknown as HTMLAudioElement[];
-        audios.forEach((audio) => {
-            audio.pause()
-        })
-        const sound1 = document.getElementById(`audio1-${id}`) as unknown as HTMLAudioElement;
-        const sound2 = document.getElementById(`audio2-${id}`) as unknown as HTMLAudioElement;
-        const sound3 = document.getElementById(`audio3-${id}`) as unknown as HTMLAudioElement;
+  playSound(id: string) {
+    const audios = document.querySelectorAll(
+      'audio'
+    ) as unknown as HTMLAudioElement[];
+    audios.forEach((audio) => {
+      audio.pause();
+    });
+    const sound1 = document.getElementById(
+      `audio1-${id}`
+    ) as unknown as HTMLAudioElement;
+    const sound2 = document.getElementById(
+      `audio2-${id}`
+    ) as unknown as HTMLAudioElement;
+    const sound3 = document.getElementById(
+      `audio3-${id}`
+    ) as unknown as HTMLAudioElement;
 
-        sound1.play()
-        sound1.onended = function () {
-            sound2.play();
-            sound2.onended = function () {
-                sound3.play()
-            }
-        }
-    }
+    sound1.play();
+    sound1.onended = function () {
+      sound2.play();
+      sound2.onended = function () {
+        sound3.play();
+      };
+    };
+  }
 
-    showWorkBook () {
-        const mainPage = document.getElementById('mainPage');
-        const workBookPage = document.getElementById('workBookPage');
+  showWorkBook() {
+    const mainPage = document.getElementById('mainPage');
+    const workBookPage = document.getElementById('workBookPage');
 
         mainPage.style.display = Display.none;
         workBookPage.style.display = Display.block;
@@ -276,4 +284,4 @@ class WorkBook {
     }
 
 }
-export default WorkBook
+export default WorkBook;
