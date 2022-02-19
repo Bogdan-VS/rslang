@@ -61,20 +61,3 @@ export interface ISettings {
   wordsPerDays: number;
   optional: {};
 }
-
-export interface IGamesController {
-  trueArray: IWord[];
-  progressArray: IWord[];
-  step: number;
-  restartGame(): void;
-  closeResultPopup(): void;
-  closeResultPopup(): void;
-  getScore(): number;
-  resultWordOnClick(elem: HTMLElement): void;
-  startRound(): Promise<void>;
-  checkAnswer(target: string): void;
-  togglePlay(): void;
-  playWord(src: string, target: HTMLElement): void;
-  toggleVolume(): void;
-
-}

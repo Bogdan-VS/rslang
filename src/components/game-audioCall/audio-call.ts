@@ -600,7 +600,7 @@ class AudioCall {
 
   async formationListWords(currPage: string, currChapter: string) {
     AudioCall.currentWordsCollection = await this.api.getWords(
-      currPage,
+      String(currPage),
       currChapter
     );
 

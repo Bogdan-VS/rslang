@@ -1,4 +1,5 @@
 import { IWord } from '../utils/api/interfaces';
+import SprintView from './game-sprint/sprintView';
 // eslint-disable-next-line import/no-cycle
 import WorkBook from './workBook';
 
@@ -9,19 +10,12 @@ class Render {
     <div class="header__logo" id="logo">RSLang.</div>
     <nav class="header__nav">
       <ul class="header__nav-container">
-<<<<<<< HEAD
-        <li class="header__nav-item text"><a href="first" class="header__nav-item">Главная</a></li>
-        <li class="header__nav-item text"><a href="#" class="header__nav-item">Учебник</a></li>
-        <li class="header__nav-item text"><a href="games" class="header__nav-item">Игры
-          <span class="nav__select-arrow"></span>
-=======
         <li class="header__nav-item text"><a href="#" class="header__nav-item">Главная</a></li>
         <li class="header__nav-item text"><a href="#" class="header__nav-item" id="workBookButton">Учебник</a></li>
         <li class="header__nav-item text" id="games">Игры
->>>>>>> develop
           <ul class="nav__sub-menu">
             <li class="sub-menu__item" id="callAudio-game"><a href="#">Аудио-вызов</a></li>
-            <li class="sub-menu__item sprint-game"><a href="#">Спринт</a></li>
+            <li class="sub-menu__item sprint-game" id="sprint-game"><a href="#">Спринт</a></li>
           </ul>
         </li>
         <li class="header__nav-item text"><a href="#" class="header__nav-item">Статистика</a></li>
@@ -32,6 +26,7 @@ class Render {
 </header>
 <main>
 ${Render.renderAudioCall()}
+${Render.renderSprint()}
 ${Render.preloader()}
 <div id="mainPage">
 ${Render.renderMainPage()}
@@ -422,6 +417,105 @@ ${WorkBook.renderWordCard(word)}
     </div>
   </section>
   `;
+
+  private static renderSprint = () => `
+  <section class="game__startScreen hide" id="startScreen">
+  <h2 class="game__startScreen-title">Sprint</h2>
+  <p class="game__startScreen-desc">Ваша задача указать, совпадают ли слово и перевод<br>По кнопкам можко кликать
+    мышкой или нажимать на клавиатуре стрелку влево(Верно), стрелку вправо(Неверно)</p>
+    <button class="button fill" id="startGame">Начать</button>
+    <a class="button prevBtn fill" href="#/">
+    <div>Назад</div>
+    <b class="prevBtn-left"></b></a>
+    <div class="levels" id="levels">
+    ${SprintView.renderLevels()}
+    <div class="game__sprint__user-words-block">
+      <div class="button game__sprint__user-words-button fill">Мои слова</div>
+      <p class="game__sprint__user-words-notification"></p>
+   </div> 
+  </section>
+    <div class="game__options" id="gameOptions"></div>
+    <div class="resultPopup">
+      <div class="resultPopup__wrap">
+        <div class="resultPopup__title">Ошибок<span class="resultPopup__errors"></span></div>
+        <div class="resultPopup__fail"></div>
+        <div class="resultPopup__title">Знаю<span class="resultPopup__correct"></span></div>
+        <div class="resultPopup__success"></div>
+        <div class="resultPopup__btns"><button class="button fill" id="closePopup">Закрыть</button>
+          <button class="button fill" id="restartGame">Играть</button>
+          </div>
+      </div>
+    </div>
+  <section class="game__sprint hide">
+    <div class="game__sprint__wrap">
+      <div class="game__sprint__main-field">
+        <div class="game__sprint__question-wrapper">
+          <button class="game__sprint__sound">
+            <span class="game__sprint__button__content">
+             ${SprintView.renderSoundIcon('#fff')} 
+            </span>
+          </button>
+          <div class="game__sprint__score"></div>
+          <div class="game__sprint__btn-sound"></div>
+          <div class="game__sprint__bonus-field">
+            <div class="game__sprint__bonus__check" id="current_Bonus">
+              <div class="game__sprint__bonus__area__1 empty" id="current_Bonus__area__1"></div>
+              <div class="game__sprint__bonus__area__2 empty" id="current_Bonus__area__2"></div>
+              <div class="game__sprint__bonus__area__3 empty" id="current_Bonus__area__3"></div>
+            </div>
+            <div class="game__sprint__bonus_note">
+              <span></span>
+            </div>
+            <div class="game__sprint__bonus__area__count" id="game__sprint__bonus__area__count">
+              <div class="game__sprint__bonus__item item1" id="game__sprint__bonus__item1"></div>
+              <div class="game__sprint__bonus__item" id="game__sprint__bonus__item2"></div>
+              <div class="game__sprint__bonus__item" id="game__sprint__bonus__item3"></div>
+              <div class="game__sprint__bonus__item" id="game__sprint__bonus__item4"></div>
+              <div class="game__sprint__bonus__area__branch"></div>
+            </div>
+          </div>
+          <div class="game__sprint__word"></div>
+          <div class="game__sprint__translation"></div>
+        </div>
+      </div>
+      <div class="game__sprint__btns-field">
+        <div class="game__sprint__btns-wrap">
+          <button
+            class="button btn-false" id="falseBtn">
+            <span class="game__sprint__btns__content">
+              <span>Неверно</span>
+            </span>
+          </button>
+          <button
+            class="button btn-true" id="trueBtn">
+            <span class="game__sprint__btns__content">
+              <span>Верно</span>
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="game__sprint__time__block">
+      <div class="game__sprint__time__block_svg"><svg class="timer_svg" width="150" height="150">
+          <circle class="circle" cx="80" cy="80" r="60"  transform='rotate(-90 75 77)'></circle>
+          <text class="circle-text" x="50%" y="50%" dy=".3em" text-anchor="middle" style="fill: rgb(255, 255, 255);">||</text>
+        </svg></div>
+      <div class="game__sprint__time__count"></div>
+    </div>
+    <div class="game__sprint__exit">
+      <a class="close" href="/#/games">
+        <svg class="svg_icon" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="#fff" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+        </svg> 
+      </a>
+    </div>
+    </div>
+  </section>
+  <div class="game__preloader hide__loader">
+    <div class="game__loader__count"></div>
+    <div class="game__loader"></div>
+    <p class="game__loader-desc text">Приготовьтесь</p>
+ </div>`;
 
   private static preloader = () => `
   <div class="preloader-page" id="preloader-page">

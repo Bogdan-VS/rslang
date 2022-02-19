@@ -241,9 +241,10 @@
 
 .resultPopup {
   position: fixed;
+  z-index: 99;
   top: 0;
   left: -2000px;
-  z-index: 3;
+  z-index: 6;
   width: 100%;
   height: 100%;
   display: flex;
@@ -367,6 +368,7 @@
 
 .game__sprint {
   position: fixed;
+  z-index: 5;
   top: 0;
   width: 100%;
   height: 100%;

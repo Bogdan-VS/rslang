@@ -1,13 +1,11 @@
-import { currentToken } from '../../../utils/api/const';
-import { IToken, IWord } from '../../../utils/api/interfaces';
-import correctAudio from '../../../assets/sounds/sprint-correct.mp3';
-import errorAudio from '../../../assets/sounds/sprint-error.mp3';
-
 import SprintModel from './sprintModel';
 import SprintView from './sprintView';
+import { IToken, IWord } from '../../utils/api/interfaces';
+import { currentToken } from '../../utils/api/const';
+import SprintLink from './enum';
+import countPageToChepter from '../game-audioCall/difference/const';
 
 export default class SprintController {
-
   baseUrl: string;
 
   sprintView: SprintView;
@@ -60,7 +58,7 @@ export default class SprintController {
     this.currentToken = currentToken;
     this.sprintModel = new SprintModel();
     this.sprintView = new SprintView(this);
-    this.answered = new Set;
+    this.answered = new Set();
     this.level = '0';
     this.step = 0;
     this.loadTime = 5;
@@ -71,22 +69,30 @@ export default class SprintController {
     this.isPaused = false;
     this.intervalLoaderTime = 0;
     this.roundTime = 0;
-    this.seconds = 3;
+    this.seconds = 10;
     this.correctCount = 0;
     this.score = 0;
     this.factor = 1;
     this.audio = new Audio();
+    // this.correctAudio = correctAudio ;
+    // this.errorAudio = errorAudio;
+    // this.audioList = {
+    //   correct: correctAudio,
+    //   error: errorAudio,
+    // };
     this.audioList = {
-      correct: correctAudio,
-      error: errorAudio,
+      correct: SprintLink.correctAudio,
+      error: SprintLink.errorAudio,
     };
     this.isMuted = false;
   }
 
-  activate(): void {
-    this.sprintView.removeListeners();
-    this.sprintView.renderPage();
+  init() {
     this.sprintView.addListeners();
+  } 
+
+  activate(): void {
+    this.sprintView.startScreen.classList.remove('hide');
     this.chooseLvl();
 
     const keyDownCb = this.keyPress.bind(this);
@@ -94,11 +100,6 @@ export default class SprintController {
     this.sprintView.close.addEventListener('click', () => {
       clearInterval(this.roundTime);
     });
-
-  }
-
-  deactivate() {
-    this.sprintView.removeListeners();
   }
 
   chooseLvl() {
@@ -117,40 +118,53 @@ export default class SprintController {
     return this.trueArray;
   }
 
-  static translateCheck(word: IWord['wordTranslate'], wrongTranslate: Array<IWord['wordTranslate']>) {
+  static translateCheck(
+    word: IWord['wordTranslate'],
+    wrongTranslate: Array<IWord['wordTranslate']>
+  ) {
     const result = wrongTranslate.filter((e) => e !== word);
     return result;
   }
 
   prevTranslateCheck(wrongTranslate: IWord['wordTranslate']) {
-    this.prevTranslate.push(wrongTranslate)
+    this.prevTranslate.push(wrongTranslate);
     if (this.prevTranslate.length === 2) {
       this.prevTranslate.shift();
     }
-    
   }
 
   makeQuestion() {
     let rand = Math.floor(Math.random() * 2);
-    if (this.prevTranslate.includes(this.trueArray[this.step].wordTranslate) && this.answered.size === this.trueArray.length - 1) {
+    if (
+      this.prevTranslate.includes(this.trueArray[this.step].wordTranslate) &&
+      this.answered.size === this.trueArray.length - 1
+    ) {
       rand = 0;
     }
     if (this.answered.size === this.trueArray.length - 1) {
       rand = 1;
     }
     if (rand) {
-      this.sprintView.getTrueCouple(this.trueArray[this.step], this.trueArray[this.step]);
+      this.sprintView.getTrueCouple(
+        this.trueArray[this.step],
+        this.trueArray[this.step]
+      );
       this.isCorrect = true;
     } else {
-      const filteredArr = SprintController.translateCheck(this.trueArray[this.step].wordTranslate,
-      this.sprintModel.gameFalseWords);
+      const filteredArr = SprintController.translateCheck(
+        this.trueArray[this.step].wordTranslate,
+        this.sprintModel.gameFalseWords
+      );
       const shuffledArr = this.sprintModel.shuffleArray(filteredArr);
 
-      while (this.answered.has(shuffledArr[0]) || this.prevTranslate.includes(shuffledArr[0])) {;
+      while (
+        this.answered.has(shuffledArr[0]) ||
+        this.prevTranslate.includes(shuffledArr[0])
+      ) {
         const reshuffledArr = this.sprintModel.shuffleArray(filteredArr);
-        shuffledArr[this.step] = reshuffledArr[this.step]
+        shuffledArr[this.step] = reshuffledArr[this.step];
       }
-      this.sprintView.getFalseCouple(this.trueArray[this.step], shuffledArr[0])
+      this.sprintView.getFalseCouple(this.trueArray[this.step], shuffledArr[0]);
       this.prevTranslateCheck(shuffledArr[0]);
 
       this.isCorrect = false;
@@ -172,8 +186,8 @@ export default class SprintController {
       this.seconds = 7;
       this.sprintView.addTimer(' ');
       this.sprintView.showPopupResult(this.progressArray);
+    }
   }
-  }   
 
   addLoadTimer() {
     this.intervalLoaderTime = window.setInterval(() => {
@@ -196,7 +210,10 @@ export default class SprintController {
 
   checkAnswer(target: string) {
     if (!this.isPaused) {
-      if ((this.isCorrect && target === 'trueBtn') || (!this.isCorrect && target === 'falseBtn')) {
+      if (
+        (this.isCorrect && target === 'trueBtn') ||
+        (!this.isCorrect && target === 'falseBtn')
+      ) {
         this.answered.add(this.trueArray[this.step].wordTranslate);
         this.correctCount += 1;
         this.bonusCounter();
@@ -207,17 +224,16 @@ export default class SprintController {
         this.score += 10 * this.factor;
         this.sprintView.getScore(this.score);
         this.sprintView.getBonusCheck(this.correctCount);
-        this.sprintView.changeBorderCorrect()
+        this.sprintView.changeBorderCorrect();
         this.step += 1;
         this.makeQuestion();
-      }
-      else {
+      } else {
         this.playAudio('error');
         this.correctCount = 0;
         this.trueArray[this.step].correct = false;
         this.progressArray.push(this.trueArray[this.step]);
         this.clearBonus();
-        this.sprintView.changeBorderIncorrect()
+        this.sprintView.changeBorderIncorrect();
         this.step += 1;
         this.makeQuestion();
         this.factor = 1;
@@ -225,7 +241,6 @@ export default class SprintController {
         this.sprintView.hideBonus();
       }
     }
-
   }
 
   addBonusStar() {
@@ -258,28 +273,30 @@ export default class SprintController {
     }
   }
 
-
   clearBonus() {
-  this.sprintView.currentBonus.forEach((elem) => {
+    this.sprintView.currentBonus.forEach((elem) => {
       elem.classList.remove('filled');
     });
   }
 
   removeBonusStar() {
-    for (let i = this.sprintView.currentFactor.length; i > this.factor; i -= 1) {
-      if (this.sprintView.currentFactor[i-1].classList.contains(`item${i}`)) {
-        this.sprintView.currentFactor[i-1].classList.remove(`item${i}`)
+    for (
+      let i = this.sprintView.currentFactor.length;
+      i > this.factor;
+      i -= 1
+    ) {
+      if (this.sprintView.currentFactor[i - 1].classList.contains(`item${i}`)) {
+        this.sprintView.currentFactor[i - 1].classList.remove(`item${i}`);
       }
     }
-  };
+  }
 
   togglePlay() {
     if (this.sprintView.timer.innerHTML === '||') {
       this.addGameTimer();
       this.isPaused = false;
       this.sprintView.timerCircle.style.animationPlayState = 'running';
-    }
-    else {
+    } else {
       this.sprintView.timer.innerHTML = '||';
       clearInterval(this.roundTime);
       this.isPaused = true;
@@ -290,11 +307,10 @@ export default class SprintController {
   toggleVolume() {
     if (this.isMuted) {
       this.isMuted = false;
-    }
-    else {
+    } else {
       this.isMuted = true;
     }
-    this.sprintView.soundBtn.classList.toggle('game__sprint__btn-sound-muted')
+    this.sprintView.soundBtn.classList.toggle('game__sprint__btn-sound-muted');
   }
 
   playAudio(sound: string) {
@@ -307,21 +323,20 @@ export default class SprintController {
   playWord(src: string, target: Element) {
     clearTimeout();
     target.classList.add('pulse');
-    setTimeout(
-      () => target.classList.remove('pulse'),
-      1000
-    );
-    const audio = new Audio;
-    audio.src = `http://localhost:8080/${src}`;
-    audio.play()
+    setTimeout(() => target.classList.remove('pulse'), 1000);
+    const audio = new Audio();
+    audio.src = `${countPageToChepter.link}${src}`;
+    audio.play();
   }
 
   resultWordOnClick(elem: HTMLElement) {
     const word = elem.closest('.resultPopup__word') as HTMLElement;
     if (word) {
       const soundIco = word.firstElementChild as HTMLElement;
-      this.playWord(this.trueArray[parseInt(word.dataset.id, 10)].audio, soundIco);
-
+      this.playWord(
+        this.trueArray[parseInt(word.dataset.id, 10)].audio,
+        soundIco
+      );
     }
   }
 
@@ -344,11 +359,7 @@ export default class SprintController {
   }
 
   restartGame() {
- 
-    this.deactivate();
-    document.getElementById('mainPage').removeEventListener('click', this.sprintView.clickHandler, false);
-    document.getElementById('mainPage').innerHTML = ' ';
-    this.activate();
+
     this.answered.clear();
     this.step = 0;
     this.loadTime = 5;
@@ -359,10 +370,11 @@ export default class SprintController {
     this.isPaused = false;
     this.intervalLoaderTime = 0;
     this.roundTime = 0;
-    this.seconds = 3;
+    this.seconds = 10;
     this.correctCount = 0;
     this.score = 0;
     this.factor = 1;
+    this.sprintView.toggleStartScreen();
+    this.sprintView.toggleGameScreen();
   }
-
 }

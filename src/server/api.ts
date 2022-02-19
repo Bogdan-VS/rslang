@@ -16,7 +16,7 @@ class Api {
     this.baseLink = 'http://localhost:8080';
   }
 
-  async getWords(page: number, group: string) {
+  async getWords(page: string, group: string) {
     const responce = await fetch(
       `${this.baseLink}${PathLink.words}?page=${page}&group=${group}`
     );

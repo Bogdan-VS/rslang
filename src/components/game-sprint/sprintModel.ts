@@ -1,5 +1,6 @@
-import Api from '../../../server/api';
-import { IToken, IWord } from '../../../utils/api/interfaces';
+
+import Api from '../../server/api';
+import { IToken, IWord } from '../../utils/api/interfaces';
 
 export default class SprintModel {
   gameWords: IWord[];
@@ -40,7 +41,7 @@ export default class SprintModel {
     }
     const pagesArr = [...pages] as number[];
     const promiseArr = pagesArr.map((item) =>
-      this.api.getWords(item, group)
+      this.api.getWords(String(item), group)
     ) as Array<Promise<IWord[]>>;
 
     let data = await (await Promise.all(promiseArr)).flat(1);
