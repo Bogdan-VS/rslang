@@ -74,12 +74,6 @@ export default class SprintController {
     this.score = 0;
     this.factor = 1;
     this.audio = new Audio();
-    // this.correctAudio = correctAudio ;
-    // this.errorAudio = errorAudio;
-    // this.audioList = {
-    //   correct: correctAudio,
-    //   error: errorAudio,
-    // };
     this.audioList = {
       correct: SprintLink.correctAudio,
       error: SprintLink.errorAudio,

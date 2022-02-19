@@ -1,6 +1,10 @@
-const wordsPage: { page: string; category: string } = {
-  page: '0',
-  category: '0',
-};
+export const wordsPage: {page: string, category: string, color: string} = {
+    page: '0',
+    category: '0',
+    color: '#fff'
+}
 
-export default wordsPage;
+export const hardButtonTextContent = {
+    addToHard: { text: 'Добавить в "Сложные"' },
+    removeToHard: { text: 'Удалить из "Сложные"' }
+}

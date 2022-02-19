@@ -1,6 +1,5 @@
-import { IWord } from "../../utils/api/interfaces";
-import { IGamesController } from "./Interface";
-
+import { IWord } from '../../utils/api/interfaces';
+import { IGamesController } from './Interface';
 
 export default class SprintView {
   main: HTMLElement;
@@ -74,7 +73,7 @@ export default class SprintView {
   sprintBeginBtn: HTMLElement;
 
   gameScreen: HTMLElement;
-  
+
   static gameLevels = 6;
 
   constructor(gameController: IGamesController) {
@@ -84,7 +83,7 @@ export default class SprintView {
     this.timeoutLoaderHide = 0;
     this.gameTime = 60;
   }
-  
+
   static renderSoundIcon(color: string) {
     return `
     <span class="sound-icon" style="width: 33px; height: 33px; color: rgb(125, 145, 159);">
@@ -241,10 +240,12 @@ export default class SprintView {
     this.gameField.addEventListener('click', (event) =>
       this.clickHandler(event)
     );
-    this.sprintBeginBtn.addEventListener('click', () => this.sprintController.activate());
+    this.sprintBeginBtn.addEventListener('click', () =>
+      this.sprintController.activate()
+    );
     this.startBtn.addEventListener('click', () =>
-    this.sprintController.startRound()
-  );
+      this.sprintController.startRound()
+    );
     this.popupCloseBtn.addEventListener('click', () => {
       this.sprintController.closeResultPopup();
     });
@@ -255,7 +256,6 @@ export default class SprintView {
     this.resultPopup.addEventListener('click', (e: MouseEvent) => {
       this.sprintController.resultWordOnClick(<HTMLElement>e.target);
     });
-
   }
 
   clickHandler(event: MouseEvent) {
@@ -385,7 +385,7 @@ export default class SprintView {
   }
 
   toggleStartScreen() {
-      this.startScreen.classList.toggle('hide');
+    this.startScreen.classList.toggle('hide');
   }
 
   toggleGameScreen() {

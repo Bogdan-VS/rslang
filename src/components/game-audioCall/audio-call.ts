@@ -1,6 +1,6 @@
 import Api from '../../server/api';
 import { IWord } from '../../utils/api/interfaces';
-import wordsPage from '../../utils/workBook/const';
+import { wordsPage } from '../../utils/workBook/const';
 import countPageToChepter, {
   amount,
   renderBtn,
@@ -600,7 +600,7 @@ class AudioCall {
 
   async formationListWords(currPage: string, currChapter: string) {
     AudioCall.currentWordsCollection = await this.api.getWords(
-      String(currPage),
+      currPage,
       currChapter
     );
 

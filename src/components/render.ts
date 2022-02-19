@@ -1,11 +1,21 @@
 import { IWord } from '../utils/api/interfaces';
-import SprintView from './game-sprint/sprintView';
 // eslint-disable-next-line import/no-cycle
 import WorkBook from './workBook';
+import { dataWords } from '../utils/api/const';
+import { colorThemes } from '../utils/workBook/enums';
+import SprintView from './game-sprint/sprintView';
+
 
 class Render {
-  static render = (words?: IWord[]) => {
-    const html = `<header class="header">
+    private workBook: WorkBook;
+
+    constructor() {
+        this.workBook = new WorkBook()
+        WorkBook.checkAuthWorkBook()
+    }
+
+    static render = (words?: IWord[]) => {
+        const html = `<header class="header">
   <div class="container header__container">
     <div class="header__logo" id="logo">RSLang.</div>
     <nav class="header__nav">
@@ -15,7 +25,7 @@ class Render {
         <li class="header__nav-item text" id="games">Игры
           <ul class="nav__sub-menu">
             <li class="sub-menu__item" id="callAudio-game"><a href="#">Аудио-вызов</a></li>
-            <li class="sub-menu__item sprint-game" id="sprint-game"><a href="#">Спринт</a></li>
+            <li class="sub-menu__item sprint-game"><a href="#">Спринт</a></li>
           </ul>
         </li>
         <li class="header__nav-item text"><a href="#" class="header__nav-item">Статистика</a></li>
@@ -144,27 +154,36 @@ ${Render.renderAuthorize()}
         <button class="level-button level-c2" id="c2">
           Hard C2
         </button>
+        <button class="level-button hard-button" id="hardLevel" style="display: none">
+          Сложные
+        </button>
       </div>
         <div class="levels__pagination">
-          <button class="pagination__item pagination__arrow prev" disabled>←</button>
+          <button class="pagination__item pagination__arrow prev">←</button>
+          <span id="page" class="page-num">1</span>
           <button class="pagination__item pagination__arrow next">→</button>
         </div>
-      <div class="words-container">${Render.renderWordsContainer(words)}</div>
-      <div class="levels__pagination">
-          <button class="pagination__item pagination__arrow prev" disabled><span>←</span></button>
-          <button class="pagination__item pagination__arrow next"><span>→</span></button>
+      <div class="words-container">${Render.renderWordsContainer(words, colorThemes.a1.color)}</div>
+      <div class="games-part__container">
+        <h2>Попробуй свои силы</h2>
+        <div class="games-wrapper">
+          <button class="games__item level-button" id="sprint-Btn">
+            <h2>Спринт</h2>
+            <p class="text">Как можно быстрее определи верный перевод слова или нет.</p>
+          </button>
+          <button class="games__item level-button" id="audioCall-Btn">
+            <h2>Аудиовызов</h2>
+            <p class="text">Попробуй понять, какое слово было произнесено.</p>
+          </button>
         </div>
       </div>
-    </div>`;
+      </div>
+    </div>`
 
-  static renderWordsContainer = (words: IWord[]) => `
-    ${words
-      .map(
-        (word) => `
-${WorkBook.renderWordCard(word)}
-  `
-      )
-      .join('')}`;
+    static renderWordsContainer = (words: IWord[], color?: string) => `
+    ${words.map((word) => `
+${WorkBook.renderWordCard(word, color)}
+  `).join('')}`
 
   private static renderAuthorize = () => `
   <div class="auth" id="auth" action="#">
