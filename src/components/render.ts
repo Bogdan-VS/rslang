@@ -5,7 +5,6 @@ import { dataWords } from '../utils/api/const';
 import { colorThemes } from '../utils/workBook/enums';
 import SprintView from './game-sprint/sprintView';
 
-
 class Render {
     private workBook: WorkBook;
 
