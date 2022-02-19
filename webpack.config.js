@@ -76,6 +76,10 @@ module.exports = {
         type: 'asset/resource',
       },
       { test: /\.tsx?$/, loader: 'ts-loader' },
+      {
+        test: /\.mp3$/i,
+        type: "asset/resource",
+      }
     ],
   },
 };
