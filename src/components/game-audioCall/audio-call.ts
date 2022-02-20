@@ -1,12 +1,14 @@
 import Api from '../../server/api';
 import { IWord } from '../../utils/api/interfaces';
-import wordsPage from '../../utils/workBook/const';
+import { wordsPage } from '../../utils/workBook/const';
 import countPageToChepter, {
   amount,
   renderBtn,
   repeatGameState,
   startGame,
   stateWorkBook,
+  audioCall,
+  series,
 } from './difference/const';
 import ProgressBar from './progress-bar';
 import Statistic from './statistic';
@@ -479,6 +481,11 @@ class AudioCall {
         AudioCall.currentWordsCollection,
         AudioCall.correctWordsCollection
       );
+
+      audioCall.betterSeries = series.general;
+      audioCall.newWords = [...AudioCall.currentWordsCollection];
+
+      console.log(audioCall);
     }
   }
 

@@ -1,6 +1,6 @@
 import { currentToken } from '../../utils/api/const';
 import { IWord } from '../../utils/api/interfaces';
-import countPageToChepter from './difference/const';
+import countPageToChepter, { series } from './difference/const';
 import AudioCallLink from './difference/enum';
 
 class Utils {
@@ -117,6 +117,7 @@ class Utils {
     correctSucssesWord: string[]
   ) {
     if (sucssesWord === currentWord) {
+      series.current += 1;
       const sucsses = document.querySelectorAll('.call-number')[
         +`${+target.dataset.number - 1}`
       ] as HTMLElement;
@@ -130,6 +131,12 @@ class Utils {
       Utils.playSound(track, AudioCallLink.correctSound);
       correctSucssesWord.push(currentWord);
     } else {
+      if (series.current > series.general) {
+        series.general = series.current;
+        series.current = 0;
+      } else {
+        series.current = 0;
+      }
       Utils.playSound(track, AudioCallLink.uncorrectSound);
       target.style.textDecoration = 'line-through';
       const collection: NodeListOf<HTMLElement> = document.querySelectorAll(
