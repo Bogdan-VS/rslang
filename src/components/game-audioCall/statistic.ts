@@ -1,4 +1,5 @@
 import { IWord } from '../../utils/api/interfaces';
+import { audioCall } from './difference/const';
 
 class Statistic {
   static getStatisticToCorrectWors(
@@ -29,6 +30,8 @@ class Statistic {
     if (progress === 100) {
       title.textContent = 'Ты знаешь все слова!';
     }
+
+    audioCall.newWords = fullCollection;
   }
 
   static renderStatisticPage(

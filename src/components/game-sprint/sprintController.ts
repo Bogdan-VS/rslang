@@ -83,7 +83,7 @@ export default class SprintController {
 
   init() {
     this.sprintView.addListeners();
-  } 
+  }
 
   activate(): void {
     this.sprintView.startScreen.classList.remove('hide');
@@ -353,7 +353,6 @@ export default class SprintController {
   }
 
   restartGame() {
-
     this.answered.clear();
     this.step = 0;
     this.loadTime = 5;

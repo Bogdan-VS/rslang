@@ -1,3 +1,5 @@
+import { audioCall } from './difference/const';
+
 class ProgressBar {
   static progressMove(
     canvas: HTMLCanvasElement,
@@ -22,7 +24,7 @@ class ProgressBar {
         procent = deegres / oneProcent;
 
         spanProcent.innerHTML = procent.toFixed();
-
+        audioCall.correctAnswer = +procent.toFixed();
         context.beginPath();
         context.arc(
           posX,

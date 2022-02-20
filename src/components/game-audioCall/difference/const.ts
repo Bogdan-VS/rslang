@@ -1,4 +1,4 @@
-import ICountPageToChepter from './interface';
+import ICountPageToChepter, { IAudioCall } from './interface';
 
 const countPageToChepter: ICountPageToChepter = {
   min: 0,
@@ -24,6 +24,17 @@ export const repeatGameState = {
 
 export const stateWorkBook = {
   display: 'none',
+};
+
+export const audioCall: IAudioCall = {
+  newWords: null,
+  correctAnswer: null,
+  betterSeries: null,
+};
+
+export const series = {
+  general: 0,
+  current: 0,
 };
 
 export const amount = ['1', '2', '3', '4', '5'];
