@@ -4,6 +4,7 @@ import WorkBook from './workBook';
 import { dataWords } from '../utils/api/const';
 import { colorThemes } from '../utils/workBook/enums';
 import SprintView from './game-sprint/sprintView';
+import Display from '../utils/baseEnums';
 
 class Render {
     private workBook: WorkBook;
@@ -11,6 +12,7 @@ class Render {
     constructor() {
         this.workBook = new WorkBook()
         WorkBook.checkAuthWorkBook()
+
     }
 
     static render = (words?: IWord[]) => {
@@ -19,7 +21,7 @@ class Render {
     <div class="header__logo" id="logo">RSLang.</div>
     <nav class="header__nav">
       <ul class="header__nav-container">
-        <li class="header__nav-item text"><a href="#" class="header__nav-item">Главная</a></li>
+        <li class="header__nav-item text"><a href="#" class="header__nav-item" id="mainPageButton">Главная</a></li>
         <li class="header__nav-item text"><a href="#" class="header__nav-item" id="workBookButton">Учебник</a></li>
         <li class="header__nav-item text" id="games">Игры
           <ul class="nav__sub-menu">
@@ -540,6 +542,14 @@ ${WorkBook.renderWordCard(word, color)}
     <span class="loader-page__item">Загрузка...</span>
   </div>
   `;
+
+  static changePage (target: HTMLButtonElement) {
+
+      if (target.classList.contains('logo') || target.id === 'mainPageButton') {
+          document.getElementById('mainPage').style.display = Display.block;
+          document.getElementById('workBookPage').style.display = Display.none;
+      }
+  }
 }
 
 export default Render;
