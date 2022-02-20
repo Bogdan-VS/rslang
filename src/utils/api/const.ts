@@ -1,4 +1,4 @@
-import { IDataWords, IToken } from './interfaces';
+import { IDataWords, IStatistics, IToken } from './interfaces';
 
 export const dataWords: IDataWords = {
   id: null,
@@ -8,4 +8,9 @@ export const dataWords: IDataWords = {
 export const currentToken: IToken = {
   token: null,
   id: null,
+};
+
+export const generalStatistics: IStatistics = {
+  learnedWords: 0,
+  optional: null,
 };

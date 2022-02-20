@@ -26,7 +26,7 @@ class Render {
             <li class="sub-menu__item sprint-game"><a href="#">Спринт</a></li>
           </ul>
         </li>
-        <li class="header__nav-item text"><a href="#" class="header__nav-item">Статистика</a></li>
+        <li class="header__nav-item text" id="main-statistics__btn"><a href="#" class="header__nav-item">Статистика</a></li>
       </ul>
     </nav>
     <button class="button" id="sign-in">Вход</button>

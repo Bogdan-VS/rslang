@@ -1,3 +1,5 @@
+import IOptional from '../../components/statistics/difference/interface';
+
 export interface IWord {
   id: string;
   group: number;
@@ -54,7 +56,8 @@ export interface IToken {
 
 export interface IStatistics {
   learnedWords: number;
-  optional: {};
+  optional: IOptional;
+  status?: number;
 }
 
 export interface ISettings {
