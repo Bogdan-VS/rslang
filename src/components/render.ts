@@ -5,15 +5,15 @@ import { colorThemes } from '../utils/workBook/enums';
 import SprintView from './game-sprint/sprintView';
 
 class Render {
-    private workBook: WorkBook;
+  private workBook: WorkBook;
 
-    constructor() {
-        this.workBook = new WorkBook()
-        WorkBook.checkAuthWorkBook()
-    }
+  constructor() {
+    this.workBook = new WorkBook();
+    WorkBook.checkAuthWorkBook();
+  }
 
-    static render = (words?: IWord[]) => {
-        const html = `<header class="header">
+  static render = (words?: IWord[]) => {
+    const html = `<header class="header">
   <div class="container header__container">
     <div class="header__logo" id="logo">RSLang.</div>
     <nav class="header__nav">
@@ -36,9 +36,10 @@ class Render {
 ${Render.renderAudioCall()}
 ${Render.renderSprint()}
 ${Render.preloader()}
+${Render.renderAuthorize()}
+${Render.statistics()}
 <div id="mainPage">
 ${Render.renderMainPage()}
-${Render.renderAuthorize()}
 </div>
 <div id="workBookPage" style="display: none">${Render.renderWorkBookPage(
       words
@@ -161,7 +162,10 @@ ${Render.renderAuthorize()}
           <span id="page" class="page-num">1</span>
           <button class="pagination__item pagination__arrow next">→</button>
         </div>
-      <div class="words-container">${Render.renderWordsContainer(words, colorThemes.a1.color)}</div>
+      <div class="words-container">${Render.renderWordsContainer(
+        words,
+        colorThemes.a1.color
+      )}</div>
       <div class="games-part__container">
         <h2>Попробуй свои силы</h2>
         <div class="games-wrapper">
@@ -176,12 +180,16 @@ ${Render.renderAuthorize()}
         </div>
       </div>
       </div>
-    </div>`
+    </div>`;
 
-    static renderWordsContainer = (words: IWord[], color?: string) => `
-    ${words.map((word) => `
+  static renderWordsContainer = (words: IWord[], color?: string) => `
+    ${words
+      .map(
+        (word) => `
 ${WorkBook.renderWordCard(word, color)}
-  `).join('')}`
+  `
+      )
+      .join('')}`;
 
   private static renderAuthorize = () => `
   <div class="auth" id="auth" action="#">
@@ -538,6 +546,22 @@ ${WorkBook.renderWordCard(word, color)}
   <div class="preloader-page" id="preloader-page">
     <span class="loader-page__item">Загрузка...</span>
   </div>
+  `;
+
+  private static statistics = () => `
+  <section class="main-statistics page hide" id="main-statistics">
+    <div class="main-statistics__wrapper">
+      <h3 class="main-statistics__title">Статистика за сегодня</h3>
+      <div class="main-statistics__container-btn">
+        <button class="container-btn__item item-left" id="audio-call__statistics-item">Аудиовызов</button>
+        <button class="container-btn__item item-center" id="sprint__statistics-item">Спринт</button>
+        <button class="container-btn__item item-right" id="general__statistics-item">Общая статистика</button>
+      </div>
+      <div class="statistics__main-container">
+        <div class="main-container__wrapper" id="statistics-game__container"></div>
+      </div>
+    </div>
+  </section>
   `;
 }
 
