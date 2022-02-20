@@ -1,6 +1,6 @@
 import Api from '../../server/api';
 import { IWord } from '../../utils/api/interfaces';
-import wordsPage from '../../utils/workBook/const';
+import { wordsPage } from '../../utils/workBook/const';
 import countPageToChepter, {
   amount,
   renderBtn,
@@ -11,6 +11,8 @@ import countPageToChepter, {
 import ProgressBar from './progress-bar';
 import Statistic from './statistic';
 import Utils from './utils';
+import Learned from '../learned';
+import WorkBook from '../workBook';
 
 class AudioCall {
   static currentWordsCollection: IWord[];
@@ -110,6 +112,8 @@ class AudioCall {
   audioCallPreloader: HTMLElement;
 
   workBookPage: HTMLElement;
+
+  learned: Learned;
 
   constructor() {
     this.body = document.querySelector('body');
@@ -217,6 +221,8 @@ class AudioCall {
       'audio-call__start-btn'
     ) as HTMLButtonElement;
     this.audioCallClose = document.getElementById('audio-call__close');
+
+    this.learned = new Learned()
   }
 
   init = () => {
@@ -278,7 +284,7 @@ class AudioCall {
     if (this.workBookPage.style.display === stateWorkBook.display) {
       this.getWordsToPlay();
     } else {
-      this.formationListWords(wordsPage.page, wordsPage.category);
+      this.formationListWords(wordsPage.page, wordsPage.category, true);
       Utils.addAnimationWordsCollection(
         this.audioCallSettings,
         'audio-call__settings-disabled'
@@ -501,7 +507,10 @@ class AudioCall {
         ].word,
         wordElement,
         this.track,
-        AudioCall.correctWordsCollection
+        AudioCall.correctWordsCollection,
+          AudioCall.currentWordsCollection[
+              AudioCall.numbersCollection[AudioCall.counter - 1]
+              ]
       );
     }
   }
@@ -514,15 +523,9 @@ class AudioCall {
 
     if (word) {
       this.choseEvent();
-      Utils.getAnswer(
-        word,
-        AudioCall.currentWordsCollection[
+      Utils.getAnswer(word, AudioCall.currentWordsCollection[
           AudioCall.numbersCollection[AudioCall.counter - 1]
-        ].word,
-        target,
-        this.track,
-        AudioCall.correctWordsCollection
-      );
+          ].word, target, this.track, AudioCall.correctWordsCollection);
     }
   }
 
@@ -598,11 +601,15 @@ class AudioCall {
     this.formationListWords(String(currentPage), currentChapter);
   }
 
-  async formationListWords(currPage: string, currChapter: string) {
+  async formationListWords(currPage: string, currChapter: string, wbState?: boolean) {
     AudioCall.currentWordsCollection = await this.api.getWords(
       currPage,
       currChapter
     );
+
+    if (wbState) {
+      AudioCall.currentWordsCollection = AudioCall.currentWordsCollection.filter(i => this.learned.isLearned(i) === 0)
+    }
 
     Utils.getRandomNumbers(
       AudioCall.numbersCollection,

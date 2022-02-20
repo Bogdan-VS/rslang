@@ -2,8 +2,12 @@ import { currentToken } from '../../utils/api/const';
 import { IWord } from '../../utils/api/interfaces';
 import countPageToChepter from './difference/const';
 import AudioCallLink from './difference/enum';
+import Learned from '../learned';
+import WorkBook from '../workBook';
 
 class Utils {
+  private static learned: Learned;
+
   static renderPage(activePage: HTMLElement, preloader: HTMLElement) {
     const pageCollection = document.querySelectorAll('.audio-game');
 
@@ -110,12 +114,14 @@ class Utils {
   }
 
   static getAnswer(
-    sucssesWord: string,
-    currentWord: string,
-    target: HTMLElement,
-    track: HTMLAudioElement,
-    correctSucssesWord: string[]
+      sucssesWord: string,
+      currentWord: string,
+      target: HTMLElement,
+      track: HTMLAudioElement,
+      correctSucssesWord: string[],
+      wordToCheck?: IWord
   ) {
+    this.learned = new Learned()
     if (sucssesWord === currentWord) {
       const sucsses = document.querySelectorAll('.call-number')[
         +`${+target.dataset.number - 1}`
@@ -130,6 +136,13 @@ class Utils {
       Utils.playSound(track, AudioCallLink.correctSound);
       correctSucssesWord.push(currentWord);
     } else {
+      if (this.learned.isLearned(wordToCheck)) {
+        const index = WorkBook.learnedArr.indexOf(wordToCheck);
+        WorkBook.learnedArr.splice(index, 1)
+      }
+
+      console.log(WorkBook.learnedArr)
+
       Utils.playSound(track, AudioCallLink.uncorrectSound);
       target.style.textDecoration = 'line-through';
       const collection: NodeListOf<HTMLElement> = document.querySelectorAll(
