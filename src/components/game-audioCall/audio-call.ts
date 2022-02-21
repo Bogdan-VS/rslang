@@ -631,13 +631,18 @@ class AudioCall {
       currChapter
     );
     if (wbState) {
-      // AudioCall.currentWordsCollection = AudioCall.currentWordsCollection.filter(i => this.learned.isLearned(i) === 0);
-      // console.log(AudioCall.currentWordsCollection)
+      AudioCall.currentWordsCollection =
+        AudioCall.currentWordsCollection.filter(
+          (i) => this.learned.isLearned(i) === 0
+        );
+      console.log(AudioCall.currentWordsCollection);
     }
+    console.log(AudioCall.numbersCollection);
 
     Utils.getRandomNumbers(
       AudioCall.numbersCollection,
-      AudioCall.currentWordsCollection.length
+      AudioCall.currentWordsCollection.length,
+      AudioCall.currentWordsCollection
     );
   }
 
@@ -647,10 +652,12 @@ class AudioCall {
     ];
     const activeNumbers = Utils.getRandomNumbers(
       activeCollectionNumber,
-      5
+      5,
+      AudioCall.currentWordsCollection
     ).sort((a, b) => a - b);
 
     this.audioCallCollectionItem.forEach((element, index) => {
+      console.log(AudioCall.currentWordsCollection[activeNumbers[index]]);
       const num = document.createElement('span');
       num.classList.add('call-number');
       num.textContent = `${index + 1}`;
