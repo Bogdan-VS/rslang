@@ -27,7 +27,7 @@ class WorkBook {
 
   private hardStatus: boolean;
 
-  private static learnedArr: IWord[];
+  static learnedArr: IWord[];
 
   private pageNum: HTMLTemplateElement;
 
