@@ -8,18 +8,10 @@ import Display from '../utils/baseEnums';
 class Render {
   private workBook: WorkBook;
 
-<<<<<<< HEAD
   constructor() {
     this.workBook = new WorkBook();
     WorkBook.checkAuthWorkBook();
   }
-=======
-    constructor() {
-        this.workBook = new WorkBook()
-        WorkBook.checkAuthWorkBook()
-
-    }
->>>>>>> develop
 
   static render = (words?: IWord[]) => {
     const html = `<header class="header">
