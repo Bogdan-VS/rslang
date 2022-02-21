@@ -1,6 +1,9 @@
 import { IWord } from '../../utils/api/interfaces';
+import Learned from '../learned';
 
 class Statistic {
+  private static learned: Learned;
+
   static getStatisticToCorrectWors(
     correctWord: HTMLSpanElement,
     uncorrectWord: HTMLSpanElement,
@@ -29,6 +32,8 @@ class Statistic {
     if (progress === 100) {
       title.textContent = 'Ты знаешь все слова!';
     }
+
+    this.audioCall.newWords = fullCollection;
   }
 
   static renderStatisticPage(
@@ -96,7 +101,7 @@ class Statistic {
 
   static drawStatisticWords(
     collection: NodeListOf<HTMLElement>,
-    collectionWords: string[]
+    collectionWords: string[],
   ) {
     collection.forEach((element, index) => {
       const value: HTMLElement = document.querySelector(

@@ -4,6 +4,7 @@ import Render from './render';
 import { colorThemes, bgGradient } from '../utils/workBook/enums';
 import Display from '../utils/baseEnums';
 import { hardButtonTextContent, wordsPage } from '../utils/workBook/const';
+import Learned from './learned';
 
 class WorkBook {
     private api: Api;
@@ -30,6 +31,8 @@ class WorkBook {
 
     private pageNum: HTMLTemplateElement;
 
+    private learned: Learned;
+
     constructor(words?: IWord[]) {
         WorkBook.hardArr = [];
         WorkBook.learnedArr = [];
@@ -44,6 +47,7 @@ class WorkBook {
         this.currentPage = 1;
         this.wordsGroup = colorThemes.a1.wordsGroup;
         wordsPage.color = colorThemes.a1.color;
+        this.learned = new Learned()
     }
 
 
@@ -216,8 +220,14 @@ class WorkBook {
 
     }
 
-    async addRemoveHard (target: HTMLButtonElement) {
-        const id = target.id.split('hardBtn-')[1];
+    async addRemoveHard (target?: HTMLButtonElement, idT?: string) {
+        let id: string = '0';
+        if (target && !idT) {
+            // eslint-disable-next-line prefer-destructuring
+            id = target.id.split('hardBtn-')[1];
+        } else if (idT && !target) {
+            id = idT
+        }
         const hardBtn = document.getElementById(`hardBtn-${id}`);
         const hardIndicator = document.getElementById(`hard-indicator-${id}`);
         const word = await this.api.getWord(id);
@@ -238,12 +248,18 @@ class WorkBook {
         const id = target.id.split('learned-btn-')[1];
         const learnedBtn = document.getElementById(`learned-btn-${id}`);
         const word = await this.api.getWord(id);
+        const hardBtn = document.getElementById(`hardBtn-${id}`) as HTMLButtonElement;
         if (WorkBook.learnedArr.filter(i => i.id === word.id).length) {
+            hardBtn.disabled = false
             const index = WorkBook.learnedArr.indexOf(word);
             WorkBook.learnedArr.splice(index, 1)
             learnedBtn.classList.toggle('word-card__hard-indicator_inactive', true);
             learnedBtn.classList.toggle('word-card__hard-indicator_active', false);
         } else {
+            hardBtn.disabled = true
+            if (this.learned.isHard(word)) {
+                await this.addRemoveHard(null ,word.id)
+            }
             WorkBook.learnedArr.push(word);
             learnedBtn.classList.toggle('word-card__hard-indicator_inactive', false);
             learnedBtn.classList.toggle('word-card__hard-indicator_active', true);
