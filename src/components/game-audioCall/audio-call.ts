@@ -282,8 +282,7 @@ class AudioCall {
       this.body.style.overflow = 'hidden';
       this.audioCallContainer.classList.remove('hide');
     }, 2000);
-
-    if (this.workBookPage.style.display === stateWorkBook.display) {
+    if (this.workBookPage.classList.contains('hide')) {
       this.getWordsToPlay();
     } else {
       this.formationListWords(wordsPage.page, wordsPage.category, true);
@@ -333,7 +332,7 @@ class AudioCall {
   }
 
   repeatGame() {
-    this.formationListWords(repeatGameState.page, repeatGameState.chapter);
+    this.formationListWords(repeatGameState.page, repeatGameState.chapter, false);
     Utils.renderPage(this.playContainer, this.audioCallPreloader);
 
     setTimeout(() => {
@@ -481,6 +480,8 @@ class AudioCall {
         AudioCall.progress
       );
 
+      console.log(AudioCall.progress)
+
       Statistic.removeStatisticsPage();
       Statistic.drawStatisticPage(
         this.audioCallStatisticsPage2,
@@ -532,7 +533,9 @@ class AudioCall {
       this.choseEvent();
       Utils.getAnswer(word, AudioCall.currentWordsCollection[
           AudioCall.numbersCollection[AudioCall.counter - 1]
-          ].word, target, this.track, AudioCall.correctWordsCollection);
+          ].word, target, this.track, AudioCall.correctWordsCollection, AudioCall.currentWordsCollection[
+          AudioCall.numbersCollection[AudioCall.counter - 1]
+          ]);
     }
   }
 
@@ -605,7 +608,7 @@ class AudioCall {
 
     repeatGameState.page = String(currentPage);
     repeatGameState.chapter = currentChapter;
-    this.formationListWords(String(currentPage), currentChapter);
+    this.formationListWords(String(currentPage), currentChapter, false);
   }
 
   async formationListWords(currPage: string, currChapter: string, wbState?: boolean) {
@@ -613,9 +616,9 @@ class AudioCall {
       currPage,
       currChapter
     );
-
     if (wbState) {
-      AudioCall.currentWordsCollection = AudioCall.currentWordsCollection.filter(i => this.learned.isLearned(i) === 0)
+      // AudioCall.currentWordsCollection = AudioCall.currentWordsCollection.filter(i => this.learned.isLearned(i) === 0);
+      // console.log(AudioCall.currentWordsCollection)
     }
 
     Utils.getRandomNumbers(
