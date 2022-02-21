@@ -61,7 +61,22 @@ ${Render.renderMainPage()}
         </nav>
       </div>
     </div>
+    <div class="footer__block">
+      <div>
+        <span class="text">Разработчики</span>
+        <nav class="footer-nav">
+          <ul class="navigation footer-navigation">
+            <li class="footer-nav__item"><a href="https://github.com/SashaLado">SashaLado</a></li>
+            <li class="footer-nav__item"><a href="https://github.com/Bogdan-VS">Bogdan-VS</a></li>
+            <li class="footer-nav__item"><a href="https://github.com/geekedger">Geekedger</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
   </div>
+  <div class="footer__sub-block">
+  ©2022 RS LANG. Project for <a href="https://rs.school/js/">RS School</a>
+</div>
 </footer>`;
     const root = document.createElement('div');
     root.innerHTML = html;
@@ -86,22 +101,22 @@ ${Render.renderMainPage()}
         <div class="advantages__item">
           <div class="advantages__icon" id="icon1"></div>
           <h3 class="underlined-title">Нескучные игры</h3>
-          <p class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p>
+          <p class="text">Игровая механика доказала свою эффективность для всех возрастов.</p>
         </div>
         <div class="advantages__item">
           <div class="advantages__icon" id="icon2"></div>
           <h3 class="underlined-title">Удобный словарь</h3>
-          <p class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+          <p class="text">Учись по программе, созданной экспертами в области лингвистики.</p>
         </div>
         <div class="advantages__item">
           <div class="advantages__icon" id="icon3"></div>
           <h3 class="underlined-title">Только нужные слова</h3>
-          <p class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+          <p class="text">Слова собраны исходя из статистики их использования носителями языка.</p>
         </div>
         <div class="advantages__item">
           <div class="advantages__icon" id="icon4"></div>
           <h3 class="underlined-title">Отслеживание запоминания слов</h3>
-          <p class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+          <p class="text">Наша миссия — сделать обучения языкам доступным для каждого.</p>
         </div>
       </div>
       <button class="advantages__button button" id="advantages__button">Войти</button>
@@ -116,16 +131,24 @@ ${Render.renderMainPage()}
           <div class="developer__text-block">
             <h3 class="developer__title">Саша</h3>
             <div class="developer__role">Front-end developer</div>
-            <p class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            <p class="text">Занималась разработкой учебника, списками избранных и сложных слов, а также главной страницей.</p>
           </div>
         </div>
         <div class="developer__card">
           <div class="developer__text-block">
             <h3 class="developer__title">Богдан</h3>
             <div class="developer__role">Front-end developer</div>
-            <p class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            <p class="text">Занимался связью с сервером и всем, что с ним связано. А также игрой Аудио-вызов и сбором статистики.</p>
           </div>
           <img class="developer__img" src="../assets/img/bogdan.jpg" alt="">
+        </div>
+        <div class="developer__card">
+          <img class="developer__img" src="../assets/img/grisha.jpg" alt="">
+          <div class="developer__text-block">
+            <h3 class="developer__title">Гриша</h3>
+            <div class="developer__role">Front-end developer</div>
+            <p class="text">Главной целью стала игра Спринт, а также сбор статистики по этой игре и по общему плану.</p>
+          </div>
         </div>
       </div>
     </div>

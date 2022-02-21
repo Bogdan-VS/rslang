@@ -46,12 +46,6 @@ section {
   width: 250px;
 }
 
-.advantages__icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-}
-
 #icon1 {
   background-color: #4DADF7;
 }
@@ -66,6 +60,13 @@ section {
 
 #icon4 {
   background-color: #FAB005;
+}
+
+.advantages__icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background-image: url("../assets/img/check-mark.png");
 }
 
 #advantages__button {
@@ -136,10 +137,19 @@ footer {
 
 .footer-container {
   display: flex;
-  gap: 200px;
+  gap: 100px;
   flex-direction: row;
   height: 250px;
   padding: 50px;
+}
+
+.footer__sub-block {
+  padding: 10px;
+  text-align: center;
+}
+
+.RSlogo {
+
 }
 
 @media (max-width: 420px) {
