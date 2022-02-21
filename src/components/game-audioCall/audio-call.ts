@@ -116,6 +116,8 @@ class AudioCall {
 
   learned: Learned;
 
+  mainStatistics: HTMLElement;
+
   constructor() {
     this.body = document.querySelector('body');
     this.api = new Api();
@@ -615,8 +617,8 @@ class AudioCall {
       currChapter
     );
     if (wbState) {
-      // AudioCall.currentWordsCollection = AudioCall.currentWordsCollection.filter(i => this.learned.isLearned(i) === 0);
-      // console.log(AudioCall.currentWordsCollection)
+      AudioCall.currentWordsCollection = AudioCall.currentWordsCollection.filter(i => this.learned.isLearned(i) === 0);
+      console.log(AudioCall.currentWordsCollection)
     }
 
     Utils.getRandomNumbers(

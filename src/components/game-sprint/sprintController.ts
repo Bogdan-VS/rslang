@@ -4,6 +4,8 @@ import { IToken, IWord } from '../../utils/api/interfaces';
 import { currentToken } from '../../utils/api/const';
 import SprintLink from './enum';
 import countPageToChepter from '../game-audioCall/difference/const';
+import Learned from '../learned';
+import WorkBook from '../workBook';
 
 export default class SprintController {
   baseUrl: string;
@@ -56,6 +58,8 @@ export default class SprintController {
 
   prevTranslate: Array<IWord['wordTranslate']>;
 
+  learned: Learned;
+
   constructor() {
     this.currentToken = currentToken;
     this.sprintModel = new SprintModel();
@@ -82,6 +86,7 @@ export default class SprintController {
       error: SprintLink.errorAudio,
     };
     this.isMuted = false;
+    this.learned = new Learned()
   }
 
   init() {
@@ -112,6 +117,7 @@ export default class SprintController {
   async makeGameArray(group: string, page: string) {
     if (page) {
       this.trueArray = await this.sprintModel.getWorkBookWords(group, page);
+      this.trueArray = this.trueArray.filter(i => this.learned.isLearned(i) === 0);
     }
     else {
       this.trueArray = await this.sprintModel.getSomeWords(group);
@@ -136,7 +142,7 @@ export default class SprintController {
   }
 
   makeQuestion() {
-    
+
     let rand = Math.floor(Math.random() * 2);
     if (
       this.prevTranslate.includes(this.trueArray[this.step].wordTranslate) &&
@@ -240,6 +246,10 @@ export default class SprintController {
         this.nextQuestionCheck();
         this.makeQuestion();
       } else {
+        if (this.learned.isLearned(this.trueArray[this.step])) {
+          const index = WorkBook.learnedArr.indexOf(this.trueArray[this.step]);
+          WorkBook.learnedArr.splice(index, 1)
+        }
         this.playAudio('error');
         this.correctCount = 0;
         this.trueArray[this.step].correct = false;

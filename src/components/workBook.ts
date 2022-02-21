@@ -349,7 +349,8 @@ class WorkBook {
         this.playSound(target.id);
       } else if (target.id === 'workBookButton') {
         this.showWorkBook();
-        if (this.burger.isOpen === true) {
+        if (this.burger.isOpen === true && document.documentElement.clientWidth <= 420) {
+          console.log(document.documentElement.clientWidth)
           this.burger.openCloseBurger()
         }
       } else if (target.classList.contains('word-card__button')) {
@@ -359,7 +360,9 @@ class WorkBook {
       } else if (target.classList.contains('header__burger-button')) {
         this.burger.openCloseBurger()
       } else if (target.classList.contains('header__nav-item')) {
-        this.burger.openCloseBurger()
+        if (document.documentElement.clientWidth <= 420) {
+          this.burger.openCloseBurger()
+        }
       }
     });
   }
