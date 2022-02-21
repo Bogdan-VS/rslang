@@ -13,6 +13,10 @@ import ProgressBar from './progress-bar';
 import Statistic from './statistic';
 import Utils from './utils';
 import Learned from '../learned';
+<<<<<<< Updated upstream
+=======
+import WorkBook from '../workBook';
+>>>>>>> Stashed changes
 
 class AudioCall {
   static currentWordsCollection: IWord[];
@@ -114,8 +118,6 @@ class AudioCall {
   workBookPage: HTMLElement;
 
   learned: Learned;
-
-  mainStatistics: HTMLElement;
 
   constructor() {
     this.body = document.querySelector('body');
@@ -225,7 +227,7 @@ class AudioCall {
     ) as HTMLButtonElement;
     this.audioCallClose = document.getElementById('audio-call__close');
 
-    this.learned = new Learned();
+    this.learned = new Learned()
   }
 
   init = () => {
@@ -333,11 +335,7 @@ class AudioCall {
   }
 
   repeatGame() {
-    this.formationListWords(
-      repeatGameState.page,
-      repeatGameState.chapter,
-      false
-    );
+    this.formationListWords(repeatGameState.page, repeatGameState.chapter, false);
     Utils.renderPage(this.playContainer, this.audioCallPreloader);
 
     setTimeout(() => {
@@ -485,7 +483,7 @@ class AudioCall {
         AudioCall.progress
       );
 
-      console.log(AudioCall.progress);
+      console.log(AudioCall.progress)
 
       Statistic.removeStatisticsPage();
       Statistic.drawStatisticPage(
@@ -519,9 +517,9 @@ class AudioCall {
         wordElement,
         this.track,
         AudioCall.correctWordsCollection,
-        AudioCall.currentWordsCollection[
-          AudioCall.numbersCollection[AudioCall.counter - 1]
-        ]
+          AudioCall.currentWordsCollection[
+              AudioCall.numbersCollection[AudioCall.counter - 1]
+              ]
       );
     }
   }
@@ -534,18 +532,11 @@ class AudioCall {
 
     if (word) {
       this.choseEvent();
-      Utils.getAnswer(
-        word,
-        AudioCall.currentWordsCollection[
+      Utils.getAnswer(word, AudioCall.currentWordsCollection[
           AudioCall.numbersCollection[AudioCall.counter - 1]
-        ].word,
-        target,
-        this.track,
-        AudioCall.correctWordsCollection,
-        AudioCall.currentWordsCollection[
+          ].word, target, this.track, AudioCall.correctWordsCollection, AudioCall.currentWordsCollection[
           AudioCall.numbersCollection[AudioCall.counter - 1]
-        ]
-      );
+          ]);
     }
   }
 
@@ -621,23 +612,15 @@ class AudioCall {
     this.formationListWords(String(currentPage), currentChapter, false);
   }
 
-  async formationListWords(
-    currPage: string,
-    currChapter: string,
-    wbState?: boolean
-  ) {
+  async formationListWords(currPage: string, currChapter: string, wbState?: boolean) {
     AudioCall.currentWordsCollection = await this.api.getWords(
       currPage,
       currChapter
     );
     if (wbState) {
-      AudioCall.currentWordsCollection =
-        AudioCall.currentWordsCollection.filter(
-          (i) => this.learned.isLearned(i) === 0
-        );
-      console.log(AudioCall.currentWordsCollection);
+      // AudioCall.currentWordsCollection = AudioCall.currentWordsCollection.filter(i => this.learned.isLearned(i) === 0);
+      // console.log(AudioCall.currentWordsCollection)
     }
-    console.log(AudioCall.numbersCollection);
 
     Utils.getRandomNumbers(
       AudioCall.numbersCollection,

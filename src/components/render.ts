@@ -456,11 +456,8 @@ ${WorkBook.renderWordCard(word, color)}
     <div class="levels" id="levels">
     ${SprintView.renderLevels()}
     <div class="game__sprint__user-words-block">
-      <div class="button game__sprint__user-words-button fill">Мои слова</div>
-      <p class="game__sprint__user-words-notification"></p>
    </div> 
   </section>
-    <div class="game__options" id="gameOptions"></div>
     <div class="resultPopup">
       <div class="resultPopup__wrap">
         <div class="resultPopup__title">Ошибок<span class="resultPopup__errors"></span></div>
@@ -565,6 +562,13 @@ ${WorkBook.renderWordCard(word, color)}
     </div>
   </section>
   `;
+
+  static changePage(target: HTMLButtonElement) {
+    if (target.classList.contains('logo') || target.id === 'mainPageButton') {
+      // document.getElementById('mainPage').style.display = Display.block;
+      // document.getElementById('workBookPage').style.display = Display.none;
+    }
+  }
 }
 
 export default Render;

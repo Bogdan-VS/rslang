@@ -116,7 +116,6 @@ export default class SprintController {
     else {
       this.trueArray = await this.sprintModel.getSomeWords(group);
     }
-    console.log(this.trueArray)
     this.makeQuestion();
     return this.trueArray;
   }
@@ -397,6 +396,10 @@ export default class SprintController {
     this.correctCount = 0;
     this.score = 0;
     this.factor = 1;
+    this.sprintView.getScore(this.score);
+    this.removeBonusStar();
+    this.clearBonus();
+    this.sprintView.bonusNote.innerHTML = ' ';
   }
 
   restartGame() {
