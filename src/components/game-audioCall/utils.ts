@@ -65,11 +65,12 @@ class Utils {
     activeClass.classList.toggle(`${className}`);
   }
 
-  static getRandomNumbers(collection: number[], count: number) {
+  static getRandomNumbers(collection: number[], count: number, max: IWord[]) {
+    console.log(collection);
     while (collection.length < count) {
       const value = Utils.getRandomNumber(
         countPageToChepter.minCountWords,
-        countPageToChepter.maxCountWords
+        max.length - 1
       );
       if (!collection.includes(value)) {
         collection.push(value);
@@ -114,14 +115,14 @@ class Utils {
   }
 
   static getAnswer(
-      sucssesWord: string,
-      currentWord: string,
-      target: HTMLElement,
-      track: HTMLAudioElement,
-      correctSucssesWord: string[],
-      wordToCheck?: IWord
+    sucssesWord: string,
+    currentWord: string,
+    target: HTMLElement,
+    track: HTMLAudioElement,
+    correctSucssesWord: string[],
+    wordToCheck?: IWord
   ) {
-    this.learned = new Learned()
+    this.learned = new Learned();
     if (sucssesWord === currentWord) {
       series.current += 1;
       const sucsses = document.querySelectorAll('.call-number')[
@@ -139,7 +140,7 @@ class Utils {
     } else {
       if (this.learned.isLearned(wordToCheck)) {
         const index = WorkBook.learnedArr.indexOf(wordToCheck);
-        WorkBook.learnedArr.splice(index, 1)
+        WorkBook.learnedArr.splice(index, 1);
       }
 
       if (series.current > series.general) {
