@@ -13,10 +13,7 @@ import ProgressBar from './progress-bar';
 import Statistic from './statistic';
 import Utils from './utils';
 import Learned from '../learned';
-<<<<<<< Updated upstream
-=======
 import WorkBook from '../workBook';
->>>>>>> Stashed changes
 
 class AudioCall {
   static currentWordsCollection: IWord[];
