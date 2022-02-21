@@ -46,12 +46,6 @@ section {
   width: 250px;
 }
 
-.advantages__icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-}
-
 #icon1 {
   background-color: #4DADF7;
 }
@@ -66,6 +60,13 @@ section {
 
 #icon4 {
   background-color: #FAB005;
+}
+
+.advantages__icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background-image: url("../assets/img/check-mark.png");
 }
 
 #advantages__button {
@@ -136,9 +137,86 @@ footer {
 
 .footer-container {
   display: flex;
-  gap: 200px;
+  gap: 100px;
   flex-direction: row;
   height: 250px;
   padding: 50px;
+}
+
+.footer__sub-block {
+  padding: 10px;
+  text-align: center;
+}
+
+.RSlogo {
+
+}
+
+@media (max-width: 420px) {
+
+  .main-section__text-container {
+    width: 100%;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .main-section__text-container h1 {
+    margin: 0;
+  }
+
+  .main-section {
+    height: 40vh;
+  }
+
+  .advantages__container {
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .advantages__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .advantages__item .text {
+    display: none;
+  }
+
+  .advantages__item h3 {
+    text-align: center;
+  }
+
+  #advantages__button {
+    display: none;
+  }
+
+  .developers__wrapper {
+    width: 100%;
+    gap: 20px;
+  }
+
+  .developer__card {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .developer__img {
+    margin: 5%;
+    background-position: center;
+    background-size: cover;
+    width: 90%;
+    height: auto;
+  }
+
+  .footer-container {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+
 }
 

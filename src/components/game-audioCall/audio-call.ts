@@ -13,6 +13,7 @@ import ProgressBar from './progress-bar';
 import Statistic from './statistic';
 import Utils from './utils';
 import Learned from '../learned';
+import WorkBook from '../workBook';
 
 class AudioCall {
   static currentWordsCollection: IWord[];

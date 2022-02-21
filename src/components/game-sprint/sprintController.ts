@@ -4,6 +4,8 @@ import { IToken, IWord } from '../../utils/api/interfaces';
 import { currentToken } from '../../utils/api/const';
 import SprintLink from './enum';
 import countPageToChepter from '../game-audioCall/difference/const';
+import Learned from '../learned';
+import WorkBook from '../workBook';
 
 export default class SprintController {
   baseUrl: string;
@@ -13,6 +15,8 @@ export default class SprintController {
   sprintModel: SprintModel;
 
   level: string;
+
+  page: string;
 
   step: number;
 
@@ -54,14 +58,17 @@ export default class SprintController {
 
   prevTranslate: Array<IWord['wordTranslate']>;
 
+  learned: Learned;
+
   constructor() {
     this.currentToken = currentToken;
     this.sprintModel = new SprintModel();
     this.sprintView = new SprintView(this);
     this.answered = new Set();
     this.level = '0';
+    this.page = '0';
     this.step = 0;
-    this.loadTime = 5;
+    this.loadTime = 3;
     this.trueArray = [];
     this.progressArray = [];
     this.prevTranslate = [];
@@ -69,7 +76,7 @@ export default class SprintController {
     this.isPaused = false;
     this.intervalLoaderTime = 0;
     this.roundTime = 0;
-    this.seconds = 10;
+    this.seconds = 30;
     this.correctCount = 0;
     this.score = 0;
     this.factor = 1;
@@ -79,6 +86,7 @@ export default class SprintController {
       error: SprintLink.errorAudio,
     };
     this.isMuted = false;
+    this.learned = new Learned()
   }
 
   init() {
@@ -106,8 +114,14 @@ export default class SprintController {
     });
   }
 
-  async makeGameArray(group: string) {
-    this.trueArray = await this.sprintModel.getSomeWords(group);
+  async makeGameArray(group: string, page: string) {
+    if (page) {
+      this.trueArray = await this.sprintModel.getWorkBookWords(group, page);
+      this.trueArray = this.trueArray.filter(i => this.learned.isLearned(i) === 0);
+    }
+    else {
+      this.trueArray = await this.sprintModel.getSomeWords(group);
+    }
     this.makeQuestion();
     return this.trueArray;
   }
@@ -128,6 +142,7 @@ export default class SprintController {
   }
 
   makeQuestion() {
+
     let rand = Math.floor(Math.random() * 2);
     if (
       this.prevTranslate.includes(this.trueArray[this.step].wordTranslate) &&
@@ -177,7 +192,7 @@ export default class SprintController {
     if (this.seconds === -1) {
       this.sprintView.restartGameTimer();
       clearInterval(this.roundTime);
-      this.seconds = 7;
+      this.seconds = 30;
       this.sprintView.addTimer(' ');
       this.sprintView.showPopupResult(this.progressArray);
     }
@@ -190,17 +205,25 @@ export default class SprintController {
       if (this.loadTime === -1) {
         this.addGameTimer();
         clearInterval(this.intervalLoaderTime);
-        this.loadTime = 5;
+        this.loadTime = 3;
       }
     }, 1000);
   }
 
-  async startRound() {
-    this.sprintView.toggleStartScreen();
-    await this.makeGameArray(this.level);
+  async startRound(data: {page: string, category: string}) {
+    this.clearScore();
+    if (data) {
+      this.level = data.category;
+      this.page = data.page;
+      await this.makeGameArray(this.level, this.page);
+    }
+    else {
+      await this.makeGameArray(this.level, null);
+    }
     this.sprintView.getPreloader();
     this.addLoadTimer();
-  }
+    }
+
 
   checkAnswer(target: string) {
     if (!this.isPaused) {
@@ -220,8 +243,13 @@ export default class SprintController {
         this.sprintView.getBonusCheck(this.correctCount);
         this.sprintView.changeBorderCorrect();
         this.step += 1;
+        this.nextQuestionCheck();
         this.makeQuestion();
       } else {
+        if (this.learned.isLearned(this.trueArray[this.step])) {
+          const index = WorkBook.learnedArr.indexOf(this.trueArray[this.step]);
+          WorkBook.learnedArr.splice(index, 1)
+        }
         this.playAudio('error');
         this.correctCount = 0;
         this.trueArray[this.step].correct = false;
@@ -229,11 +257,21 @@ export default class SprintController {
         this.clearBonus();
         this.sprintView.changeBorderIncorrect();
         this.step += 1;
+        this.nextQuestionCheck();
         this.makeQuestion();
         this.factor = 1;
         this.removeBonusStar();
         this.sprintView.hideBonus();
       }
+    }
+  }
+
+  nextQuestionCheck() {
+    if (this.step === this.trueArray.length) {
+      this.seconds = 0;
+      this.step -= this.step;
+      this.isPaused = true;
+      this.addGameTimer();
     }
   }
 
@@ -350,12 +388,13 @@ export default class SprintController {
 
   closeResultPopup() {
     this.sprintView.resultPopup.classList.remove('active');
+    this.isPaused = true;
   }
 
-  restartGame() {
+  clearScore() {
     this.answered.clear();
     this.step = 0;
-    this.loadTime = 5;
+    this.loadTime = 3;
     this.trueArray = [];
     this.progressArray = [];
     this.prevTranslate = [];
@@ -363,10 +402,18 @@ export default class SprintController {
     this.isPaused = false;
     this.intervalLoaderTime = 0;
     this.roundTime = 0;
-    this.seconds = 10;
+    this.seconds = 30;
     this.correctCount = 0;
     this.score = 0;
     this.factor = 1;
+    this.sprintView.getScore(this.score);
+    this.removeBonusStar();
+    this.clearBonus();
+    this.sprintView.bonusNote.innerHTML = ' ';
+  }
+
+  restartGame() {
+    this.clearScore();
     this.sprintView.toggleStartScreen();
     this.sprintView.toggleGameScreen();
   }
