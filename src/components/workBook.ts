@@ -255,6 +255,7 @@ class WorkBook {
     async listen () {
         document.addEventListener('click', (e) => {
             const target = e.target  as HTMLButtonElement;
+            Render.changePage(target)
             if (target.id === 'a1') {
                 this.changeColorThem(colorThemes.a1, target)
             } else if (target.id === 'a2') {
