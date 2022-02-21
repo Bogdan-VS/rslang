@@ -283,7 +283,6 @@ class AudioCall {
       this.body.style.overflow = 'hidden';
       this.audioCallContainer.classList.remove('hide');
     }, 2000);
-
     if (this.workBookPage.classList.contains('hide')) {
       this.getWordsToPlay();
     } else {
@@ -334,7 +333,11 @@ class AudioCall {
   }
 
   repeatGame() {
-    this.formationListWords(repeatGameState.page, repeatGameState.chapter);
+    this.formationListWords(
+      repeatGameState.page,
+      repeatGameState.chapter,
+      false
+    );
     Utils.renderPage(this.playContainer, this.audioCallPreloader);
 
     setTimeout(() => {
@@ -482,6 +485,8 @@ class AudioCall {
         AudioCall.progress
       );
 
+      console.log(AudioCall.progress);
+
       Statistic.removeStatisticsPage();
       Statistic.drawStatisticPage(
         this.audioCallStatisticsPage2,
@@ -536,7 +541,10 @@ class AudioCall {
         ].word,
         target,
         this.track,
-        AudioCall.correctWordsCollection
+        AudioCall.correctWordsCollection,
+        AudioCall.currentWordsCollection[
+          AudioCall.numbersCollection[AudioCall.counter - 1]
+        ]
       );
     }
   }
@@ -610,7 +618,7 @@ class AudioCall {
 
     repeatGameState.page = String(currentPage);
     repeatGameState.chapter = currentChapter;
-    this.formationListWords(String(currentPage), currentChapter);
+    this.formationListWords(String(currentPage), currentChapter, false);
   }
 
   async formationListWords(
@@ -622,12 +630,9 @@ class AudioCall {
       currPage,
       currChapter
     );
-
     if (wbState) {
-      AudioCall.currentWordsCollection =
-        AudioCall.currentWordsCollection.filter(
-          (i) => this.learned.isLearned(i) === 0
-        );
+      // AudioCall.currentWordsCollection = AudioCall.currentWordsCollection.filter(i => this.learned.isLearned(i) === 0);
+      // console.log(AudioCall.currentWordsCollection)
     }
 
     Utils.getRandomNumbers(

@@ -10,12 +10,10 @@ class Learned {
     }
 
     isLearned (word: IWord) {
-        console.log(WorkBook.learnedArr.filter(i => i.id === word.id).length)
         return WorkBook.learnedArr.filter(i => i.id === word.id).length
     }
 
-    async isHard (id: string) {
-        const word = await this.api.getWord(id);
+    isHard (word: IWord) {
         return WorkBook.hardArr.filter(i => i.id === word.id).length
     }
 }

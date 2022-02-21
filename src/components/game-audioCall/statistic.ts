@@ -1,7 +1,10 @@
 import { IWord } from '../../utils/api/interfaces';
 import { audioCall } from './difference/const';
+import Learned from '../learned';
 
 class Statistic {
+  private static learned: Learned;
+
   static getStatisticToCorrectWors(
     correctWord: HTMLSpanElement,
     uncorrectWord: HTMLSpanElement,
@@ -99,7 +102,7 @@ class Statistic {
 
   static drawStatisticWords(
     collection: NodeListOf<HTMLElement>,
-    collectionWords: string[]
+    collectionWords: string[],
   ) {
     collection.forEach((element, index) => {
       const value: HTMLElement = document.querySelector(
