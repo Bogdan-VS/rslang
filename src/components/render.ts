@@ -29,6 +29,7 @@ class Render {
         <li class="header__nav-item text" id="statisticsButton"><a href="#" class="header__nav-item">Статистика</a></li>
       </ul>
     </nav>
+    <div class="header__burger-button"></div>
     <button class="button" id="sign-in">Вход</button>
   </div>
 </header>

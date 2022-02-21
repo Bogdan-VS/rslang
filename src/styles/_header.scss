@@ -77,3 +77,23 @@
   color: #1943ef;
   cursor: pointer;
 }
+
+@media (max-width: 420px) {
+
+  .header__burger-button {
+    width: 30px;
+    height: 30px;
+    background: url("../assets/img/icon-burger.png") no-repeat center/cover;
+    filter: brightness(0) saturate(100%) invert(74%) sepia(97%) saturate(3828%) hue-rotate(3deg) brightness(104%) contrast(104%);
+    margin: 0 20px 0 50px;
+  }
+
+  .header__nav {
+    display: none;
+  }
+
+  .header__container {
+    justify-content: center;
+  }
+
+}
