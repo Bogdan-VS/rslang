@@ -118,11 +118,16 @@ class AudioCall {
 
   mainStatistics: HTMLElement;
 
+  audioCallBtn: HTMLButtonElement;
+
   constructor() {
     this.body = document.querySelector('body');
     this.api = new Api();
     this.applySettingsBtn = document.getElementById(
       'audio-call__ok-btn'
+    ) as HTMLButtonElement;
+    this.audioCallBtn = document.getElementById(
+      'audioCall-Btn'
     ) as HTMLButtonElement;
     this.audioCallContainer = document.getElementById('audio-call');
     this.workBookPage = document.getElementById('workBookPage');
@@ -226,11 +231,12 @@ class AudioCall {
     ) as HTMLButtonElement;
     this.audioCallClose = document.getElementById('audio-call__close');
 
-    this.learned = new Learned()
+    this.learned = new Learned();
   }
 
   init = () => {
     this.audioCallBeginBtn.addEventListener('click', this.openGame.bind(this));
+    this.audioCallBtn.addEventListener('click', this.openGame.bind(this));
     this.audioCallClose.addEventListener('click', this.closeGame.bind(this));
     this.audioCallStatisticsBtnEnd.addEventListener(
       'click',
@@ -315,6 +321,20 @@ class AudioCall {
       );
     }
 
+    if (
+      this.audioCallCollection.classList.contains(
+        'audio-call__collection-disabled'
+      )
+    ) {
+      this.audioCallCollection.classList.remove(
+        'audio-call__collection-disabled'
+      );
+    }
+
+    if (this.audioCallPlayArrow.classList.contains('arrow-active')) {
+      this.audioCallPlayArrow.classList.remove('arrow-active');
+    }
+
     startGame.start = false;
     AudioCall.cleanDataGame();
   }
@@ -334,7 +354,11 @@ class AudioCall {
   }
 
   repeatGame() {
-    this.formationListWords(repeatGameState.page, repeatGameState.chapter, false);
+    this.formationListWords(
+      repeatGameState.page,
+      repeatGameState.chapter,
+      false
+    );
     Utils.renderPage(this.playContainer, this.audioCallPreloader);
 
     setTimeout(() => {
@@ -482,8 +506,6 @@ class AudioCall {
         AudioCall.progress
       );
 
-      console.log(AudioCall.progress)
-
       Statistic.removeStatisticsPage();
       Statistic.drawStatisticPage(
         this.audioCallStatisticsPage2,
@@ -516,9 +538,9 @@ class AudioCall {
         wordElement,
         this.track,
         AudioCall.correctWordsCollection,
-          AudioCall.currentWordsCollection[
-              AudioCall.numbersCollection[AudioCall.counter - 1]
-              ]
+        AudioCall.currentWordsCollection[
+          AudioCall.numbersCollection[AudioCall.counter - 1]
+        ]
       );
     }
   }
@@ -531,11 +553,18 @@ class AudioCall {
 
     if (word) {
       this.choseEvent();
-      Utils.getAnswer(word, AudioCall.currentWordsCollection[
+      Utils.getAnswer(
+        word,
+        AudioCall.currentWordsCollection[
           AudioCall.numbersCollection[AudioCall.counter - 1]
-          ].word, target, this.track, AudioCall.correctWordsCollection, AudioCall.currentWordsCollection[
+        ].word,
+        target,
+        this.track,
+        AudioCall.correctWordsCollection,
+        AudioCall.currentWordsCollection[
           AudioCall.numbersCollection[AudioCall.counter - 1]
-          ]);
+        ]
+      );
     }
   }
 
@@ -611,14 +640,20 @@ class AudioCall {
     this.formationListWords(String(currentPage), currentChapter, false);
   }
 
-  async formationListWords(currPage: string, currChapter: string, wbState?: boolean) {
+  async formationListWords(
+    currPage: string,
+    currChapter: string,
+    wbState?: boolean
+  ) {
     AudioCall.currentWordsCollection = await this.api.getWords(
       currPage,
       currChapter
     );
     if (wbState) {
-      AudioCall.currentWordsCollection = AudioCall.currentWordsCollection.filter(i => this.learned.isLearned(i) === 0);
-      console.log(AudioCall.currentWordsCollection)
+      AudioCall.currentWordsCollection =
+        AudioCall.currentWordsCollection.filter(
+          (i) => this.learned.isLearned(i) === 0
+        );
     }
 
     Utils.getRandomNumbers(
@@ -639,7 +674,6 @@ class AudioCall {
     ).sort((a, b) => a - b);
 
     this.audioCallCollectionItem.forEach((element, index) => {
-      console.log(AudioCall.currentWordsCollection[activeNumbers[index]]);
       const num = document.createElement('span');
       num.classList.add('call-number');
       num.textContent = `${index + 1}`;

@@ -2,7 +2,7 @@ import Api from '../../server/api';
 import { currentToken, generalStatistics } from '../../utils/api/const';
 import { IStatistics } from '../../utils/api/interfaces';
 import { audioCall } from '../game-audioCall/difference/const';
-import optional from './difference/const';
+import optional, { currentDay, dailyStats } from './difference/const';
 import { IAudioCallStat } from './difference/interface';
 import UtilsStatistics from './utils';
 
@@ -60,17 +60,12 @@ class Statistics {
       this.statMessage.classList.add('');
     }
     this.addCorrectData();
-
-    console.log(currentToken.id);
-    console.log(optional.audioCall.currentNewWords);
     if (currentToken.id) {
       this.statMessage.classList.remove('start-message__active');
       this.getStatisticsById();
     } else {
       this.statMessage.classList.add('start-message__active');
     }
-
-    // this.getStatistics();
   }
 
   addStartPage() {
@@ -78,23 +73,45 @@ class Statistics {
   }
 
   async addStatistics() {
-    generalStatistics.optional = optional;
-    const result = await this.api.apsertStatistics(
-      currentToken.id,
-      generalStatistics
-    );
-
-    console.log(result);
+    dailyStats[currentDay] = optional;
+    generalStatistics.optional = dailyStats[currentDay];
+    await this.api.apsertStatistics(currentToken.id, generalStatistics);
   }
 
   async getStatisticsById() {
     const statistics = await this.api.getStatistics(currentToken.id);
 
     if (typeof statistics === 'number') {
-      this.drawCurrentData(optional.audioCall);
+      if (optional.audioCall.currentNewWords.length > 0) {
+        this.addCorrectData();
+        this.addStatistics();
+        const stat = await this.api.getStatistics(currentToken.id);
+
+        const result = stat as IStatistics;
+        this.drawCurrentData(result.optional.audioCall);
+      } else {
+        this.drawCurrentData(optional.audioCall);
+      }
     } else {
       const result: IStatistics = statistics;
-      this.drawCurrentData(result.optional.audioCall);
+
+      if (audioCall.newWords === null) {
+        UtilsStatistics.getWordsFromServer(
+          result.optional.audioCall.currentNewWords,
+          Statistics.currentNewWords
+        );
+
+        optional.audioCall.betterSeries =
+          result.optional.audioCall.betterSeries;
+        optional.audioCall.correctAnswer =
+          result.optional.audioCall.correctAnswer;
+        optional.audioCall.currentNewWords =
+          result.optional.audioCall.currentNewWords;
+        this.drawCurrentData(optional.audioCall);
+      } else {
+        this.addCorrectData();
+        this.drawCurrentData(optional.audioCall);
+      }
     }
   }
 

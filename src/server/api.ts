@@ -13,7 +13,7 @@ class Api {
   baseLink: string;
 
   constructor() {
-    this.baseLink = 'http://localhost:8080';
+    this.baseLink = 'https://rslang-learnwords.herokuapp.com';
   }
 
   async getWords(page: string, group: string) {

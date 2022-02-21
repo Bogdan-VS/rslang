@@ -127,7 +127,7 @@ ${Render.renderMainPage()}
       <h2>Познакомимся?</h2>
       <div class="developers__wrapper">
         <div class="developer__card">
-          <img class="developer__img" src="../assets/img/sasha.jpeg" alt="">
+          <img class="developer__img" src="./assets/img/sasha.jpeg" alt="">
           <div class="developer__text-block">
             <h3 class="developer__title">Саша</h3>
             <div class="developer__role">Front-end developer</div>
@@ -140,10 +140,10 @@ ${Render.renderMainPage()}
             <div class="developer__role">Front-end developer</div>
             <p class="text">Занимался связью с сервером и всем, что с ним связано. А также игрой Аудио-вызов и сбором статистики.</p>
           </div>
-          <img class="developer__img" src="../assets/img/bogdan.jpg" alt="">
+          <img class="developer__img" src="./assets/img/bogdan.jpg" alt="">
         </div>
         <div class="developer__card">
-          <img class="developer__img" src="../assets/img/grisha.jpg" alt="">
+          <img class="developer__img" src="./assets/img/grisha.jpg" alt="">
           <div class="developer__text-block">
             <h3 class="developer__title">Гриша</h3>
             <div class="developer__role">Front-end developer</div>
@@ -588,8 +588,6 @@ ${WorkBook.renderWordCard(word, color)}
 
   static changePage(target: HTMLButtonElement) {
     if (target.classList.contains('logo') || target.id === 'mainPageButton') {
-      // document.getElementById('mainPage').style.display = Display.block;
-      // document.getElementById('workBookPage').style.display = Display.none;
     }
   }
 }
