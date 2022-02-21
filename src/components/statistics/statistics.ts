@@ -21,33 +21,44 @@ class Statistics {
 
   audioCallLongSeries: HTMLElement;
 
+  uadioCallStatisticsItemBtn: HTMLButtonElement;
+
+  statMessage: HTMLElement;
+
   api: Api;
 
   constructor() {
     this.statisticsWrapper = document.getElementById(
       'statistics-game__container'
     );
+    this.uadioCallStatisticsItemBtn = document.getElementById(
+      'audio-call__statistics-item'
+    ) as HTMLButtonElement;
     this.statisticsPage = document.getElementById('main-statistics');
-    this.statisticsBtn = document.getElementById('main-statistics__btn');
     this.api = new Api();
   }
 
   init() {
-    this.statisticsBtn.addEventListener(
-      'click',
-      this.openStatisticsPage.bind(this)
-    );
-
     this.addStartPage();
     this.audioCallNewWords = document.getElementById('audio-call__new-words');
     this.audioCallAnswers = document.getElementById('audio-call__answers');
+    this.statMessage = document.getElementById('stat-message');
     this.audioCallLongSeries = document.getElementById(
       'audio-call__long-series'
+    );
+
+    this.uadioCallStatisticsItemBtn.addEventListener(
+      'click',
+      this.openStatisticsPage.bind(this)
     );
   }
 
   openStatisticsPage() {
-    UtilsStatistics.showPage(this.statisticsPage);
+    if (currentToken.id) {
+      this.getStatisticsById();
+    } else {
+      this.statMessage.classList.add('');
+    }
     this.addCorrectData();
 
     console.log(currentToken.id);
@@ -58,7 +69,7 @@ class Statistics {
       }
     }
 
-    this.getStatistics();
+    // this.getStatistics();
   }
 
   addStartPage() {
@@ -75,18 +86,15 @@ class Statistics {
     console.log(result);
   }
 
-  async getStatistics() {
+  async getStatisticsById() {
     const statistics = await this.api.getStatistics(currentToken.id);
 
     if (typeof statistics === 'number') {
-      this.statisticsWrapper.classList.add('hide');
-      console.log('zero');
-      return;
+      this.drawCurrentData(optional.audioCall);
+    } else {
+      const result: IStatistics = statistics;
+      this.drawCurrentData(result.optional.audioCall);
     }
-
-    const result: IStatistics = statistics;
-    this.drawCurrentData(result.optional.audioCall);
-    this.statisticsWrapper.classList.remove('hide');
   }
 
   drawCurrentData(data: IAudioCallStat) {

@@ -2,9 +2,9 @@ import IOptional from './interface';
 
 const optional: IOptional = {
   audioCall: {
-    betterSeries: null,
-    correctAnswer: null,
-    currentNewWords: null,
+    betterSeries: 0,
+    correctAnswer: 0,
+    currentNewWords: [],
   },
 };
 
