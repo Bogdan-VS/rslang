@@ -3,16 +3,14 @@ import { IWord } from '../utils/api/interfaces';
 import WorkBook from './workBook';
 import { colorThemes } from '../utils/workBook/enums';
 import SprintView from './game-sprint/sprintView';
-import Display from '../utils/baseEnums';
 
 class Render {
   private workBook: WorkBook;
 
-    constructor() {
-        this.workBook = new WorkBook()
-        WorkBook.checkAuthWorkBook()
-
-    }
+  constructor() {
+    this.workBook = new WorkBook();
+    WorkBook.checkAuthWorkBook();
+  }
 
   static render = (words?: IWord[]) => {
     const html = `<header class="header">
@@ -25,12 +23,13 @@ class Render {
         <li class="header__nav-item text" id="games">Игры
           <ul class="nav__sub-menu">
             <li class="sub-menu__item" id="callAudio-game"><a href="#">Аудио-вызов</a></li>
-            <li class="sub-menu__item sprint-game" id="sprint-game"><a href="#">Спринт</a></li>
+            <li class="sub-menu__item" id="sprint-game"><a href="#">Спринт</a></li>
           </ul>
         </li>
-        <li class="header__nav-item text" id="main-statistics__btn"><a href="#" class="header__nav-item">Статистика</a></li>
+        <li class="header__nav-item text" id="statisticsButton"><a href="#" class="header__nav-item">Статистика</a></li>
       </ul>
     </nav>
+    <div class="header__burger-button"></div>
     <button class="button" id="sign-in">Вход</button>
   </div>
 </header>
@@ -40,10 +39,10 @@ ${Render.renderSprint()}
 ${Render.preloader()}
 ${Render.renderAuthorize()}
 ${Render.statistics()}
-<div id="mainPage">
+<div class="page" id="mainPage">
 ${Render.renderMainPage()}
 </div>
-<div id="workBookPage" style="display: none">${Render.renderWorkBookPage(
+<div class="page hide" id="workBookPage">${Render.renderWorkBookPage(
       words
     )}</div>
 </main>
@@ -561,18 +560,11 @@ ${WorkBook.renderWordCard(word, color)}
       </div>
       <div class="statistics__main-container">
         <div class="main-container__wrapper" id="statistics-game__container"></div>
+        <span class="stat-message" id="stat-message">Статистика доступна только для авторизованных пользоателей</span>
       </div>
     </div>
   </section>
   `;
-
-  static changePage (target: HTMLButtonElement) {
-
-      if (target.classList.contains('logo') || target.id === 'mainPageButton') {
-          document.getElementById('mainPage').style.display = Display.block;
-          document.getElementById('workBookPage').style.display = Display.none;
-      }
-  }
 }
 
 export default Render;

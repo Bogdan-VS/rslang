@@ -2,8 +2,12 @@ import { currentToken } from '../../utils/api/const';
 import { IWord } from '../../utils/api/interfaces';
 import countPageToChepter, { series } from './difference/const';
 import AudioCallLink from './difference/enum';
+import Learned from '../learned';
+import WorkBook from '../workBook';
 
 class Utils {
+  private static learned: Learned;
+
   static renderPage(activePage: HTMLElement, preloader: HTMLElement) {
     const pageCollection = document.querySelectorAll('.audio-game');
 
@@ -61,11 +65,12 @@ class Utils {
     activeClass.classList.toggle(`${className}`);
   }
 
-  static getRandomNumbers(collection: number[], count: number) {
+  static getRandomNumbers(collection: number[], count: number, max: IWord[]) {
+    console.log(collection);
     while (collection.length < count) {
       const value = Utils.getRandomNumber(
         countPageToChepter.minCountWords,
-        countPageToChepter.maxCountWords
+        max.length - 1
       );
       if (!collection.includes(value)) {
         collection.push(value);
@@ -114,8 +119,10 @@ class Utils {
     currentWord: string,
     target: HTMLElement,
     track: HTMLAudioElement,
-    correctSucssesWord: string[]
+    correctSucssesWord: string[],
+    wordToCheck?: IWord
   ) {
+    this.learned = new Learned();
     if (sucssesWord === currentWord) {
       series.current += 1;
       const sucsses = document.querySelectorAll('.call-number')[
@@ -131,6 +138,11 @@ class Utils {
       Utils.playSound(track, AudioCallLink.correctSound);
       correctSucssesWord.push(currentWord);
     } else {
+      if (this.learned.isLearned(wordToCheck)) {
+        const index = WorkBook.learnedArr.indexOf(wordToCheck);
+        WorkBook.learnedArr.splice(index, 1);
+      }
+
       if (series.current > series.general) {
         series.general = series.current;
         series.current = 0;

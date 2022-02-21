@@ -21,44 +21,45 @@ class Statistics {
 
   audioCallLongSeries: HTMLElement;
 
+  uadioCallStatisticsItemBtn: HTMLButtonElement;
+
+  statMessage: HTMLElement;
+
   api: Api;
 
   constructor() {
     this.statisticsWrapper = document.getElementById(
       'statistics-game__container'
     );
+    this.uadioCallStatisticsItemBtn = document.getElementById(
+      'audio-call__statistics-item'
+    ) as HTMLButtonElement;
     this.statisticsPage = document.getElementById('main-statistics');
-    this.statisticsBtn = document.getElementById('main-statistics__btn');
     this.api = new Api();
   }
 
   init() {
-    this.statisticsBtn.addEventListener(
-      'click',
-      this.openStatisticsPage.bind(this)
-    );
-
     this.addStartPage();
     this.audioCallNewWords = document.getElementById('audio-call__new-words');
     this.audioCallAnswers = document.getElementById('audio-call__answers');
+    this.statMessage = document.getElementById('stat-message');
     this.audioCallLongSeries = document.getElementById(
       'audio-call__long-series'
+    );
+
+    this.uadioCallStatisticsItemBtn.addEventListener(
+      'click',
+      this.openStatisticsPage.bind(this)
     );
   }
 
   openStatisticsPage() {
-    UtilsStatistics.showPage(this.statisticsPage);
-    this.addCorrectData();
-
-    console.log(currentToken.id);
-    console.log(optional.audioCall.currentNewWords);
     if (currentToken.id) {
-      if (optional.audioCall.currentNewWords) {
-        this.addStatistics();
-      }
+      this.statMessage.classList.remove('start-message__active');
+      this.getStatisticsById();
+    } else {
+      this.statMessage.classList.add('start-message__active');
     }
-
-    this.getStatistics();
   }
 
   addStartPage() {
@@ -75,18 +76,26 @@ class Statistics {
     console.log(result);
   }
 
-  async getStatistics() {
+  async getStatisticsById() {
     const statistics = await this.api.getStatistics(currentToken.id);
 
     if (typeof statistics === 'number') {
-      this.statisticsWrapper.classList.add('hide');
-      console.log('zero');
-      return;
-    }
+      if (optional.audioCall.currentNewWords.length > 0) {
+        this.addCorrectData();
+        this.addStatistics();
+        const statistics = await this.api.getStatistics(currentToken.id);
 
-    const result: IStatistics = statistics;
-    this.drawCurrentData(result.optional.audioCall);
-    this.statisticsWrapper.classList.remove('hide');
+        const result = statistics as IStatistics;
+        this.drawCurrentData(result.optional.audioCall);
+      } else {
+        this.drawCurrentData(optional.audioCall);
+      }
+    } else {
+      const result: IStatistics = statistics;
+      this.addCorrectData();
+      console.log(result);
+      console.log(optional);
+    }
   }
 
   drawCurrentData(data: IAudioCallStat) {

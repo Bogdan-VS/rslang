@@ -1,7 +1,3 @@
-.hide {
-  display: none;
-}
-
 .main-statistics__wrapper {
   width: 80%;
   margin: 0 auto;
@@ -49,7 +45,25 @@
 }
 
 .statistics__main-container {
+  position: relative;
   max-width: 660px;
   margin: 0 auto;
   border: 1px solid #ff9900;
+  .stat-message {
+    display: none;
+    visibility: hidden;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .start-message__active {
+    display: block;
+    visibility: visible;
+  }
+}
+
+.hide {
+  display: none;
 }

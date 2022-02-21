@@ -215,7 +215,6 @@ export default class SprintController {
     else {
       await this.makeGameArray(this.level, null);
     }
-    // this.sprintView.toggleStartScreen();
     this.sprintView.getPreloader();
     this.addLoadTimer();
     }
@@ -383,11 +382,7 @@ export default class SprintController {
     this.isPaused = true;
   }
 
-<<<<<<< HEAD
   clearScore() {
-=======
-  restartGame() {
->>>>>>> develop
     this.answered.clear();
     this.step = 0;
     this.loadTime = 3;
