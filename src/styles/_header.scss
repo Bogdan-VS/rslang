@@ -86,14 +86,43 @@
     background: url("../assets/img/icon-burger.png") no-repeat center/cover;
     filter: brightness(0) saturate(100%) invert(74%) sepia(97%) saturate(3828%) hue-rotate(3deg) brightness(104%) contrast(104%);
     margin: 0 20px 0 50px;
+    transition: all 0.3s;
   }
 
   .header__nav {
     display: none;
+    flex-direction: column;
+    width: 100vw;
+    top: 88px;
+    background-color: #FF7549;
+    height: 40vh;
+    position: fixed;
+    z-index: 100;
   }
 
   .header__container {
     justify-content: center;
+  }
+
+  .header__nav-container {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .header__nav-item a {
+    font-family: 'Gilroy-Bold', serif;
+    padding: 0;
+    color: #fff;
+    font-size: 18px;
+    line-height: 26px;
+  }
+
+  .header__nav-item {
+    font-family: 'Gilroy-Bold', serif;
+    text-align: center;
+    color: #fff;
+    font-size: 18px;
+    line-height: 26px;
   }
 
 }

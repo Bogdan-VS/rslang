@@ -5,6 +5,7 @@ import { colorThemes, bgGradient } from '../utils/workBook/enums';
 import Display from '../utils/baseEnums';
 import { hardButtonTextContent, wordsPage } from '../utils/workBook/const';
 import Learned from './learned';
+import Burger from './burgerMenu';
 
 class WorkBook {
   private api: Api;
@@ -33,6 +34,8 @@ class WorkBook {
 
   private learned: Learned;
 
+  private burger: Burger;
+
 
     constructor(words?: IWord[]) {
     WorkBook.hardArr = [];
@@ -48,12 +51,12 @@ class WorkBook {
     );
     this.words = words;
     this.api = new Api();
+    this.burger = new Burger()
     this.listen();
     this.currentPage = 1;
     this.wordsGroup = colorThemes.a1.wordsGroup;
     wordsPage.color = colorThemes.a1.color;
     this.learned = new Learned()
-
   }
 
   static renderWordCard = (word: IWord, color: string) =>
@@ -326,7 +329,6 @@ class WorkBook {
   async listen() {
     document.addEventListener('click', (e) => {
       const target = e.target as HTMLButtonElement;
-      Render.changePage(target);
       if (target.id === 'a1') {
         this.changeColorThem(colorThemes.a1, target);
       } else if (target.id === 'a2') {
@@ -347,10 +349,17 @@ class WorkBook {
         this.playSound(target.id);
       } else if (target.id === 'workBookButton') {
         this.showWorkBook();
+        if (this.burger.isOpen === true) {
+          this.burger.openCloseBurger()
+        }
       } else if (target.classList.contains('word-card__button')) {
         this.addRemoveHard(target);
       } else if (target.classList.contains('word-card__learned-indicator')) {
         this.addRemoveLearned(target);
+      } else if (target.classList.contains('header__burger-button')) {
+        this.burger.openCloseBurger()
+      } else if (target.classList.contains('header__nav-item')) {
+        this.burger.openCloseBurger()
       }
     });
   }
