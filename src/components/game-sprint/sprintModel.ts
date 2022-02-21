@@ -35,7 +35,7 @@ export default class SprintModel {
   async getSomeWords(group: string): Promise<IWord[]> {
     let page = parseInt(this.page, 10);
     const pages = new Set();
-    while (pages.size < 5) {
+    while (pages.size < 1) {
       page = Math.floor(Math.random() * 29);
       pages.add(page);
     }
@@ -54,4 +54,32 @@ export default class SprintModel {
     });
     return this.gameWords;
   }
+
+  async getWorkBookWords(group: string, page: string): Promise<IWord[]> {
+    const  wPage = parseInt(page, 10);
+    let pagesArr = [] as number[];
+    if (wPage < 2) {
+      for (let i = 0; i <= wPage; i += 1) {
+        pagesArr.push(i);
+      }
+    }
+    else {
+      pagesArr = [wPage - 1, wPage - 2, wPage - 3];
+    }
+    const promiseArr = pagesArr.map((item) =>
+    this.api.getWords(String(item), group)
+    ) as Array<Promise<IWord[]>>;
+    
+    let data = await (await Promise.all(promiseArr)).flat(1);
+    data = this.shuffleArray(data);
+    this.gameWords = [];
+    this.gameFalseWords = [];
+    data.forEach((elem) => {
+      this.gameWords.push(elem);
+      this.gameFalseWords.push(elem.wordTranslate);
+    });
+    return this.gameWords;
+
+  }
+
 }

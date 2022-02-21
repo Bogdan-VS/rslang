@@ -55,11 +55,22 @@ class Statistics {
 
   openStatisticsPage() {
     if (currentToken.id) {
+      this.getStatisticsById();
+    } else {
+      this.statMessage.classList.add('');
+    }
+    this.addCorrectData();
+
+    console.log(currentToken.id);
+    console.log(optional.audioCall.currentNewWords);
+    if (currentToken.id) {
       this.statMessage.classList.remove('start-message__active');
       this.getStatisticsById();
     } else {
       this.statMessage.classList.add('start-message__active');
     }
+
+    // this.getStatistics();
   }
 
   addStartPage() {
@@ -80,21 +91,10 @@ class Statistics {
     const statistics = await this.api.getStatistics(currentToken.id);
 
     if (typeof statistics === 'number') {
-      if (optional.audioCall.currentNewWords.length > 0) {
-        this.addCorrectData();
-        this.addStatistics();
-        const statistics = await this.api.getStatistics(currentToken.id);
-
-        const result = statistics as IStatistics;
-        this.drawCurrentData(result.optional.audioCall);
-      } else {
-        this.drawCurrentData(optional.audioCall);
-      }
+      this.drawCurrentData(optional.audioCall);
     } else {
       const result: IStatistics = statistics;
-      this.addCorrectData();
-      console.log(result);
-      console.log(optional);
+      this.drawCurrentData(result.optional.audioCall);
     }
   }
 
