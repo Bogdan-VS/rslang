@@ -14,6 +14,8 @@ export default class SprintController {
 
   level: string;
 
+  page: string;
+
   step: number;
 
   wordCount: number;
@@ -60,8 +62,9 @@ export default class SprintController {
     this.sprintView = new SprintView(this);
     this.answered = new Set();
     this.level = '0';
+    this.page = '0';
     this.step = 0;
-    this.loadTime = 5;
+    this.loadTime = 3;
     this.trueArray = [];
     this.progressArray = [];
     this.prevTranslate = [];
@@ -69,7 +72,7 @@ export default class SprintController {
     this.isPaused = false;
     this.intervalLoaderTime = 0;
     this.roundTime = 0;
-    this.seconds = 10;
+    this.seconds = 30;
     this.correctCount = 0;
     this.score = 0;
     this.factor = 1;
@@ -106,8 +109,14 @@ export default class SprintController {
     });
   }
 
-  async makeGameArray(group: string) {
-    this.trueArray = await this.sprintModel.getSomeWords(group);
+  async makeGameArray(group: string, page: string) {
+    if (page) {
+      this.trueArray = await this.sprintModel.getWorkBookWords(group, page);
+    }
+    else {
+      this.trueArray = await this.sprintModel.getSomeWords(group);
+    }
+    console.log(this.trueArray)
     this.makeQuestion();
     return this.trueArray;
   }
@@ -128,6 +137,7 @@ export default class SprintController {
   }
 
   makeQuestion() {
+    
     let rand = Math.floor(Math.random() * 2);
     if (
       this.prevTranslate.includes(this.trueArray[this.step].wordTranslate) &&
@@ -177,7 +187,7 @@ export default class SprintController {
     if (this.seconds === -1) {
       this.sprintView.restartGameTimer();
       clearInterval(this.roundTime);
-      this.seconds = 7;
+      this.seconds = 30;
       this.sprintView.addTimer(' ');
       this.sprintView.showPopupResult(this.progressArray);
     }
@@ -190,17 +200,26 @@ export default class SprintController {
       if (this.loadTime === -1) {
         this.addGameTimer();
         clearInterval(this.intervalLoaderTime);
-        this.loadTime = 5;
+        this.loadTime = 3;
       }
     }, 1000);
   }
 
-  async startRound() {
-    this.sprintView.toggleStartScreen();
-    await this.makeGameArray(this.level);
+  async startRound(data: {page: string, category: string}) {
+    this.clearScore();
+    if (data) {
+      this.level = data.category;
+      this.page = data.page;
+      await this.makeGameArray(this.level, this.page);
+    }
+    else {
+      await this.makeGameArray(this.level, null);
+    }
+    // this.sprintView.toggleStartScreen();
     this.sprintView.getPreloader();
     this.addLoadTimer();
-  }
+    }
+
 
   checkAnswer(target: string) {
     if (!this.isPaused) {
@@ -220,6 +239,7 @@ export default class SprintController {
         this.sprintView.getBonusCheck(this.correctCount);
         this.sprintView.changeBorderCorrect();
         this.step += 1;
+        this.nextQuestionCheck();
         this.makeQuestion();
       } else {
         this.playAudio('error');
@@ -229,11 +249,21 @@ export default class SprintController {
         this.clearBonus();
         this.sprintView.changeBorderIncorrect();
         this.step += 1;
+        this.nextQuestionCheck();
         this.makeQuestion();
         this.factor = 1;
         this.removeBonusStar();
         this.sprintView.hideBonus();
       }
+    }
+  }
+
+  nextQuestionCheck() {
+    if (this.step === this.trueArray.length) {
+      this.seconds = 0;
+      this.step -= this.step;
+      this.isPaused = true;
+      this.addGameTimer();
     }
   }
 
@@ -350,13 +380,13 @@ export default class SprintController {
 
   closeResultPopup() {
     this.sprintView.resultPopup.classList.remove('active');
+    this.isPaused = true;
   }
 
-  restartGame() {
-
+  clearScore() {
     this.answered.clear();
     this.step = 0;
-    this.loadTime = 5;
+    this.loadTime = 3;
     this.trueArray = [];
     this.progressArray = [];
     this.prevTranslate = [];
@@ -364,10 +394,14 @@ export default class SprintController {
     this.isPaused = false;
     this.intervalLoaderTime = 0;
     this.roundTime = 0;
-    this.seconds = 10;
+    this.seconds = 30;
     this.correctCount = 0;
     this.score = 0;
     this.factor = 1;
+  }
+
+  restartGame() {
+    this.clearScore();
     this.sprintView.toggleStartScreen();
     this.sprintView.toggleGameScreen();
   }

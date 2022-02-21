@@ -260,22 +260,24 @@
 }
 
 .resultPopup__wrap {
-  width: 60rem;
+  width: 49rem;
   overflow-y: auto;
   max-width: 98%;
   max-height: 90%;
   padding: 2rem;
   border-radius: 0.5rem;
   background-color: #fff;
+  box-shadow: 0px 0px 10px 3px rgb(255 255 255 / 30%);
+  transition: all 0.5s;
 }
 
 .resultPopup__wrap::-webkit-scrollbar-thumb {
   background-color: var(--light-gray);
-  border-radius: 0.3rem;
+  border-radius: 0.8rem;
 }
 
 .resultPopup__wrap::-webkit-scrollbar {
-  width: 1rem;
+  width: 1.3rem;
 }
 
 .resultPopup__title {
@@ -304,6 +306,7 @@
 .resultPopup__fail,
 .resultPopup__success {
   margin-bottom: 1.5rem;
+  min-height: 20rem;
 }
 
 .resultPopup__word {
@@ -331,15 +334,29 @@
 
 .resultPopup__word .text {
   margin-right: 0.5rem;
+  font-size: 1.6rem;
 }
 
 .resultPopup__btns {
   display: flex;
-  justify-content: space-between;
+  column-gap: 30px;
+  justify-content: center;
   align-items: center;
 }
 .resultPopup__btns button.fill {
   border-color: var(--charcoal-grey);
+  width: 130px;
+  height: 40px;
+  outline: none;
+  font-family: "Open-Sans", serif;
+  font-size: 14px;
+  border-radius: 4px;
+  transition: all 0.25s;
+  padding: 0; 
+}
+.resultPopup__btns button.fill:hover {
+  background-color: #fff;
+  color: var(--bg);
 }
 .resultPopup__btns button:first-child {
   background-color: var(--cyan);
@@ -473,7 +490,7 @@
 }
 
 .start_timer {
-  animation: 80s clocktimer linear;
+  animation: 40s clocktimer linear;
 }
 
 .game__sprint__question-wrapper {

@@ -24,7 +24,7 @@ class Render {
         <li class="header__nav-item text" id="games">Игры
           <ul class="nav__sub-menu">
             <li class="sub-menu__item" id="callAudio-game"><a href="#">Аудио-вызов</a></li>
-            <li class="sub-menu__item sprint-game"><a href="#">Спринт</a></li>
+            <li class="sub-menu__item sprint-game" id="sprint-game"><a href="#">Спринт</a></li>
           </ul>
         </li>
         <li class="header__nav-item text"><a href="#" class="header__nav-item">Статистика</a></li>

@@ -10,7 +10,7 @@ export interface IGamesController {
   closeResultPopup(): void;
   getScore(): number;
   resultWordOnClick(elem: HTMLElement): void;
-  startRound(): Promise<void>;
+  startRound(data: {page: string; category: string}): Promise<void>;
   checkAnswer(target: string): void;
   togglePlay(): void;
   playWord(src: string, target: HTMLElement): void;

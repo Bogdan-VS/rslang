@@ -1,4 +1,5 @@
 import { IWord } from '../../utils/api/interfaces';
+import { wordsPage } from '../../utils/workBook/const';
 import { IGamesController } from './Interface';
 
 export default class SprintView {
@@ -74,6 +75,10 @@ export default class SprintView {
 
   gameScreen: HTMLElement;
 
+  workBookSprintBtn: HTMLElement;
+
+  prevBtn: HTMLElement;
+
   static gameLevels = 6;
 
   constructor(gameController: IGamesController) {
@@ -81,7 +86,7 @@ export default class SprintView {
     this.main = document.getElementById('mainPage') as HTMLElement;
     this.sprintBeginBtn = document.getElementById('sprint-game') as HTMLElement;
     this.timeoutLoaderHide = 0;
-    this.gameTime = 60;
+    this.gameTime = 30;
   }
 
   static renderSoundIcon(color: string) {
@@ -237,6 +242,8 @@ export default class SprintView {
     this.restartGameBtn = document.getElementById(
       'restartGame'
     ) as HTMLButtonElement;
+    this.workBookSprintBtn = document.getElementById('sprint-Btn') as HTMLElement;
+    this.prevBtn = document.querySelector('.prevBtn') as HTMLElement;
     this.gameField.addEventListener('click', (event) =>
       this.clickHandler(event)
     );
@@ -244,7 +251,7 @@ export default class SprintView {
       this.sprintController.activate()
     );
     this.startBtn.addEventListener('click', () =>
-      this.sprintController.startRound()
+      this.sprintController.startRound(null)
     );
     this.popupCloseBtn.addEventListener('click', () => {
       this.sprintController.closeResultPopup();
@@ -256,6 +263,9 @@ export default class SprintView {
     this.resultPopup.addEventListener('click', (e: MouseEvent) => {
       this.sprintController.resultWordOnClick(<HTMLElement>e.target);
     });
+    this.close.addEventListener('click', () => this.toggleGameScreen());
+    this.prevBtn.addEventListener('click', () => this.toggleStartScreen());
+    this.workBookSprintBtn.addEventListener('click', () => this.sprintController.startRound(wordsPage));
   }
 
   clickHandler(event: MouseEvent) {
@@ -377,7 +387,7 @@ export default class SprintView {
         this.startGameTimer();
         this.toggleGameControls();
       }
-    }, 6000);
+    }, 4000);
   }
 
   getLoaderTime(timeItem: number) {
