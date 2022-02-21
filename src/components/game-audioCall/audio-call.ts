@@ -117,11 +117,16 @@ class AudioCall {
 
   mainStatistics: HTMLElement;
 
+  audioCallBtn: HTMLButtonElement;
+
   constructor() {
     this.body = document.querySelector('body');
     this.api = new Api();
     this.applySettingsBtn = document.getElementById(
       'audio-call__ok-btn'
+    ) as HTMLButtonElement;
+    this.audioCallBtn = document.getElementById(
+      'audioCall-Btn'
     ) as HTMLButtonElement;
     this.audioCallContainer = document.getElementById('audio-call');
     this.workBookPage = document.getElementById('workBookPage');
@@ -230,6 +235,7 @@ class AudioCall {
 
   init = () => {
     this.audioCallBeginBtn.addEventListener('click', this.openGame.bind(this));
+    this.audioCallBtn.addEventListener('click', this.openGame.bind(this));
     this.audioCallClose.addEventListener('click', this.closeGame.bind(this));
     this.audioCallStatisticsBtnEnd.addEventListener(
       'click',
@@ -312,6 +318,20 @@ class AudioCall {
       this.audioCallRegulation.classList.remove(
         'audio-call__regulation-disabled'
       );
+    }
+
+    if (
+      this.audioCallCollection.classList.contains(
+        'audio-call__collection-disabled'
+      )
+    ) {
+      this.audioCallCollection.classList.remove(
+        'audio-call__collection-disabled'
+      );
+    }
+
+    if (this.audioCallPlayArrow.classList.contains('arrow-active')) {
+      this.audioCallPlayArrow.classList.remove('arrow-active');
     }
 
     startGame.start = false;
@@ -485,8 +505,6 @@ class AudioCall {
         AudioCall.progress
       );
 
-      console.log(AudioCall.progress);
-
       Statistic.removeStatisticsPage();
       Statistic.drawStatisticPage(
         this.audioCallStatisticsPage2,
@@ -635,9 +653,7 @@ class AudioCall {
         AudioCall.currentWordsCollection.filter(
           (i) => this.learned.isLearned(i) === 0
         );
-      console.log(AudioCall.currentWordsCollection);
     }
-    console.log(AudioCall.numbersCollection);
 
     Utils.getRandomNumbers(
       AudioCall.numbersCollection,
@@ -657,7 +673,6 @@ class AudioCall {
     ).sort((a, b) => a - b);
 
     this.audioCallCollectionItem.forEach((element, index) => {
-      console.log(AudioCall.currentWordsCollection[activeNumbers[index]]);
       const num = document.createElement('span');
       num.classList.add('call-number');
       num.textContent = `${index + 1}`;

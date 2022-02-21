@@ -66,7 +66,6 @@ class Utils {
   }
 
   static getRandomNumbers(collection: number[], count: number, max: IWord[]) {
-    console.log(collection);
     while (collection.length < count) {
       const value = Utils.getRandomNumber(
         countPageToChepter.minCountWords,

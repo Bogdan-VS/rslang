@@ -2,7 +2,7 @@ import Api from '../../server/api';
 import { currentToken, generalStatistics } from '../../utils/api/const';
 import { IStatistics } from '../../utils/api/interfaces';
 import { audioCall } from '../game-audioCall/difference/const';
-import optional from './difference/const';
+import optional, { currentDay, dailyStats } from './difference/const';
 import { IAudioCallStat } from './difference/interface';
 import UtilsStatistics from './utils';
 
@@ -67,13 +67,9 @@ class Statistics {
   }
 
   async addStatistics() {
-    generalStatistics.optional = optional;
-    const result = await this.api.apsertStatistics(
-      currentToken.id,
-      generalStatistics
-    );
-
-    console.log(result);
+    dailyStats[currentDay] = optional;
+    generalStatistics.optional = dailyStats[currentDay];
+    await this.api.apsertStatistics(currentToken.id, generalStatistics);
   }
 
   async getStatisticsById() {
@@ -83,18 +79,33 @@ class Statistics {
       if (optional.audioCall.currentNewWords.length > 0) {
         this.addCorrectData();
         this.addStatistics();
-        const statistics = await this.api.getStatistics(currentToken.id);
+        const stat = await this.api.getStatistics(currentToken.id);
 
-        const result = statistics as IStatistics;
+        const result = stat as IStatistics;
         this.drawCurrentData(result.optional.audioCall);
       } else {
         this.drawCurrentData(optional.audioCall);
       }
     } else {
       const result: IStatistics = statistics;
-      this.addCorrectData();
-      console.log(result);
-      console.log(optional);
+
+      if (audioCall.newWords === null) {
+        UtilsStatistics.getWordsFromServer(
+          result.optional.audioCall.currentNewWords,
+          Statistics.currentNewWords
+        );
+
+        optional.audioCall.betterSeries =
+          result.optional.audioCall.betterSeries;
+        optional.audioCall.correctAnswer =
+          result.optional.audioCall.correctAnswer;
+        optional.audioCall.currentNewWords =
+          result.optional.audioCall.currentNewWords;
+        this.drawCurrentData(optional.audioCall);
+      } else {
+        this.addCorrectData();
+        this.drawCurrentData(optional.audioCall);
+      }
     }
   }
 

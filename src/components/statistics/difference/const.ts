@@ -8,4 +8,7 @@ const optional: IOptional = {
   },
 };
 
+export const currentDay = new Date().getDate();
+export const dailyStats: Record<number, IOptional> = {};
+
 export default optional;

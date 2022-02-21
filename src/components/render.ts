@@ -564,10 +564,9 @@ ${WorkBook.renderWordCard(word, color)}
     </div>
   </section>
   `;
+
   static changePage(target: HTMLButtonElement) {
     if (target.classList.contains('logo') || target.id === 'mainPageButton') {
-      // document.getElementById('mainPage').style.display = Display.block;
-      // document.getElementById('workBookPage').style.display = Display.none;
     }
   }
 }
